@@ -1,3 +1,5 @@
 *.flv
 japon/
 img/
+modules/visitstat/config_allmystats.php
+tools/sql.php
