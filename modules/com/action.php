@@ -1,14 +1,15 @@
 <?php
 require_once(dirname(__FILE__).'/../../tools/recaptcha/recaptchalib.php');
 $err = false;
-$resp = recaptcha_check_answer ($recaptcha_priv,
+if (!empty($_POST)) {
+    $resp = recaptcha_check_answer ($recaptcha_priv,
                               $_SERVER["REMOTE_ADDR"],
                               $_POST["recaptcha_challenge_field"],
                               $_POST["recaptcha_response_field"]);
-
-if (!$resp->is_valid) {
-    $err = true;
-    $err_msg = "Erreur dans le captcha";
+    if (!$resp->is_valid) {
+        $err = true;
+        $err_msg = "Erreur dans le captcha";
+    }
 }
 
 if (!empty($_SESSION['ok']) && $_SESSION['ok']) {
