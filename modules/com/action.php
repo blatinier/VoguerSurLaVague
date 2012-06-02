@@ -1,14 +1,23 @@
 <?php
+require_once(dirname(__FILE__).'/../../tools/recaptcha/recaptchalib.php');
 $err = false;
+$resp = recaptcha_check_answer ($recaptcha_priv,
+                              $_SERVER["REMOTE_ADDR"],
+                              $_POST["recaptcha_challenge_field"],
+                              $_POST["recaptcha_response_field"]);
 
-if($_SESSION['ok']){
-	$pseudo = "Melmelboo";
+if (!$resp->is_valid) {
+    $err = true;
+    $err_msg = "Erreur dans le captcha";
 }
-elseif(!$_SESSION['ok'] && (strtolower($_POST['pseudo']) == "melmelboo")){
+
+if (!empty($_SESSION['ok']) && $_SESSION['ok']) {
+	$pseudo = "Melmelboo";
+} elseif ((empty($_SESSION['ok']) || !$_SESSION['ok']) && (strtolower($_POST['pseudo']) == "melmelboo")) {
 	$pseudo = "";
 	$err = true;
-}
-else{
+    $err_msg = "Désolé mais ce pseudo est réservé.";
+} else {
 	$pseudo = $_POST['pseudo'];
 }
 
@@ -44,10 +53,12 @@ if(!empty($pseudo)&&!empty($commentaire) && !$err){
     }
 }
 
-if($_COOKIE['ComVoguer']['P']){
-	$pseudo = $_COOKIE['ComVoguer']['P'];
-}
-if($_COOKIE['ComVoguer']['S']){
-	$site = $_COOKIE['ComVoguer']['S'];
+if (!empty($_COOKIER['ComVoguer'])){
+    if($_COOKIE['ComVoguer']['P']){
+    	$pseudo = $_COOKIE['ComVoguer']['P'];
+    }
+    if($_COOKIE['ComVoguer']['S']){
+    	$site = $_COOKIE['ComVoguer']['S'];
+    }
 }
 ?>

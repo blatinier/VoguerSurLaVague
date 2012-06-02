@@ -1,5 +1,7 @@
 <?php
 while($res = mysql_fetch_assoc($req)){
+    $closed_com = $res['closed_com'];
+    $captcha_com = $res['captcha_com'];
 	?>
 	<div class="post">
 		<span class="categorie">
@@ -19,17 +21,19 @@ while($res = mysql_fetch_assoc($req)){
 		</div>
 		<div class="comconteneur">
 			<?php 
-       // 	if(!empty($_GET['com']) && !$_GET['com']){
+        	if(!$closed_com){
 				?>
 				<a class="comlink" href="index.php?art=<?php echo $res['id']; ?>&amp;com=1#postcom">
 					Commenter
 				</a>
 				 - 
+            <?php
+		    }
+            ?>
 				<a class="comlink" href="index.php?art=<?php echo $res['id']; ?>">
 					Lire les commentaires (<?php echo ($nbcom[$res['id']])?$nbcom[$res['id']]:0; ?>)
 				</a>
 				<?php
-		//	}
 			if(!empty($_SESSION['ok']) && $_SESSION['ok'] == 1){
 				echo " - <a class=\"comlink\" href=\"index.php?p=mart&amp;art=".$res['id']."\">Editer</a> - 
 				<a class=\"comlink\" href=\"index.php?p=dart&amp;art=".$res['id']."\">Supprimer</a><br/>";
@@ -44,7 +48,7 @@ while($res = mysql_fetch_assoc($req)){
                     echo "<span style=\"color:red;\"> Cet article sera publié dans ".$jour." jours ".$heure." heures et ".$minutes." minutes.</span><br/>";
                 }
             ?>
-                Ecrit le <?php echo $res['post_date']; ?> par <?php echo stripslashes($res['auteur']); ?>
+                Écrit le <?php echo $res['post_date']; ?> par <?php echo stripslashes($res['auteur']); ?>
             </span>
 			<div id="com<?php echo $res['id']; ?>">
 				<?php
@@ -54,7 +58,7 @@ while($res = mysql_fetch_assoc($req)){
 				?>
 			</div>
 			<?php
-			if(!empty($_GET['com']) && $_GET['com']){	
+			if (!empty($_GET['com']) && $_GET['com'] && !$closed_com) {
 				include("modules/com/newcom.php");
 			}
 			?>

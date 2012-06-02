@@ -1,14 +1,13 @@
 <?php
 require_once(dirname(__FILE__).'/../../tools/sql.php');
 
-if(!empty($_GET['art'])){
+if (!empty($_GET['art'])) {
     $ida = (int)$_GET['art'];
-}
-else{
+} else {
     $ida = 0;
 }
 
-if($ida > 0){
+if ($ida > 0) {
 	$req = mysql_query("SELECT id, pseudo, DATE_FORMAT(moment,'à %H:%i \l\e %d/%c/%y') AS heure, commentaire, site, ip
 							FROM mellismelau_com WHERE idarticle=".$ida." ORDER BY moment");
 	while($res = mysql_fetch_assoc($req)){

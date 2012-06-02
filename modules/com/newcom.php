@@ -1,13 +1,12 @@
 <?php
 require_once(dirname(__FILE__).'/../../tools/sql.php');
-if(!empty($sent)){
+if (!empty($sent)) {
 	echo 'Commentaire envoyé.';
 }
-if($err){
-	echo "Désolé mais ce pseudo est réservé.";
+if ($err) {
+	echo $err_msg;
 }
 ?>
-
 
 <div style="line-height:2em;">
 	<form method="post" action="">
@@ -24,6 +23,12 @@ if($err){
 		
 		Sauvegarder mes informations : <input type="checkbox" name="savedata" /><br/>
 		
+        <?php
+        if ($captcha_com) {
+            require_once dirname(__FILE__).'/../../tools/recaptcha/recaptchalib.php';
+            echo recaptcha_get_html($recaptcha_pub);
+        }
+        ?>
 		<input type="submit" value="Poster!"/>
 	</fieldset>
 	</form>
