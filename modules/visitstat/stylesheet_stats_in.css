@@ -1,0 +1,123 @@
+
+H1{
+	TEXT-ALIGN: center;
+	COLOR: #dd0000; 
+	FONT-SIZE: 8pt; 
+	FONT-STYLE: italic;
+}
+TABLE.head{
+	WIDTH: 570px;
+}
+.head{
+	FONT-FAMILY: Verdana Arial, sans-serif;
+	FONT-SIZE: 25px;
+	TEXT-ALIGN: center;
+	COLOR: #266082;
+	FONT-WEIGHT: bold;
+	FONT-STYLE: italic;
+}
+.TDstatsin{
+	FONT-FAMILY: Verdana, Arial, sans-serif; FONT-SIZE: 10px
+}
+.THstatsin {
+	FONT-FAMILY: Verdana, Arial, sans-serif; FONT-SIZE: 10px
+}
+
+.NAVHREF {
+	COLOR: #4000ff; FONT-FAMILY: Verdana, Arial, Helvetica, sans-serif; FONT-SIZE: 12px; FONT-WEIGHT: bold; TEXT-DECORATION: underline
+}
+.NAVNOHREF {
+	COLOR: #000000; FONT-FAMILY: Verdana, Arial, Helvetica, sans-serif; FONT-SIZE: 12px; FONT-STYLE: normal; FONT-WEIGHT: bold
+}
+.TABLEBORDER {
+	BORDER: 0px black solid;
+	BACKGROUND-COLOR: #000000;
+	WIDTH: 570px;
+	/* TEXT-ALIGN: center; */
+}
+.TABLEFRAME {
+	BACKGROUND-COLOR:  #99CCFF;
+	BORDER: 0px black solid;
+	WIDTH: 100%;
+}
+.TABLEDATA {
+	BACKGROUND-COLOR: #FAFAFA;
+	WIDTH: 100%;
+}
+.TABLEHREF {
+	COLOR: #dd0050; FONT-FAMILY: Verdana, Arial, Helvetica, sans-serif; FONT-SIZE: 12px; FONT-WEIGHT: bold
+}
+.TABLETITLE {
+	BACKGROUND-COLOR: #99CCFF;
+	COLOR: #303030;
+	FONT-FAMILY: Verdana, Arial, Helvetica, sans-serif;
+	FONT-SIZE: 14px;
+	FONT-WEIGHT: bold;
+	text-align: center;
+	vertical-align: middle;
+}
+
+.head_large {
+	font-size: large;
+	color: #EC0000;
+	font-family: Arial, Helvetica, sans-serif;
+	font-weight: bold;
+	font-style: italic;
+}
+.head_small {font-size: small}
+
+.TABLEARCHIVE{
+	BACKGROUND-COLOR: #ffffff;
+	TEXT-ALIGN: center;
+	FONT-SIZE: 14px;
+}
+.TABLEINSTALL{
+	BACKGROUND-COLOR: #ffffff;
+}
+.PAGESVUES {
+	COLOR: #2000ff; FONT-FAMILY: Verdana, Arial, Helvetica, sans-serif; FONT-SIZE: 10px; FONT-STYLE: normal
+}
+.VISITES {
+	COLOR: #8f0080; FONT-FAMILY: Verdana, Arial, Helvetica, sans-serif; FONT-SIZE: 10px; FONT-STYLE: normal
+}
+.TOPDAY {
+	BACKGROUND-COLOR: #ffe678; COLOR: #ff0000; FONT-FAMILY: Verdana, Arial, Helvetica, sans-serif; FONT-SIZE: 10px; FONT-WEIGHT: bold
+}
+.SITENAME {
+	COLOR: #000000; FONT-FAMILY: Verdana, Arial, Helvetica, sans-serif; FONT-SIZE: 14px; FONT-WEIGHT: bold
+}
+
+input.submit {
+	text-decoration: underline;
+	background: transparent;
+	color: #3300FF;
+	border-width: 1px;
+	font-weight: bold;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	font-style: normal;
+}
+
+input.submitDate {
+	text-decoration: underline;
+	background: transparent;
+	color: #3300FF;
+	border-width: 1px;
+	font-weight: bold;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: x-small;
+}
+
+input.submitTrans {
+	text-decoration: underline;
+	background: transparent;
+	color: #3300FF;
+	border-width: 0px;
+	font-weight: bold;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: x-small;
+}
+
+form, form div {
+  display: inline;
+}

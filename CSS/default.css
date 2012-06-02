@@ -1,0 +1,334 @@
+body{
+    color: #333333;
+}
+
+#conteneur{
+	width:950px;
+	margin-left:auto;
+	margin-right:auto;
+	padding-top: 9px;
+}
+
+#header{
+	width: 946px;
+	height: 225px;
+	margin: auto;
+    background: #ffffff url("../images/Baniere946.jpg") no-repeat right top;
+}
+
+#main{
+	width:950px;
+	float:left;
+    margin-top: 30px;
+}
+
+#contenu{
+	float:right;
+	width: 71%;
+	margin-bottom: 20px;
+}
+
+#menuV{
+	width: 25%;
+    font-style: normal;
+}
+
+#menuV li{
+	list-style-type: none;
+}
+
+a{
+	color: #67696a;
+	text-decoration: none;
+	font-size: 0.9em;
+}
+
+#menuV .menuTitle{
+	font-size: 1em;
+	width:100%;
+    font-weight: Bold;
+    font-family:Arial,sans-serif;
+    color: #000000;
+}
+
+#menuV .menuBlock{
+    float: left;
+    margin: auto;
+    margin-top: 5px;
+}
+
+#menuArchiveCat{
+    display: block;
+}
+
+#menuBlockLeft{
+    display: block;
+    float: left;
+    width: 50%;
+}
+
+#menuBlockRight{
+    display: block;
+    float: right;
+    width: 50%;
+}
+
+#menuV .menuCloud{
+	font-size: 1em;
+	text-align: justify;
+}
+
+.ulmenuV{
+	padding-left: 0;
+	font-size:0.8em;
+	line-height:20px;
+}
+
+#footer{
+	text-align: right;
+	padding-bottom: 15px;
+	padding-top: 15px;
+	width: 950px;
+	font-size:0.8em;
+}
+
+.post{
+	line-height:0.5em;
+}
+
+.mainpost{
+	line-height:1.3em;
+	font-family: Arial;
+	text-align: justify;
+	font-size: 0.9em;
+}
+
+.postcontent{
+	line-height:1.3em;
+	font-family: Arial;
+	text-align: justify;
+	font-size: 0.9em;
+    font-style: normal;
+}
+
+.postcontent a{
+    color: #FE61D0;
+}
+
+.postTitle{
+	line-height:0;
+	color: #000000;
+}
+
+.postTitle a{
+	color: #000000;
+    font-family:Arial,sans-serif;
+    font-size: 80%;
+}
+
+.postDate{
+	font-size: 0.7em;
+	text-transform: uppercase;
+    float: right;
+    color: #969696;
+}
+
+hr{
+	border: dotted;
+	border-top-width: 1px; 
+	border-bottom-width: 0px; 
+	border-right-width: 0px;
+	border-left-width: 0px;
+}
+
+#menuV hr{
+    float: right;
+    width: 100%;
+    margin-top: 10px;
+    margin-bottom: 15px;
+}
+
+.liens {
+	list-style-type: none;
+}
+
+#formcontact{
+	text-align:right;
+	line-height:2em;
+}
+
+.coloredTitle{
+	color: #77797a;
+}
+
+.categorie{
+	font-size:0.6em;
+	text-transform: uppercase;
+    font-family:Arial,sans-serif;
+    color: #969696;
+    letter-spacing: 1px;
+}
+
+.archive_root{
+    margin-left: -40px;
+}
+
+.archive_mounth{
+    margin-left: -25px;
+}
+
+.archive{
+	font-size:1em;
+	line-height:20px;
+}
+
+.comlink{
+    color: #969696;
+}
+
+.comconteneur{
+	float:left;
+	width:100%;
+	line-height:15px;
+	font-size: 0.8em;
+	font-family: Arial;
+}
+
+.comconteneur strong{
+	font-size: 1.2em;
+}
+
+a img{
+	border: 0px;
+}
+
+div#menuH ul li {
+	position:relative;
+	list-style: none; /*on enleve les icones de liste */
+	border-bottom:1px solid black; /*ajout d'une bordure de separation d'element:*/
+	font-size:0.7em;
+	filter:alpha(opacity=85);
+	-moz-opacity:0.85; 
+}
+
+div#menuH div ul {
+	position: relative;
+	top:-10px;
+	right: 40px;
+	width:100%;
+	visibility:hidden;
+}   
+
+div#menuH{
+    text-align: center;
+} 
+
+div#menuH a {
+	text-decoration: none; /* plus de soulignement pour les liens */
+} 
+
+div#menuH div.sousmenu{
+	float:left;
+	height: 50px;
+	margin-top:10px;
+	margin-right:0px;
+	width: 100px;
+}
+
+div#menuH div.sousmenuliens{
+	float:right;
+	height: 50px;
+	margin-top:10px;
+	margin-right:0px;
+	margin-left:0px;
+	width: 100px;
+	text-align:center;
+}
+
+div#menuH div.sousmenuliens:hover ul.menunv2{
+	visibility:visible;
+}
+
+div#menuH div.sousmenu:hover ul.menunv2{
+	visibility:visible;
+}
+
+.ssmH{
+	text-decoration: none; /* plus de soulignement pour les liens */
+}
+
+#vignetteAstuce{
+    position: absolute;
+}
+
+#cadreAstuceMenuV{
+    width:205px;
+    margin-top:-225px;
+    margin-left:15px;
+    z-index:2;
+    position:absolute;
+}
+
+#astuceMenuV{
+    width:200px;
+    z-index:1;
+    margin-top:-205px;
+    margin-left:19px;
+    position:absolute;
+}
+
+#astuceLegendMenuV{
+    margin:3px;
+    margin-top:203px;
+    height:30px;
+}
+
+.ftBox{
+    text-align:center;
+    position: relative;
+    width: 200px;
+    padding-right: 200px;
+    padding-top: 187px;
+}
+
+.ftBox img{
+    position: absolute;
+    z-index: 1;
+    width: 200px;
+    margin-top: -210px;
+}
+
+.ftTitle{
+    position: absolute;
+    z-index: 2;
+    margin: 45px 10px 10px;
+    width: 190px;
+    color: #FFFFFF;
+    margin-top: -155px;
+    display: none;
+}
+
+.fader{
+    background-color: rgba(238, 55, 142, 0.8);
+    position: absolute;
+    width: 200px;
+    height: 200px;
+    margin-top: -210px;
+    margin-left: 3px;
+    z-index: 1;
+    display: none;
+}
+
+.ftCatTitle{
+    background-color: black;
+    color: white;
+    font-family:Arial,sans-serif;
+    margin-left: 5px;
+    line-height: 18px;
+}
+
+#diy{
+    font-family:Arial,sans-serif;
+    margin-left: 14px;
+    font-size: 26px;
+}
