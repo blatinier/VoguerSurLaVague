@@ -1,7 +1,7 @@
 <?php
 $nom_page='page à propos';
 $Racine_abs = str_replace($_SERVER['PHP_SELF'],"",$_SERVER['SCRIPT_FILENAME']);
-require $Racine_abs.'/modules/visitstat/visiteur.php';
+require $Racine_abs.'/modules/allmystats/visiteur.php';
 ?> 
 
 <img style="width: 40%; margin: 0pt 10px 10px 0pt;" src="http://melmelboo.free.fr/img/BD02.png" alt="Image" />

@@ -2,7 +2,7 @@
 
 $nom_page='page fiche technique';
 $Racine_abs = str_replace($_SERVER['PHP_SELF'],"",$_SERVER['SCRIPT_FILENAME']);
-require $Racine_abs.'/modules/visitstat/visiteur.php';
+require $Racine_abs.'/modules/allmystats/visiteur.php';
 
 if(!empty($_GET['com']) && $_GET['com']){	
 	include("modules/com/action.php");

@@ -2,7 +2,7 @@
 
 $nom_page='page galerie';
 $Racine_abs = str_replace($_SERVER['PHP_SELF'],"",$_SERVER['SCRIPT_FILENAME']);
-require $Racine_abs.'/modules/visitstat/visiteur.php';
+require $Racine_abs.'/modules/allmystats/visiteur.php';
 
 $_GET['page'] = (empty($_GET['page']))? 1 : $_GET['page'];
 if(!empty($_GET['img'])){

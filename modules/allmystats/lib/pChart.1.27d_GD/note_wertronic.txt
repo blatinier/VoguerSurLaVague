@@ -1,0 +1,55 @@
+Nouveau pchart 2.0 en développement mais n'est pas compatible avec l'ancien code
+- http://wiki.pchart.net/doc.installation.html --> pchart 2.0
+- http://www.pchart.net/download
+
+
+pchart 1.27d n'est pas compatible avec PHP 5.3
+principalement les functions split
+
+
+- Un split pChart.class --> loadColorPalette 
+---> Corrigé dans 
+https://limesurvey.svn.sourceforge.net/svnroot/limesurvey/source/limesurvey/classes/pchart/pchart/
+
+$Values = split($Delimiter,$buffer);
+replace with 
+$Values = explode($Delimiter,$buffer);
+
+
+- Reste un split dans pChart.class --> function setImageMap mais on ne s'en sert pas
+- Reste un split dans pData.class  --> function ImportFromCSV mais on ne s'en sert pas
+
+même chose possible
+$Values = split($Delimiter,$buffer);
+replace with 
+$Values = explode($Delimiter,$buffer);
+
+-----------------------------------------------------------
+
+
+New pChart 2.0 in development but is not compatible with old code
+- http://wiki.pchart.net/doc.installation.html -> 2.0 pChart
+- http://www.pchart.net/download
+
+
+pChart 1.27d is not compatible with PHP 5.3
+mainly functions split
+
+
+- A split pChart.class -> loadColorPalette
+---> Fixed in
+https: / / limesurvey.svn.sourceforge.net / svnroot / LimeSurvey / source / LimeSurvey / classes / pChart / pChart /
+
+$ Values = split ($ delimiter, $ buffer);
+replace with
+$ Values = explode ($ delimiter, $ buffer);
+
+
+- Stay in a split pChart.class -> function setImageMap but not in use
+- Stay in a split pData.class -> function ImportFromCSV but not in use
+
+same can
+$ Values = split ($ delimiter, $ buffer);
+replace with
+$ Values = explode ($ delimiter, $ buffer);
+

@@ -1,7 +1,7 @@
 <?php
 $nom_page='Page de contact';
 $Racine_abs = str_replace($_SERVER['PHP_SELF'],"",$_SERVER['SCRIPT_FILENAME']);
-require $Racine_abs.'/modules/visitstat/visiteur.php';
+require $Racine_abs.'/modules/allmystats/visiteur.php';
 ?> 
 
 <h2 class="coloredTitle">Vous souhaitez me contacter ?</h2>

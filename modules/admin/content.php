@@ -21,7 +21,7 @@ elseif($_SESSION['ok'] != 1){
 if($_SESSION['ok']==1){
 	?>
 	<ul>
-		<li><a href="modules/visitstat">Statistiques visiteurs</a></li>
+		<li><a href="modules/allmystats">Statistiques visiteurs</a></li>
 		<li><a href="index.php?p=deconnexion">Deconnexion</a></li>
 		<li><a href="index.php?p=nlu">Derniers commentaires</a></li>
 		<li><a href="index.php?p=nart">Nouveau message</a></li>
