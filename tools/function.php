@@ -128,6 +128,12 @@ function del_articles($id){
 	mysql_query("DELETE FROM mellismelau_com WHERE idarticle=".$id);
 }
 
+function get_title($id) {
+    $req = get_article_byId($id);
+    $res = mysql_fetch_assoc($req);
+	return $res['titre'];
+}
+
 function get_article_byId($id){
 	$id = (int)$id;
 	$cond = " AND pubdate < NOW() ";

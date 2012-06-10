@@ -19,13 +19,13 @@ if(file_exists($inc_page.'action.php'))
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="content-type" content="text/html; charset=utf-8" />
-<title>Voguer sur la vague et divaguer</title>
-<meta name="keywords" content="blog, melmelboo, frippes, ecolo, ecologie, recyclage, naturel, astuces, bricolage" />
-<meta name="description" content="..." />
+<title>Voguer sur la vague et divaguer<?php echo (!empty($append_title)) ? " - ".$append_title : ""; ?></title>
+<meta name="keywords" content="blog, melmelboo, frippes, ecolo, ecologie, recyclage, naturel, astuces, bricolage, truc, bloubiboulga" />
+<meta name="description" content="Le blog de Melmelboo !" />
 <link href="CSS/default.css" rel="stylesheet" type="text/css" media="screen" />
 <script type="text/javascript" src="js/jquery.js"></script>
-<link rel="stylesheet" type="text/css" href="tools/shadowbox/shadowbox.css">
 <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+<link rel="stylesheet" type="text/css" href="tools/shadowbox/shadowbox.css">
 <script type="text/javascript" src="tools/shadowbox/shadowbox.js"></script>
 <script type="text/javascript">
     Shadowbox.init();
@@ -38,10 +38,9 @@ if(file_exists($inc_page.'action.php'))
 <script type="text/javascript">
 	<?php echo (!empty($fm_javascript)) ? $fm_javascript : ""; ?>
 </script>
-
 </head>
-<body>
 
+<body>
 <div id="conteneur">
     <div id="header" onclick="location.href='http://www.melmelboo.fr'"></div>
     <div id="main">
@@ -56,6 +55,5 @@ if(file_exists($inc_page.'action.php'))
 		<?php require_once("modules/footer/content.php"); ?>
 	</div>
 </div>
-
 </body>
 </html>

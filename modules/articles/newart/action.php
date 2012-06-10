@@ -1,22 +1,15 @@
 <?php
-
 $list_cat_q = "SELECT titre,id FROM voguer_cat WHERE type=0";
 $list_cat_q = mysql_query($list_cat_q)or die(mysql_error());
-
-
-if(!empty($_POST['auteur']) && !empty($_POST['titre']) && !empty($_POST['cat']) && !empty($_POST['texte'])){
-
-	if(!empty($_POST['mini'])){
+if (!empty($_POST['auteur']) && !empty($_POST['titre']) && !empty($_POST['cat']) && !empty($_POST['texte'])) {
+	if (!empty($_POST['mini'])) {
     	$idf = post_fiche_tech($_POST['auteur'],$_POST['titre'],$_POST['texte'],$_POST['cat'],$_POST['pub'],$_POST['mini']);
 	}
-	
 	$ida = poster_articles($_POST['auteur'],$_POST['titre'],$_POST['texte'],$_POST['cat'],$_POST['pub']);
 	header("Location: index.php?mod=1&art=".$ida);
 }
 
 $maintenant = date("Y-m-d H:i:s",time()+3600*24);
-
-
 $req = mysql_query("SELECT auteur,titre,cat,art FROM cache WHERE id=1");
 $res = mysql_fetch_assoc($req);
 $_SESSION['nart_auteur'] = $res['auteur'];
@@ -26,9 +19,7 @@ $_SESSION['nart_art'] = $res['art'];
 
 $fm_javascript="
 		function cache_art(){
-			
 			var xhr = null;
-	
 			if (window.XMLHttpRequest || window.ActiveXObject) {
 				if (window.ActiveXObject) {
 					try {
@@ -54,7 +45,6 @@ $fm_javascript="
     	    }
 };
 
-
 			uri = 'auteur='+auteur+'&titre='+titre+'&cat='+cat+'&art='+art;
 			xhr.open('GET', 'modules/articles/newart/save.php?'+uri, true);
 			xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
@@ -65,7 +55,5 @@ $fm_javascript="
 		window.onload = function(){
 			// 60 secondes entre les demandes
   			interval = setInterval ( 'cache_art()', 60 * 1000); 
-		};
-";
-
+		};";
 ?>

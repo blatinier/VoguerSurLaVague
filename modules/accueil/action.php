@@ -22,16 +22,16 @@ if (!empty($_GET['change']) && $_GET['change']==1 && $_SESSION['ord']!="ASC") {
 }
 
 $ord = (!empty($_SESSION['ord']))?$_SESSION['ord']:"DESC";
-
 $_GET['page'] = (empty($_GET['page']))? 1 : $_GET['page'];
 if (!empty($_GET['art'])) {
 	$req = get_article_byId($_GET['art']);
 	$nbcom = nbcomments($_GET['art']);
+    $append_title = get_title($_GET['art']);
 } elseif (!empty($_GET['cat'])) {
-    $req = get_articles("pubdate",$_GET['cat'],$ord,$_GET['page']);
-	$nbcom = nbcomments(NULL);
+    $req = get_articles("pubdate", $_GET['cat'], $ord, $_GET['page']);
+	$nbcom = nbcomments(null);
 } else {
-	$req = get_articles("pubdate","",$ord,$_GET['page']);
-	$nbcom = nbcomments(NULL);
+	$req = get_articles("pubdate", "", $ord, $_GET['page']);
+	$nbcom = nbcomments(null);
 }
 ?>
