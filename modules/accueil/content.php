@@ -1,5 +1,5 @@
 <?php
-while($res = mysql_fetch_assoc($req)){
+while ($res = mysql_fetch_assoc($req)) {
     $closed_com = $res['closed_com'];
     $captcha_com = $res['captcha_com'];
 	?>
@@ -8,7 +8,8 @@ while($res = mysql_fetch_assoc($req)){
 			<?php echo $cats[$res['cat']]; ?>
 		</span>
 		<h2 class="postTitle">
-			<a href="index.php?art=<?php echo $res['id']; ?>">
+<!--			<a href="index.php?art=<?php echo $res['id']; ?>">-->
+			<a href="art-<?php echo $res['url']; ?>-<?php echo $res['id']; ?>">
 				<?php echo stripslashes($res['titre']); ?>
 			</a>
 		</h2>

@@ -4,3 +4,4 @@ img/
 modules/visitstat/config_allmystats.php
 modules/allmystats/config_allmystats.php
 tools/sql.php
+modules/allmystats/cache/

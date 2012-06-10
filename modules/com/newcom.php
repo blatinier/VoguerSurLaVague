@@ -25,6 +25,7 @@ if ($err) {
 		
         <?php
         if ($captcha_com) {
+            ?><input type="hidden" name="captcha_com" value="1" /><?php
             require_once dirname(__FILE__).'/../../tools/recaptcha/recaptchalib.php';
             echo recaptcha_get_html($recaptcha_pub);
         }

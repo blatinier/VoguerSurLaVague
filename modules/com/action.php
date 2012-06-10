@@ -1,7 +1,7 @@
 <?php
 require_once(dirname(__FILE__).'/../../tools/recaptcha/recaptchalib.php');
 $err = false;
-if (!empty($_POST)) {
+if (!empty($_POST) && !empty($_POST['captcha_com'])) {
     $resp = recaptcha_check_answer ($recaptcha_priv,
                               $_SERVER["REMOTE_ADDR"],
                               $_POST["recaptcha_challenge_field"],

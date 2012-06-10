@@ -7,8 +7,8 @@ function post_fiche_tech($auteur,$titre,$texte,$cat,$pub,$mini){
     $cat = mysql_real_escape_string($cat); 
     $mini = mysql_real_escape_string($mini); 
  
-    mysql_query("INSERT INTO voguer_fichestech(id,auteur,titre,texte,pubdate,cat,miniature)  
-                VALUES('','".$auteur."','".$titre."','".$texte."','".$pub."','".$cat."','".$mini."')"); 
+    mysql_query("INSERT INTO voguer_fichestech(id,auteur,titre, texte,pubdate,cat,miniature)  
+                VALUES('','".$auteur."','".$titre."', '".$texte."','".$pub."','".$cat."','".$mini."')"); 
     return mysql_insert_id(); 
 } 
 
@@ -19,8 +19,8 @@ function poster_articles($auteur,$titre,$texte,$cat,$pub){
     $texte = mysql_real_escape_string($texte); 
     $cat = mysql_real_escape_string($cat); 
  
-    mysql_query("INSERT INTO mellismelau_articles(id,auteur,titre,texte,pubdate,cat)  
-                VALUES('','".$auteur."','".$titre."','".$texte."','".$pub."','".$cat."')"); 
+    mysql_query("INSERT INTO mellismelau_articles(id,auteur,titre, url, texte,pubdate,cat)  
+                VALUES('','".$auteur."','".$titre."', '".sanitize_string($titre)."','".$texte."','".$pub."','".$cat."')"); 
     return mysql_insert_id(); 
 } 
 

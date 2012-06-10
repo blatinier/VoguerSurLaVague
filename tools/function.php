@@ -63,6 +63,7 @@ function get_articles($orderbyc="pubdate",$cat="",$orderbyt="ASC",$page=""){
 			SELECT 
 				id,
 				titre,
+				url,
 				auteur,
 				texte,
 				pubdate,
@@ -96,8 +97,8 @@ function post_articles($auteur,$titre,$texte,$cat,$pub){
 	$titre = mysql_real_escape_string($titre);
 	$texte = mysql_real_escape_string($texte);
 	$cat = mysql_real_escape_string($cat);
-	mysql_query("INSERT INTO mellismelau_articles(id,auteur,titre,texte,pubdate,cat) 
-				VALUES('','".$auteur."','".$titre."','".$texte."','".$pub."','".$cat."')");
+	mysql_query("INSERT INTO mellismelau_articles(id,auteur,titre, url,texte,pubdate,cat) 
+				VALUES('','".$auteur."','".$titre."', '".sanitize_string($titre)."', '".$texte."','".$pub."','".$cat."')");
 	return mysql_insert_id();
 }
 
@@ -112,6 +113,7 @@ function mod_articles($auteur, $titre, $texte, $cat, $id, $pub, $closed_com=fals
 	return mysql_query("UPDATE mellismelau_articles 
 		SET auteur='".$auteur."', 
 			titre='".$titre."', 
+			url='".sanitize_string($titre)."',
 			pubdate='".$pub."', 
 			texte='".$texte."',
 			cat='".$cat."',
@@ -137,6 +139,7 @@ function get_article_byId($id){
 							id,
 							auteur,
 							titre,
+							url,
 							texte,
 							pubdate,
 							DATE_FORMAT(pubdate,'%d/%m/%Y') AS post_date,
@@ -145,5 +148,19 @@ function get_article_byId($id){
                             closed_com,
                             captcha_com
 							FROM mellismelau_articles WHERE id=".$id.$cond);
+}
+
+function sanitize_string($s, $glue='-') {
+    // Lower case
+    $s = strtolower($s);
+    // Replaces accentuated chars by their non-accentuated version
+    $s = iconv('UTF-8', 'US-ASCII//TRANSLIT', $s);
+    // Replaces other chars by "-"
+    $s = preg_replace('#([^a-z0-9'.$glue.'])#', $glue, $s);
+    // Remove consecutives "-"
+    $s = preg_replace('#(['.$glue.']+)#', $glue, $s);
+    // Trim glue
+    $s = trim($s, $glue);
+    return $s;
 }
 ?>
