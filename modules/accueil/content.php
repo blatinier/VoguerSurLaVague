@@ -24,14 +24,14 @@ while ($res = mysql_fetch_assoc($req)) {
 			<?php 
         	if(!$closed_com){
 				?>
-				<a class="comlink" href="index.php?art=<?php echo $res['id']; ?>&amp;com=1#postcom">
+                <a class="comlink" href="art-<?php echo $res['url']; ?>-<?php echo $res['id']; ?>#postcom">
 					Commenter
 				</a>
 				 - 
             <?php
 		    }
             ?>
-				<a class="comlink" href="index.php?art=<?php echo $res['id']; ?>">
+                <a href="art-<?php echo $res['url']; ?>-<?php echo $res['id']; ?>">
 					Lire les commentaires (<?php echo ($nbcom[$res['id']])?$nbcom[$res['id']]:0; ?>)
 				</a>
 				<?php
@@ -59,7 +59,7 @@ while ($res = mysql_fetch_assoc($req)) {
 				?>
 			</div>
 			<?php
-			if (!empty($_GET['com']) && $_GET['com'] && !$closed_com) {
+			if (!$closed_com && !empty($_GET['art'])) {
 				include("modules/com/newcom.php");
 			}
 			?>

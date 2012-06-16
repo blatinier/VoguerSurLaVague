@@ -6,6 +6,7 @@ if (!empty($sent)) {
 if ($err) {
 	echo $err_msg;
 }
+if (!$closed_com) {
 ?>
 
 <div style="line-height:2em;">
@@ -34,3 +35,6 @@ if ($err) {
 	</fieldset>
 	</form>
 </div>
+<?php
+}
+?>
