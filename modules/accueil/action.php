@@ -11,7 +11,7 @@ $nom_page='page accueil';
 $Racine_abs = str_replace($_SERVER['PHP_SELF'],"",$_SERVER['SCRIPT_FILENAME']);
 require $Racine_abs.'/modules/allmystats/visiteur.php';
 
-if (!empty($_GET['com'])) {
+if (!empty($_POST)) {
 	include("modules/com/action.php");
 }
 

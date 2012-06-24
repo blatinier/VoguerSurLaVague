@@ -29,7 +29,7 @@ if(!empty($_POST['ida']))
 elseif(!empty($_GET['art']))
 	$ida = (int)$_GET['art'];
 
-if(!empty($pseudo)&&!empty($commentaire) && !$err){
+if(!empty($pseudo) && !empty($commentaire) && !$err){
 
 	if($_POST['savedata']=="on"){
 		setcookie('ComVoguer[P]',$pseudo,(time()+3600*24*365));
