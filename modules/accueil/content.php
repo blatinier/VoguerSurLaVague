@@ -8,7 +8,6 @@ while ($res = mysql_fetch_assoc($req)) {
 			<?php echo $cats[$res['cat']]; ?>
 		</span>
 		<h2 class="postTitle">
-<!--			<a href="index.php?art=<?php echo $res['id']; ?>">-->
 			<a href="art-<?php echo $res['url']; ?>-<?php echo $res['id']; ?>">
 				<?php echo stripslashes($res['titre']); ?>
 			</a>
@@ -22,19 +21,21 @@ while ($res = mysql_fetch_assoc($req)) {
 		</div>
 		<div class="comconteneur">
 			<?php 
-        	if(!$closed_com){
-				?>
-                <a class="comlink" href="art-<?php echo $res['url']; ?>-<?php echo $res['id']; ?>#postcom">
-					Commenter
-				</a>
-				 - 
-            <?php
-		    }
-            ?>
-                <a href="art-<?php echo $res['url']; ?>-<?php echo $res['id']; ?>">
-					Lire les commentaires (<?php echo ($nbcom[$res['id']])?$nbcom[$res['id']]:0; ?>)
-				</a>
-				<?php
+			if (empty($_GET['art'])) {
+                if(!$closed_com){
+                    ?>
+                    <a class="comlink" href="art-<?php echo $res['url']; ?>-<?php echo $res['id']; ?>#postcom">
+                        Commenter
+                    </a>
+                     - 
+                <?php
+                }
+                ?>
+                    <a href="art-<?php echo $res['url']; ?>-<?php echo $res['id']; ?>">
+                        Lire les commentaires (<?php echo ($nbcom[$res['id']])?$nbcom[$res['id']]:0; ?>)
+                    </a>
+                <?php
+            }
 			if(!empty($_SESSION['ok']) && $_SESSION['ok'] == 1){
 				echo " - <a class=\"comlink\" href=\"index.php?p=mart&amp;art=".$res['id']."\">Editer</a> - 
 				<a class=\"comlink\" href=\"index.php?p=dart&amp;art=".$res['id']."\">Supprimer</a><br/>";

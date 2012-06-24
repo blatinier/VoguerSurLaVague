@@ -9,7 +9,7 @@ if ($err) {
 if (!$closed_com) {
 ?>
 
-<div style="line-height:2em;">
+<div id="combox" style="line-height:2em;">
 	<form method="post" action="">
 	<fieldset>
 		<legend><a name="postcom">Commenter cet article</a></legend>

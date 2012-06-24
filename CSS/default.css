@@ -186,6 +186,10 @@ hr{
     color: #969696;
 }
 
+#combox {
+    margin-top: 30px;
+}
+
 .comconteneur{
 	float:left;
 	width:100%;
