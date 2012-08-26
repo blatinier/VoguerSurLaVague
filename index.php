@@ -38,11 +38,17 @@ if(file_exists($inc_page.'action.php'))
 <script type="text/javascript">
 	<?php echo (!empty($fm_javascript)) ? $fm_javascript : ""; ?>
 </script>
+<link href='http://fonts.googleapis.com/css?family=Anton' rel='stylesheet' type='text/css'>
 </head>
 
 <body>
 <div id="conteneur">
-    <div id="header" onclick="location.href='http://www.melmelboo.fr'"></div>
+    <div id="menuH">
+        <a href="/">HOME</a> / 
+        <a href="/about">ABOUT</a> / 
+        <a href="/contact">CONTACT</a>
+    </div>
+    <div id="header" onclick="location.href='http://www.melmelboo.fr'">Melmelboo</div>
     <div id="main">
         <div id="contenu">
             <?php require_once($inc_page.'content.php'); ?>

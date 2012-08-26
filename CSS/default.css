@@ -1,5 +1,16 @@
-body{
+body {
     color: #333333;
+    font-family:Arial,sans-serif;
+}
+
+a {
+    color: #BFBFBF;
+	font-size: 0.9em;
+	text-decoration: none;
+}
+
+a:hover {
+    color: #FFC6A9;
 }
 
 #conteneur{
@@ -9,11 +20,26 @@ body{
 	padding-top: 9px;
 }
 
+#menuH {
+    border-bottom: 1px solid #BAB6B1;
+    font-size: 20px;
+    width: 100%;
+}
+
+#menuH a {
+    font-family: 'Anton',sans-serif;
+    font-size: 22px;
+}
+
 #header{
-	width: 946px;
-	height: 225px;
+    color: #B1ECC7;
+    font-family: "Anton",sans-serif;
+    font-size: 150px;
+	height: 200px;
 	margin: auto;
-    background: #ffffff url("../images/Baniere946.jpg") no-repeat right top;
+    text-transform: uppercase;
+    margin-left: -5px;
+	width: 946px;
 }
 
 #main{
@@ -23,12 +49,13 @@ body{
 }
 
 #contenu{
-	float:right;
+	float:left;
 	width: 71%;
 	margin-bottom: 20px;
 }
 
 #menuV{
+	float: right;
 	width: 25%;
     font-style: normal;
 }
@@ -37,19 +64,23 @@ body{
 	list-style-type: none;
 }
 
-a{
-	color: #67696a;
-	text-decoration: none;
-	font-size: 0.9em;
-}
-
 #menuV .menuTitle{
-	font-size: 1em;
+	font-size: 15px;
 	width:100%;
     font-weight: Bold;
     font-family:Arial,sans-serif;
-    color: #000000;
+    color: #666666;
+    text-transform: uppercase;
 }
+
+/*.postTitle{
+	line-height:0;
+}
+
+.postTitle a {
+    font-family:'Anton',sans-serif;
+    font-size: 80%;
+}*/
 
 #menuV .menuBlock{
     float: left;
@@ -111,18 +142,13 @@ a{
     font-style: normal;
 }
 
-.postcontent a{
-    color: #FE61D0;
-}
-
 .postTitle{
 	line-height:0;
-	color: #000000;
+    text-transform: uppercase;
 }
 
-.postTitle a{
-	color: #000000;
-    font-family:Arial,sans-serif;
+.postTitle a {
+    font-family:'Anton',sans-serif;
     font-size: 80%;
 }
 
@@ -150,11 +176,6 @@ hr{
 
 .liens {
 	list-style-type: none;
-}
-
-#formcontact{
-	text-align:right;
-	line-height:2em;
 }
 
 .coloredTitle{
@@ -204,61 +225,6 @@ hr{
 
 a img{
 	border: 0px;
-}
-
-div#menuH ul li {
-	position:relative;
-	list-style: none; /*on enleve les icones de liste */
-	border-bottom:1px solid black; /*ajout d'une bordure de separation d'element:*/
-	font-size:0.7em;
-	filter:alpha(opacity=85);
-	-moz-opacity:0.85; 
-}
-
-div#menuH div ul {
-	position: relative;
-	top:-10px;
-	right: 40px;
-	width:100%;
-	visibility:hidden;
-}   
-
-div#menuH{
-    text-align: center;
-} 
-
-div#menuH a {
-	text-decoration: none; /* plus de soulignement pour les liens */
-} 
-
-div#menuH div.sousmenu{
-	float:left;
-	height: 50px;
-	margin-top:10px;
-	margin-right:0px;
-	width: 100px;
-}
-
-div#menuH div.sousmenuliens{
-	float:right;
-	height: 50px;
-	margin-top:10px;
-	margin-right:0px;
-	margin-left:0px;
-	width: 100px;
-	text-align:center;
-}
-
-div#menuH div.sousmenuliens:hover ul.menunv2{
-	visibility:visible;
-}
-
-div#menuH div.sousmenu:hover ul.menunv2{
-	visibility:visible;
-}
-
-.ssmH{
-	text-decoration: none; /* plus de soulignement pour les liens */
 }
 
 #vignetteAstuce{
@@ -335,4 +301,67 @@ div#menuH div.sousmenu:hover ul.menunv2{
     font-family:Arial,sans-serif;
     margin-left: 14px;
     font-size: 26px;
+}
+
+.arrow {
+    font-size: 18px;
+}
+
+.page_link a {
+    color: #B1ECC7;
+}
+
+strong.pseudo a {
+    font-size: 13px;
+}
+
+strong.pseudo {
+    color: #BFBFBF;
+    font-size: 13px;
+    text-transform: lowercase;
+}
+
+.com_content {
+    margin-top: 5px;
+}
+
+.melmelboo {
+    color: #B1ECC7;
+}
+
+#commentaire {
+    border: 1px solid #CECECE;
+    height: 100px;
+    width: 100%;
+}
+
+.input_com {
+    border: 1px solid #CECECE;
+    text-align: left;
+    height: 27px;
+    margin-bottom: 13px;
+}
+
+select.input_com {
+    width: 155px;
+}
+
+#leavecom a {
+    font-size: 15px;
+}
+
+#leavecom {
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+input[type="submit"] {
+    background: url("/images/button_bg.png") repeat-x scroll 0 0 transparent;
+    height: 30px;
+    line-height: 30px;
+    padding: 0 40px;
+}
+
+textarea.new_art#commentaire {
+    height: 450px;
 }

@@ -1,3 +1,7 @@
+<br />
+<br />
+<br />
+<hr/>
 <?php
 require_once(dirname(__FILE__).'/../../tools/sql.php');
 
@@ -12,17 +16,17 @@ if ($ida > 0) {
 							FROM mellismelau_com WHERE idarticle=".$ida." ORDER BY moment");
 	while($res = mysql_fetch_assoc($req)){
 		if($res['pseudo'] == "Melmelboo")
-			$res['pseudo'] = '<a style="color:#0198b3;" href="http://melmelboo.free.fr">'.$res['pseudo'].'</a>';
+			$res['pseudo'] = '<a class="melmelboo" href="http://melmelboo.free.fr">'.$res['pseudo'].'</a>';
 		elseif(!empty($res['site']))
-			$res['pseudo'] = '<a style="text-decoration:underline;color:black;" href="'.$res['site'].'">'.$res['pseudo'].'</a>';
+			$res['pseudo'] = '<a href="'.$res['site'].'">'.$res['pseudo'].'</a>';
 		echo '	<div class="entry">
-					<p><strong>'.$res['pseudo'].'</strong>';
+					<p><strong class="pseudo">'.$res['pseudo'].'</strong>';
 		if(!empty($_SESSION['ok']) && $_SESSION['ok']==1){
 			echo ' ('.$res['ip'].') <a href="index.php?p=dcom&amp;c='.$res['id'].'">Supprimer ce commentaire</a>';
 		}
 		echo			'<br/>
 					 <small>'.$res['heure'].'</small><br/>
-					'.nl2br(stripslashes(htmlspecialchars($res['commentaire']))).'</p>
+					<div class="com_content">'.nl2br(stripslashes(htmlspecialchars($res['commentaire']))).'</div></p>
 					<hr/>
 				</div>';
 	}

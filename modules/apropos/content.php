@@ -3,25 +3,28 @@ $nom_page='page à propos';
 $Racine_abs = str_replace($_SERVER['PHP_SELF'],"",$_SERVER['SCRIPT_FILENAME']);
 require $Racine_abs.'/modules/allmystats/visiteur.php';
 ?> 
+<div class="post">
+<div class="mainpost">
+<div class="postcontent">
+    <strong>Qui je suis ?</strong>
+    <br/><br/>
 
-<img style="width: 40%; margin: 0pt 10px 10px 0pt;" src="http://melmelboo.free.fr/img/BD02.png" alt="Image" />
+    Camille, 24 ans, parisienne depuis 2 ans. Pour le reste je vous laisse découvrir !
+    <br/><br/>
 
-<img style="width: 40%; margin: 0pt 10px 10px 0pt;" src="http://melmelboo.free.fr/img/BD01.png" alt="Image" />
-<br/>
+    <strong>Pourquoi ce blog ?</strong>
+    <br/><br/>
 
-<img style="width: 40%; margin: 0pt 10px 10px 0pt;" src="http://melmelboo.free.fr/img/BDarticles.png" alt="Image" />
+    Parce que j'adore partager mes idées, mes trouvailles, les détails de rien qui font tout. Parce que j'aime prendre en photo l'univers dans lequel j'évolue. Parce que ça m'oblige à toujours avancer, être curieuse, m'améliorer. Et parce que des lecteurs fidèles me suivent depuis des années et me donnent envi de continuer. Ici c'est un petit univers à moi où tout est possible, où je me sens libre et qui est, je crois, à mon image.  
+    <br/><br/>
 
-<img style="width: 40%; margin: 0pt 10px 10px 0pt;" src="http://melmelboo.free.fr/img/Articles.JPG" alt="Image" />
-<br/>
+    <strong>Pourquoi MELMELBOO ? </strong>
+    <br/><br/>
 
-<img style="width: 40%; margin: 0pt 10px 10px 0pt;" src="http://melmelboo.free.fr/img/BDastuces.png" alt="Image" />
+    Parce que c'est le pseudo que j'ai trouvé et utilisé sur le web lorsqu'il a fallu me créer une identité unique, anonyme et originale il y a plusieurs années déjà et qu'il me suit depuis le début. 
+    <br/><br/>
 
-<img style="width: 40%; margin: 0pt 10px 10px 0pt;" src="http://melmelboo.free.fr/img/Fiches_techniques.JPG" alt="Image" />
-<br/>
-
-<img style="width: 40%; margin: 0pt 10px 10px 0pt;" src="http://melmelboo.free.fr/img/BDgaleries.png" alt="Image" />
-
-<img style="width: 40%; margin: 0pt 10px 10px 0pt;" src="http://melmelboo.free.fr/img/Galeries.JPG" alt="Image" />
-
-
-
+    <img style="width: 100%;" src="/img/About/About01.JPG" alt="Révisions" />
+</div>
+</div>
+</div>

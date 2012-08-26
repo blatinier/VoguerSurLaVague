@@ -21,16 +21,15 @@ elseif($_SESSION['ok'] != 1){
 if($_SESSION['ok']==1){
 	?>
 	<ul>
-		<li><a href="modules/allmystats">Statistiques visiteurs</a></li>
-		<li><a href="index.php?p=deconnexion">Deconnexion</a></li>
+		<li><a href="index.php?p=nart">Nouvel article</a></li>
 		<li><a href="index.php?p=nlu">Derniers commentaires</a></li>
-		<li><a href="index.php?p=nart">Nouveau message</a></li>
-		<li><a href="index.php?p=newft">Nouvelle fiche technique</a></li>
-		<li><a href="index.php?p=newgal">Nouvelle image</a></li>
 		<li><a href="index.php?p=newcat">Nouvelle catégorie</a></li>
 		<li><a href="index.php?p=listcat">Modifier/Supprimer une catégorie</a></li>
+		<li><a href="index.php?p=newft">Nouvelle fiche technique</a></li>
+		<li><a href="index.php?p=newgal">Nouvelle image</a></li>
+		<li><a href="modules/allmystats">Statistiques visiteurs</a></li>
+		<li><a href="index.php?p=deconnexion">Deconnexion</a></li>
 	</ul>
 	<?php
 }
-
 ?>

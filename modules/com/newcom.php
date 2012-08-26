@@ -11,16 +11,14 @@ if (!$closed_com) {
 
 <div id="combox" style="line-height:2em;">
 	<form method="post" action="">
-	<fieldset>
-		<legend><a name="postcom">Commenter cet article</a></legend>
-		<label for="pseudo">Pseudo </label>
-		<input type="text" name="pseudo" id="pseudo" value="<?php echo $pseudo; ?>" /><br/>
+		<h3 id="leavecom"><a name="postcom">Commenter cet article</a></h3>
+		<input class="input_com" type="text" name="pseudo" id="pseudo" value="<?php echo $pseudo; ?>" />
+		<label for="pseudo">Pseudo </label><br/>
 
-		<label for="site">Site web </label>
-		<input type="text" name="site" id="site" value="<?php echo $site; ?>"/><br/>
+		<input class="input_com" type="text" name="site" id="site" value="<?php echo $site; ?>"/>
+		<label for="site">Site web </label><br/>
 		
-		<label for="commentaire">Commentaire :</label><br/>
-		<textarea rows="15" cols="50" name="commentaire" id="commentaire"></textarea><br/>
+		<textarea name="commentaire" id="commentaire"></textarea><br/>
 		
 		Sauvegarder mes informations : <input type="checkbox" name="savedata" /><br/>
 		
@@ -31,8 +29,7 @@ if (!$closed_com) {
             echo recaptcha_get_html($recaptcha_pub);
         }
         ?>
-		<input type="submit" value="Poster!"/>
-	</fieldset>
+		<input type="submit" value="Poster"/>
 	</form>
 </div>
 <?php

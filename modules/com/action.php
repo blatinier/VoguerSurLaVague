@@ -1,6 +1,17 @@
 <?php
 require_once(dirname(__FILE__).'/../../tools/recaptcha/recaptchalib.php');
 $err = false;
+if(!empty($_POST['ida']))
+	$ida = (int)$_POST['ida'];
+elseif(!empty($_GET['art']))
+	$ida = (int)$_GET['art'];
+
+$commentaire = $_POST['commentaire'];
+$site = $_POST['site'];
+if (strpos("http://") === false) {
+    $site = "";
+}
+
 if (!empty($_POST) && !empty($_POST['captcha_com'])) {
     $resp = recaptcha_check_answer ($recaptcha_priv,
                               $_SERVER["REMOTE_ADDR"],
@@ -11,9 +22,30 @@ if (!empty($_POST) && !empty($_POST['captcha_com'])) {
         $err_msg = "Erreur dans le captcha";
     }
 }
+if (!empty($_POST) && !empty($ida)) {
+    $open_com_query = "SELECT closed_com FROM mellismelau_com WHERE id=".$ida;
+    $q = mysql_query($open_com_query);
+    $open_line = mysql_fetch_assoc($q);
+    if (!empty($open_line) && $open_com_query['closed_com'] == 1) {
+        $err = true;
+        $err_msg = "Commentaires fermés sur cet article.";
+    } 
+    if (!$err) {
+        $banned_words_query = "SELECT word FROM banned_words";
+        $banned_words_qr = mysql_query($banned_words_query);
+        while ($r = mysql_fetch_assoc($banned_words_qr)) {
+            if (strpos(strtolower($commentaire), $r['word']) !== false){
+                $err = true;
+                $err_msg = "Ce commentaire contient des mots interdits.";
+                break;
+            }
+        }
+    }
+}
 
 if (!empty($_SESSION['ok']) && $_SESSION['ok']) {
 	$pseudo = "Melmelboo";
+    $site = "http://www.melmelboo.fr";
 } elseif ((empty($_SESSION['ok']) || !$_SESSION['ok']) && (strtolower($_POST['pseudo']) == "melmelboo")) {
 	$pseudo = "";
 	$err = true;
@@ -21,14 +53,6 @@ if (!empty($_SESSION['ok']) && $_SESSION['ok']) {
 } else {
 	$pseudo = $_POST['pseudo'];
 }
-
-$commentaire = $_POST['commentaire'];
-$site = $_POST['site'];
-if(!empty($_POST['ida']))
-	$ida = (int)$_POST['ida'];
-elseif(!empty($_GET['art']))
-	$ida = (int)$_GET['art'];
-
 if(!empty($pseudo) && !empty($commentaire) && !$err){
 
 	if($_POST['savedata']=="on"){

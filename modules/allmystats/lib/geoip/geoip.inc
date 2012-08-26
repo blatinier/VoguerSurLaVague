@@ -343,6 +343,7 @@ function geoip_country_id_by_name($gi, $name) {
   return geoip_country_id_by_addr($gi, $addr);
 }
 
+/*
 function geoip_country_code_by_name($gi, $name) {
   $country_id = geoip_country_id_by_name($gi,$name);
   if ($country_id !== false) {
@@ -359,6 +360,7 @@ function geoip_country_name_by_name($gi, $name) {
   return false;
 }
 
+*/
 function geoip_country_id_by_addr($gi, $addr) {
   $ipnum = ip2long($addr);
   return _geoip_seek_country($gi, $ipnum) - GEOIP_COUNTRY_BEGIN;

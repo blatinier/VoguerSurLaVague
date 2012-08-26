@@ -3,7 +3,6 @@ $nom_page='Page de contact';
 $Racine_abs = str_replace($_SERVER['PHP_SELF'],"",$_SERVER['SCRIPT_FILENAME']);
 require $Racine_abs.'/modules/allmystats/visiteur.php';
 ?> 
-
 <h2 class="coloredTitle">Vous souhaitez me contacter ?</h2>
 <?php
 
@@ -23,28 +22,25 @@ if(!empty($_POST['pseudo']) && !empty($_POST['mail']) && !empty($_POST['titre'])
 
 	echo "<p>Merci pour ce petit message !!</p>";
 }
-elseif(empty($_POST['pseudo']) || empty($_POST['mail']) || empty($_POST['titre']) || empty($_POST['msg'])){
+elseif((empty($_POST['pseudo']) || empty($_POST['mail']) || empty($_POST['titre']) || empty($_POST['msg'])) && !empty($_POST)){
 	$_SESSION['pseudo']  = $_POST['pseudo'];
 	$_SESSION['mail']  = $_POST['mail'];
 	$_SESSION['titre']  = $_POST['titre'];
 	$_SESSION['msg']  = $_POST['msg'];
 	echo "<p>Merci de bien vouloir remplir tous les champs :)</p>";
 }
-
 ?>
 
-<div id="formcontact">
-<form method="post" action="">
-	<fieldset>
-		<legend>Formulaire de contact</legend>
-		<label for="pseudo">Pseudo : </label> <input size="60" type="type" name="pseudo" id="pseudo" value="<?php echo $_SESSION['pseudo'];?>"/> <br/>
-		<label for="mail">Adresse mail : </label> <input size="60" type="type" name="mail" id="mail"  value="<?php echo $_SESSION['mail'];?>"/> <br/>
-		<label for="titre">Sujet : </label> <input size="60" type="type" name="titre" id="titre"  value="<?php echo $_SESSION['titre'];?>"/> <br/>
-		<label style="width:127px;text-align:right;float:left;clear:left" for="msg">Message : </label> 
-		<textarea style="margin-top:5px;" cols="69" rows="10" name="msg" id="msg"><?php echo $_SESSION['msg'] ?></textarea><br/>
-		<input type="submit" value="Envoyer" />
-	</fieldset>
-</form>
+<div class="comconteneur">
+    <form method="post" action="">
+        <h3 id="leavecom"><a href="#">Formulaire de contact</a></h3>
+        <input class="input_com" type="type" name="pseudo" value="<?php echo $_SESSION['pseudo'];?>"/>
+        <label for="pseudo">Pseudo</label> <br/>
+        <input class="input_com" type="type" name="mail" value="<?php echo $_SESSION['mail'];?>"/>
+        <label for="mail">Adresse mail</label> <br/>
+        <input class="input_com" type="type" name="titre" value="<?php echo $_SESSION['titre'];?>"/>
+        <label for="titre">Sujet</label> <br/>
+        <textarea name="msg" id="commentaire"><?php echo $_SESSION['msg'] ?></textarea><br/><br/>
+        <input type="submit" value="Envoyer" />
+    </form>
 </div>
-
-

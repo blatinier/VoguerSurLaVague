@@ -10,7 +10,7 @@ $ftid = $ft_res['id'];
 $ftmini = $ft_res['miniature'];
 $fttitre = $ft_res['titre'];
 
-$list_cat_q = "SELECT titre,id FROM voguer_cat WHERE type=0";
+$list_cat_q = "SELECT slug,titre,id FROM voguer_cat WHERE type=0";
 $list_cat_q = mysql_query($list_cat_q)or die(mysql_error());
 
 $requete = "SELECT COUNT(*) AS nba, cat FROM mellismelau_articles GROUP BY cat";
@@ -27,7 +27,7 @@ foreach($poids as $key => $val){
 }
 ?>
 <div class="menuBlock">
-    <a href="index.php?p=contact">
+    <a href="/about">
         <img style="width:237px;" src="images/Moi.png" alt="À propos" />
     </a>
 </div>
@@ -50,7 +50,7 @@ foreach($poids as $key => $val){
         <ul class="ulmenuV">
             <?php 
                 while($r = mysql_fetch_assoc($list_cat_q)){
-                    echo '<li><a href="index.php?cat='.$r['id'].'">'.$r['titre'].'</a></li>';
+                    echo '<li><a href="cat-'.$r['slug'].'-'.$r['id'].'">'.$r['titre'].'</a></li>';
                 }
             ?>
         </ul>

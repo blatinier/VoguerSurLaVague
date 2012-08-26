@@ -74,22 +74,19 @@ while ($res = mysql_fetch_assoc($req)) {
 <div>
 	<?php
 	if(empty($_GET['art'])){
-        if(!empty($_GET['cat'])){
-            $cat = $_GET['cat'];
-        }
-        else{
-            $cat = "";
-        }
         $nombreDePages = get_nb_pages($cat);
 		$suiv = ($nombreDePages > 1 && $_GET['page'] != $nombreDePages);
 		$prec = ($nombreDePages > 1 && !empty($_GET['page']) && $_GET['page'] > 1);
+        $cat = (!empty($_GET['cat'])) ? '&cat='.$_GET['cat'] : '';
+        $year = (!empty($_GET['y'])) ? '&y='.$_GET['y'] : '';
+        $month = (!empty($_GET['m'])) ? '&m='.$_GET['m'] : '';
 		if($prec){
-			$lien = "index.php?page=".($_GET['page']-1)."&amp;cat=".$cat;
-			echo '<span style="float:left;"><a href="'.$lien.'"><img src="/images/billets_recents.png" alt="Billets plus récents" /></a></span>';
+			$lien = "index.php?page=".($_GET['page']-1).$cat.$year.$month;
+			echo '<span style="float:left;" class="page_link"><a href="'.$lien.'"><span class="arrow">←</span> NEWER</a></span>';
 		}
 		if($suiv){
-			$lien = "index.php?page=".($_GET['page']+1)."&amp;cat=".$cat;
-			echo '<span style="float:right;"><a href="'.$lien.'"><img src="/images/billets_anciens.png" alt="Billets plus anciens" /></a></span>';
+			$lien = "index.php?page=".($_GET['page']+1).$cat.$year.$month;
+			echo '<span style="float:right;" class="page_link"><a href="'.$lien.'">OLDER <span class="arrow">→</span></a></span>';
 		}
 	}
 	?>

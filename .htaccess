@@ -1,2 +1,5 @@
 RewriteEngine On
+RewriteRule ^cat-(.*)-([0-9]+)$ index.php?cat=$2 [L] 
 RewriteRule ^art-(.*)-([0-9]+)$ index.php?art=$2 [L] 
+RewriteRule ^contact$ index.php?p=contact [L] 
+RewriteRule ^about$ index.php?p=apropos [L] 
