@@ -130,7 +130,7 @@ if (in_array($p, $migrated_modules)) {
             </div>
         </div>
         <div id="footer">
-            <a href="index.php?p=admin">- Admin -</a>
+            <a href="/admin">- Admin -</a>
         </div>
     </div>
     </body>
