@@ -1,0 +1,8 @@
+<h3>Professions d'artisans à <?php echo $view->location['name']; ?></h3>
+<hr />
+<h3>Contacter directement un artisan : </h3>
+<ul>
+    <?php foreach ($view->cat_names as $c) { ?>
+        <li><a href="local-category-<?php echo $view->location['slug']."-".$c['slug']."-".$view->location['id']."-".$c['id']; ?>"><?php echo $c['name']; ?></a></li>
+    <?php }?>
+</ul>
