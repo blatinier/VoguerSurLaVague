@@ -130,7 +130,7 @@ if (in_array($p, $migrated_modules)) {
             </div>
         </div>
         <div id="footer">
-            <?php require_once("modules/footer/content.php"); ?>
+            <a href="index.php?p=admin">- Admin -</a>
         </div>
     </div>
     </body>
