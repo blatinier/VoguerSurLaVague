@@ -25,6 +25,15 @@ require $Racine_abs.'/modules/allmystats/visiteur.php';
     <br/><br/>
 
     <img style="width: 100%;" src="/img/About/About01.JPG" alt="Révisions" />
+    <img style="width: 100%;" src="/img/articles/paris/About04.JPG" alt="About" />
+
+    <img style="width: 100%;" src="/img/articles/paris/About08.JPG" alt="About" />
+
+    <img style="width: 100%;" src="/img/articles/paris/About05.JPG" alt="About" />
+
+    <img style="width: 100%;" src="/img/articles/paris/About07.JPG" alt="About" />
+
+    <img style="width: 100%;" src="/img/articles/paris/About09.JPG" alt="About" />
 </div>
 </div>
 </div>

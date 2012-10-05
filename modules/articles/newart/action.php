@@ -5,7 +5,7 @@ if (!empty($_POST['auteur']) && !empty($_POST['titre']) && !empty($_POST['cat'])
 	if (!empty($_POST['mini'])) {
     	$idf = post_fiche_tech($_POST['auteur'],$_POST['titre'],$_POST['texte'],$_POST['cat'],$_POST['pub'],$_POST['mini']);
 	}
-	$ida = poster_articles($_POST['auteur'],$_POST['titre'],$_POST['texte'],$_POST['cat'],$_POST['pub']);
+	$ida = poster_articles($_POST['auteur'],$_POST['titre'],$_POST['texte'],$_POST['cat'],$_POST['pub'],$_POST['is_diy']);
 	header("Location: index.php?mod=1&art=".$ida);
 }
 
@@ -16,6 +16,7 @@ $_SESSION['nart_auteur'] = $res['auteur'];
 $_SESSION['nart_titre'] = $res['titre'];
 $_SESSION['nart_cat'] = $res['cat'];
 $_SESSION['nart_art'] = $res['art'];
+$_SESSION['is_diy'] = $res['is_diy'];
 
 $fm_javascript="
 		function cache_art(){

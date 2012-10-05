@@ -3,7 +3,6 @@ $nom_page='Page de contact';
 $Racine_abs = str_replace($_SERVER['PHP_SELF'],"",$_SERVER['SCRIPT_FILENAME']);
 require $Racine_abs.'/modules/allmystats/visiteur.php';
 ?> 
-<h2 class="coloredTitle">Vous souhaitez me contacter ?</h2>
 <?php
 
 if(!empty($_POST['pseudo']) && !empty($_POST['mail']) && !empty($_POST['titre']) && !empty($_POST['msg'])){
@@ -31,6 +30,7 @@ elseif((empty($_POST['pseudo']) || empty($_POST['mail']) || empty($_POST['titre'
 }
 ?>
 
+<h2 class="coloredTitle">Vous souhaitez me contacter ?</h2>
 <div class="comconteneur">
     <form method="post" action="">
         <h3 id="leavecom"><a href="#">Formulaire de contact</a></h3>

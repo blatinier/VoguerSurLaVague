@@ -12,15 +12,15 @@ function post_fiche_tech($auteur,$titre,$texte,$cat,$pub,$mini){
     return mysql_insert_id(); 
 } 
 
-function poster_articles($auteur,$titre,$texte,$cat,$pub){ 
-     
+function poster_articles($auteur, $titre, $texte, $cat, $pub, $is_diy){ 
     $auteur = mysql_real_escape_string($auteur); 
     $titre = mysql_real_escape_string($titre); 
     $texte = mysql_real_escape_string($texte); 
     $cat = mysql_real_escape_string($cat); 
+    $is_diy = ($is_diy == 'on') ? 1 : 0;
  
-    mysql_query("INSERT INTO mellismelau_articles(id,auteur,titre, url, texte,pubdate,cat)  
-                VALUES('','".$auteur."','".$titre."', '".sanitize_string($titre)."','".$texte."','".$pub."','".$cat."')"); 
+    mysql_query("INSERT INTO mellismelau_articles(id, auteur, titre, url, texte, pubdate, cat, is_diy)
+                VALUES('','".$auteur."','".$titre."', '".sanitize_string($titre)."','".$texte."','".$pub."','".$cat."', ".$is_diy.")"); 
     return mysql_insert_id(); 
 } 
 

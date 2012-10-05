@@ -15,7 +15,7 @@ if (!$closed_com) {
 		<input class="input_com" type="text" name="pseudo" id="pseudo" value="<?php echo $pseudo; ?>" />
 		<label for="pseudo">Pseudo </label><br/>
 
-		<input class="input_com" type="text" name="site" id="site" value="<?php echo $site; ?>"/>
+		<input class="input_com" type="text" name="site" id="site" value=""/>
 		<label for="site">Site web </label><br/>
 		
 		<textarea name="commentaire" id="commentaire"></textarea><br/>

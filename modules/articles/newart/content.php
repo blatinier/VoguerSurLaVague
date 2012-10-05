@@ -26,13 +26,14 @@ if($_SESSION['ok'] == 1){
         </select>
         <label for="cat">Catégorie</label><br />
         <textarea class="new_art" name="texte" id="commentaire"><?php echo $_SESSION['nart_art'];?></textarea><br /><br />
-        <input class="input_com" type="text" name="mini" id="mini" />
-        <label for="mini">Adresse de la miniature(ajoute un article et une astuce si présent)</label><br />
+        <label for="is_diy">C'est un DIY</label><input type="checkbox" name="is_diy" id="is_diy" <?php echo ($_SESSION['is_diy'] == 1) ? 'checked' : ''; ?> /><br /><br />
+<!--        <input class="input_com" type="text" name="mini" id="mini" />
+        <label for="mini">Adresse de la miniature(ajoute un article et une astuce si présent)</label><br />-->
         <input class="input_com" type="text" name="pub" id="pub" value="<?php echo $maintenant; ?>" />
         <label for="pub">Date de publication de l'article(AAAA-MM-JJ HH-MM-SS)</label><br />
         <input type="submit" value="Envoyer" />
 	</form>
-	Besoin d'aide pour de la mise en page? <strong><a href="modules/helphtml/html.php">C'est par ici.</a></strong> (Attention si tu ne veux pas perdre ce que tu es en train d'écrire, ouvre le lien dans un nouvel onglet.)
+	Besoin d'aide pour de la mise en page ? <strong><a href="modules/helphtml/html.php">C'est par ici.</a></strong> (Attention si tu ne veux pas perdre ce que tu es en train d'écrire, ouvre le lien dans un nouvel onglet.)
 </div>
 	<?php
 }

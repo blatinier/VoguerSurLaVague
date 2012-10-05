@@ -47,10 +47,22 @@ if (!empty($_SESSION['ok']) && $_SESSION['ok']) {
 	$pseudo = "Melmelboo";
     $site = "http://www.melmelboo.fr";
 } elseif ((empty($_SESSION['ok']) || !$_SESSION['ok']) && (strtolower($_POST['pseudo']) == "melmelboo")) {
+    if (strpos($site, "melmelboo.fr")) {
+        $site = "";
+    }
+    if (strpos($site, "http://") === false) {
+        $site = "http://" . $site;
+    }
 	$pseudo = "";
 	$err = true;
     $err_msg = "Désolé mais ce pseudo est réservé.";
 } else {
+    if (strpos($site, "melmelboo.fr")) {
+        $site = "";
+    }
+    if (strpos($site, "http://") === false) {
+        $site = "http://" . $site;
+    }
 	$pseudo = $_POST['pseudo'];
 }
 if(!empty($pseudo) && !empty($commentaire) && !$err){
