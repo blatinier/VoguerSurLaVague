@@ -1,7 +1,28 @@
 RewriteEngine On
-RewriteRule ^cat-(.*)-([0-9]+)$ index.php?cat=$2 [L] 
-RewriteRule ^art-(.*)-([0-9]+)$ index.php?art=$2 [L] 
-RewriteRule ^diy-(.*)-([0-9]+)$ index.php?art=$2 [L] 
-RewriteRule ^contact$ index.php?p=contact [L] 
-RewriteRule ^about$ index.php?p=apropos [L] 
-RewriteRule ^admin$ index.php?p=admin [L] 
+
+RewriteRule ^cat-(.*)-([0-9]+)$ index.php?controller=listing&action=category&cat=$2 [L] 
+RewriteRule ^art-(.*)-([0-9]+)$ index.php?controller=article&action=article&art=$2 [L] 
+RewriteRule ^diy-(.*)-([0-9]+)$ index.php?controller=article&action=diy&art=$2 [L] 
+
+# Static pages
+RewriteRule ^contact$ index.php?controller=staticpages&action=contact [L] 
+RewriteRule ^about$ index.php?controller=staticpages&action=apropos [L] 
+RewriteRule ^helphtml$ index.php?controller=staticpages&action=helphtml [L] 
+
+# Admin
+RewriteRule ^admin$ index.php?controller=staticpages&action=admin [L] 
+RewriteRule ^logout$ index.php?controller=staticpages&action=logout [L] 
+RewriteRule ^last_comments$ index.php?controller=comments&action=last_unread [L] 
+RewriteRule ^mark_comment/([0-9]+)$ index.php?controller=comments&action=mark_read&com_id=$1 [L] 
+RewriteRule ^mark_read_all_comments$ index.php?controller=comments&action=mark_all_read [L] 
+RewriteRule ^article_new$ index.php?controller=article&action=new_art [L] 
+
+# Archives
+RewriteRule ^get_months$ index.php?controller=ajax&action=get_months [L] 
+RewriteRule ^archive-([0-9]+)-([0-9]+)$ index.php?controller=listing&action=month&month=$1&year=$2 [L] 
+RewriteRule ^archive-page-([0-9]+)$ index.php?controller=home&action=main&page=$1 [L]
+
+AuthName "Page protégée"
+AuthType Basic
+AuthUserFile "/var/www/test.melmelboo.fr/.htpasswd"
+Require valid-user

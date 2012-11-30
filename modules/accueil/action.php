@@ -15,13 +15,7 @@ if (!empty($_POST)) {
 	include("modules/com/action.php");
 }
 
-if (!empty($_GET['change']) && $_GET['change']==1 && $_SESSION['ord']!="ASC") {
-	$_SESSION['ord'] = "ASC";
-} elseif (!empty($_GET['change']) && $_GET['change']==1 && $_SESSION['ord']!="DESC") {
-	$_SESSION['ord'] = "DESC";
-}
-
-$ord = (!empty($_SESSION['ord']))?$_SESSION['ord']:"DESC";
+$ord = "DESC";
 $_GET['page'] = (empty($_GET['page']))? 1 : $_GET['page'];
 if (!empty($_GET['art'])) {
 	$req = get_article_byId($_GET['art']);

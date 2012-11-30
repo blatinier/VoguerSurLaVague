@@ -1,0 +1,20 @@
+<?php if ($view->connected) { ?>
+<ul>
+    <li><a href="article_new">Nouvel article</a></li>
+    <li><a href="last_comments">Derniers commentaires</a></li>
+    <li><a href="index.php?p=newcat">Nouvelle catégorie</a></li>
+    <li><a href="index.php?p=listcat">Modifier/Supprimer une catégorie</a></li>
+    <li><a href="modules/allmystats">Statistiques visiteurs</a></li>
+    <li><a href="logout">Deconnexion</a></li>
+</ul>
+<?php } else { 
+if (!empty($view->msg)) echo $view->msg; ?>
+<form method="post" action="">
+	<fieldset>
+		<legend>Accès protégé par mot de passe</legend>
+		<label for="pass">Entrez le mot de passe : </label>
+		<input type="password" name="pass" id="pass" /><br/>
+		<input type="submit" value="Envoyer" />
+	</fieldset>
+</form>
+<?php } ?>

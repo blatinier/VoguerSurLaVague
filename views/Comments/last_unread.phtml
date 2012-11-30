@@ -1,0 +1,17 @@
+<?php echo count($view->comments); ?> commentaires non lus : <br/>
+<ul>
+    <?php
+    foreach($view->comments as $com){
+        echo '
+            <li>
+                Commentaire de '.$com['com']['pseudo'].' 
+                dans l\'article 
+                <a href="mark_comment/'.$com['idcom'].'">
+                    '.$com['article']->titre.'
+                </a>
+            </li>';
+    }
+    ?>
+</ul>
+<a href="mark_read_all_comments">Tout marquer comme lu</a>
+

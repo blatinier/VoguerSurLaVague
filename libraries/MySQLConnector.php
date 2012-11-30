@@ -140,5 +140,12 @@ class MySQLConnector {
         $args = func_get_args();
         return call_user_func_array(array($this, 'insert'), $args);
     }
+
+    public function execute($req) {
+        $q = $this->_link->prepare($req);
+        // Execution
+        $q->execute();
+        $q->close();
+    }
 }
 ?>

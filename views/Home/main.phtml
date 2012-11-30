@@ -1,0 +1,84 @@
+<?php
+foreach ($view->articles as $art) {
+	?>
+	<div class="post">
+		<span class="categorie">
+			<?php echo $art->category->titre; ?>
+		</span>
+		<h2 class="postTitle">
+			<a href="art-<?php echo $art->url; ?>-<?php echo $art->id; ?>">
+				<?php echo stripslashes($art->titre); ?>
+			</a>
+		</h2>
+		<br/><br/>
+		<div class="mainpost">
+			<div class="postcontent">
+				<?php echo stripslashes($art->texte); ?>
+				<br/><br/>
+			</div>
+		</div>
+		<div class="comconteneur">
+			<?php 
+			if (empty($_GET['art'])) {
+                if(!$art->closed_com){
+                    ?>
+                    <a class="comlink" href="art-<?php echo $art->url; ?>-<?php echo $art->id; ?>#postcom">
+                        Commenter
+                    </a>
+                     - 
+                <?php
+                }
+                ?>
+                    <a href="art-<?php echo $art->url; ?>-<?php echo $art->id; ?>">
+                        Lire les commentaires (<?php echo $art->nb_comment; ?>)
+                    </a>
+                <?php
+            }
+			if(!empty($_SESSION['ok']) && $_SESSION['ok'] == 1){
+				echo " - <a class=\"comlink\" href=\"index.php?p=mart&amp;art=".$art->id."\">Editer</a> - 
+				<a class=\"comlink\" href=\"index.php?p=dart&amp;art=".$art->id."\">Supprimer</a><br/>";
+			}
+			?>
+            <span class="postDate">
+            <?php
+                if($art->ecart < 0){
+                    $jour = floor(-$art->ecart/(3600*24));
+                    $heure = floor((-$art->ecart-$jour*3600*24)/3600);
+                    $minutes = floor((-$art->ecart-$jour*3600*24-$heure*3600)/60);
+                    echo "<span style=\"color:red;\"> Cet article sera publié dans ".$jour." jours ".$heure." heures et ".$minutes." minutes.</span><br/>";
+                }
+            ?>
+                Écrit le <?php echo $art->post_date; ?> par <?php echo stripslashes($art->auteur); ?>
+            </span>
+			<div id="com<?php echo $art->id; ?>">
+				<?php
+				if(!empty($art->id)){
+					include("modules/com/commentaire.php");
+				}
+				?>
+			</div>
+		</div>
+		<br/>
+	</div>
+	<br/>
+	<hr/>
+	<?php
+} ?>
+<div>
+	<?php
+    $page = (!empty($_GET['page'])) ? $_GET['page'] : 1;
+    $nb_pages = $view->nb_pages;
+	$suiv = ($nb_pages > 1 && $page != $nb_pages);
+	$prec = ($nb_pages > 1 && !empty($page) && $page > 1);
+    $year = (!empty($_GET['y'])) ? '&y='.$_GET['y'] : '';
+    $month = (!empty($_GET['m'])) ? '&m='.$_GET['m'] : '';
+	if($prec){
+		$lien = "index.php?page=".($page-1).$year.$month;
+		echo '<span style="float:left;" class="page_link"><a href="'.$lien.'"><span class="arrow">←</span> NEWER</a></span>';
+	}
+	if($suiv){
+		$lien = "index.php?page=".($page+1).$year.$month;
+		echo '<span style="float:right;" class="page_link"><a href="'.$lien.'">OLDER <span class="arrow">→</span></a></span>';
+	}
+	?>
+</div>

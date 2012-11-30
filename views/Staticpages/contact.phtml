@@ -1,0 +1,17 @@
+<?php if (!empty($view->msg)) {
+    echo '<p>'.$view->msg.'</p>';
+} ?>
+<h2 class="coloredTitle">Vous souhaitez me contacter ?</h2>
+<div class="comconteneur">
+    <form method="post" action="">
+        <h3 id="leavecom"><a href="#">Formulaire de contact</a></h3>
+        <input class="input_com" type="type" name="pseudo" value="<?php echo $_SESSION['pseudo'];?>"/>
+        <label for="pseudo">Pseudo</label> <br/>
+        <input class="input_com" type="type" name="mail" value="<?php echo $_SESSION['mail'];?>"/>
+        <label for="mail">Adresse mail</label> <br/>
+        <input class="input_com" type="type" name="titre" value="<?php echo $_SESSION['titre'];?>"/>
+        <label for="titre">Sujet</label> <br/>
+        <textarea name="msg" id="commentaire"><?php echo $_SESSION['msg'] ?></textarea><br/><br/>
+        <input type="submit" value="Envoyer" />
+    </form>
+</div>

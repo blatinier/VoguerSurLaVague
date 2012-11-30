@@ -7,6 +7,7 @@
         <meta name="keywords" content="blog, melmelboo, frippes, ecolo, ecologie, recyclage, naturel, astuces, bricolage, truc, bloubiboulga<?php echo (!empty($layout->keywords)) ? implode(",", $layout->keywords) : ""; ?>" /> 
         <link href="CSS/default.css" rel="stylesheet" type="text/css" media="screen" />
         <script type="text/javascript" src="js/jquery.js"></script>
+        <script type="text/javascript" src="js/common.js"></script>
         <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
         <link rel="stylesheet" type="text/css" href="tools/shadowbox/shadowbox.css">
         <script type="text/javascript" src="tools/shadowbox/shadowbox.js"></script>
@@ -30,13 +31,25 @@
                 <a href="/about">ABOUT</a> / 
                 <a href="/contact">CONTACT</a>
             </div>
-            <div id="header" onclick="location.href='http://www.melmelboo.fr'">Melmelboo</div>
+            <div id="header" onclick="location.href='/'">Melmelboo</div>
             <div id="main">
                 <div id="contenu">
                     <?php echo $_view_str; ?>
                 </div>
                 <div id="menuV">
-                    <?php require_once("modules/menuVertical/content.php"); ?>
+                    <div class="menuBlock">
+                        <a href="/about">
+                            <img style="width:237px;" src="images/Moi.png" alt="À propos" />
+                        </a>
+                    </div>
+                    <hr />
+                    <?php echo $_widgets['last_art']; ?>
+                    <div id="menuBlockRight">
+                        <?php echo $_widgets['categories']; ?>
+                    </div>
+                    <div id="menuBlockLeft">
+                        <?php echo $_widgets['archives']; ?>
+                    </div>
                     <?php echo $_widgets['links']; ?>
                 </div>
             </div>
