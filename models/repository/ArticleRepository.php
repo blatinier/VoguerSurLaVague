@@ -109,11 +109,11 @@ class ArticleRepository extends Repository {
     public function save($article) {
         if (!empty($article->id)) {
             $req = "UPDATE mellismelau_articles SET
-                        auteur = '%s',
-                        titre = '%s',
-                        url = '%s',
-                        texte = '%s',
-                        pubdate = '%s',
+                        auteur = %s,
+                        titre = %s,
+                        url = %s,
+                        texte = %s,
+                        pubdate = %s,
                         cat = %d,
                         is_diy = %d,
                         captcha_com = %d,
@@ -125,13 +125,27 @@ class ArticleRepository extends Repository {
                 $article->captcha_com, $article->closed_com, $article->id);
         } else {
             $req = "INSERT INTO mellismelau_articles
-                    (id, auteur, titre, url, texte, pubdate, cat, is_diy, captcha_com, closed_com)
-                    VALUES('', '%s', '%s', '%s', '%s', '%s', %d, %d, %d, %d)";
-            $this->mysql_connector->insert($req, $article->auteur,
-                $article->titre, $article->url, $article->texte,
-                $article->pubdate, $article->cat, $article->is_diy,
-                $article->captcha_com, $article->closed_com);
+                        (id, auteur, titre, url,
+                         texte, pubdate, cat,
+                         is_diy, captcha_com,
+                         closed_com)
+                    VALUES('', %s, %s, %s,
+                           %s, %s, %d,
+                           %d, %d,
+                           %d)";
+            $res = $this->mysql_connector->insert($req,
+                $article->auteur, $article->titre, $article->url,
+                $article->texte, $article->pubdate, $article->cat,
+                $article->is_diy, $article->captcha_com,
+                $article->closed_com);
+            $article->id = $res['insert_id'];
         }
+        return $article;
+    }
+
+    public function delete($article_id) {
+        $req = "DELETE FROM mellismelau_articles WHERE id = %d";
+        $this->mysql_connector->delete($req, $article_id);
     }
 }
 ?>

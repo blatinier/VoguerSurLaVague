@@ -1,11 +1,15 @@
 <?php
 if(!empty($view->msg)){
-    echo "<p>".$view->msg."";
+    echo "<p>".$view->msg."</p>";
 }
 ?>
 <div class="comconteneur">
 	<form method="post" action="">
-        <h3 id="leavecom"><a href="#">Ajouter un article</a></h3>
+        <?php if (!empty($view->art_id)) { ?>
+            <h3 id="leavecom"><a href="#">Édition de « <?php echo $view->titre; ?> »</a></h3>
+        <?php } else { ?>
+            <h3 id="leavecom"><a href="#">Ajouter un article</a></h3>
+        <?php } ?>
         <input class="input_com" type="text" name="auteur" id="auteur" value="<?php echo (!empty($view->auteur)) ? $view->auteur : '';?>" />
         <label for="auteur">Auteur</label><br />
         <input class="input_com" type="text" name="titre" id="titre" value="<?php echo (!empty($view->titre)) ? $view->titre : '';?>" />
@@ -13,8 +17,8 @@ if(!empty($view->msg)){
         <select class="input_com" name="cat" id="cat">
         <?php
         foreach($view->list_cat as $cat){
-            if(!empty($view->cat) && $k == $view->cat){
-                $selected = "selected";
+            if(!empty($view->cat) && $cat->id == $view->cat){
+                $selected = 'selected';
             } else {
                 $selected = '';
             }
@@ -27,6 +31,9 @@ if(!empty($view->msg)){
         <label for="is_diy">C'est un DIY</label><input type="checkbox" name="is_diy" id="is_diy" <?php echo (!empty($view->is_diy) && $view->is_diy == 1) ? 'checked' : ''; ?> /><br /><br />
         <input class="input_com" type="text" name="pub" id="pub" value="<?php echo $view->now; ?>" />
         <label for="pub">Date de publication de l'article(AAAA-MM-JJ HH-MM-SS)</label><br />
+        <?php if (!empty($view->art_id)) { ?>
+        <input type="hidden" name="art_id" value="<?php echo $view->art_id; ?>" id="art_id" />
+        <?php } ?>
         <input type="submit" value="Envoyer" />
 	</form>
 	Besoin d'aide pour de la mise en page ? <strong><a target="_blank" href="helphtml">C'est par ici.</a></strong> (Attention si tu ne veux pas perdre ce que tu es en train d'écrire, ouvre le lien dans un nouvel onglet.)

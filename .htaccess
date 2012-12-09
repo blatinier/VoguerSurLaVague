@@ -15,7 +15,11 @@ RewriteRule ^logout$ index.php?controller=staticpages&action=logout [L]
 RewriteRule ^last_comments$ index.php?controller=comments&action=last_unread [L] 
 RewriteRule ^mark_comment/([0-9]+)$ index.php?controller=comments&action=mark_read&com_id=$1 [L] 
 RewriteRule ^mark_read_all_comments$ index.php?controller=comments&action=mark_all_read [L] 
+
+# Article gestion
 RewriteRule ^article_new$ index.php?controller=article&action=new_art [L] 
+RewriteRule ^article_edit-([0-9]+)$ index.php?controller=article&action=edit_art&art_id=$1 [L] 
+RewriteRule ^article_delete-([0-9]+)$ index.php?controller=article&action=delete_art&art_id=$1 [L] 
 
 # Archives
 RewriteRule ^get_months$ index.php?controller=ajax&action=get_months [L] 

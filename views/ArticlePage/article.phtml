@@ -21,8 +21,8 @@ $captcha_com = $view->article->captcha_com;
     <div class="comconteneur">
         <?php 
         if(!empty($_SESSION['ok']) && $_SESSION['ok'] == 1){
-            echo " - <a class=\"comlink\" href=\"index.php?p=mart&amp;art=".$view->article->id."\">Editer</a> - 
-            <a class=\"comlink\" href=\"index.php?p=dart&amp;art=".$view->article->id."\">Supprimer</a><br/>";
+            echo " - <a class=\"comlink\" href=\"article_edit-".$view->article->id."\">Editer</a> - 
+            <a class=\"comlink\" href=\"article_delete-".$view->article->id."\">Supprimer</a><br/>";
         }
         ?>
         <span class="postDate">
