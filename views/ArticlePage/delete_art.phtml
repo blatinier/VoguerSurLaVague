@@ -1,5 +1,18 @@
-<?php
-if(!empty($view->art)){
-    echo "<p> L'article « ".$view->art." » a été supprimé.</p>";
+<?php if(!empty($view->art) && !$view->deleted){ ?>
+<div class="comconteneur">
+	<form method="post" action="">
+        <h3 id="leavecom">
+            <a href="#">Suppression de « <?php echo $view->art; ?> »</a>
+        </h3>
+        <input class="input_com" type="text" name="confirmation" id="confirmation" />
+        <label for="auteur">Taper « oui » pour confirmer la suppression.</label><br />
+        <input type="submit" value="Supprimer" />
+	</form>
+</div>
+    <?php
+} else {
+    ?>
+    <p>L'article « <?php echo $view->art; ?> » a été supprimé.</p>
+    <?php
 }
 ?>

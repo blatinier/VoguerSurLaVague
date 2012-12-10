@@ -47,6 +47,7 @@ class ArticlePage extends Controller {
             $_SESSION['cat'] = $cat;
             $_SESSION['pub'] = $pub;
             $_SESSION['is_diy'] = $is_diy;
+            $this->view->sent = true;
         }
         $cat_repo = new CategoryRepository();
         $this->view->list_cat = $cat_repo->get_all();
@@ -74,13 +75,17 @@ class ArticlePage extends Controller {
     }
 
     public function delete_art () {
+        $this->view->deleted = false;
         $admin = (!empty($_SESSION['ok']) && $_SESSION['ok'] == 1);
         if ($admin && !empty($_GET['art_id'])) {
             $art_id = (int)$_GET['art_id'];
             $art_repo = new ArticleRepository();
             $article = $art_repo->get_by_id($admin, $art_id);
             $this->view->art = $article->titre;
-            $art_repo->delete($art_id);
+            if (strtolower($_POST['confirmation']) == "oui") {
+                $art_repo->delete($art_id);
+                $this->view->deleted = true;
+            }
         }
     }
 }

@@ -18,7 +18,7 @@ RewriteRule ^mark_read_all_comments$ index.php?controller=comments&action=mark_a
 
 # Article gestion
 RewriteRule ^article_new$ index.php?controller=article&action=new_art [L] 
-RewriteRule ^article_edit-([0-9]+)$ index.php?controller=article&action=edit_art&art_id=$1 [L] 
+RewriteRule ^article_edit-([0-9]+)$ index.php?controller=article&action=new_art&art_id=$1 [L] 
 RewriteRule ^article_delete-([0-9]+)$ index.php?controller=article&action=delete_art&art_id=$1 [L] 
 
 # Archives
