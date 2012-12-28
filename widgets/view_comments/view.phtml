@@ -1,0 +1,25 @@
+<div id="com">
+    <br />
+    <br />
+    <br />
+    <hr/>
+    <?php
+    foreach ($_widget_data['comments'] as $com) {
+        if ($com['pseudo'] == "Melmelboo") {
+            $com['pseudo'] = '<a class="melmelboo" href="http://melmelboo.free.fr">'.$com['pseudo'].'</a>';
+        } elseif(!empty($com['site'])) {
+            $com['pseudo'] = '<a href="'.$com['site'].'">'.$com['pseudo'].'</a>';
+        } ?>
+        <div class="entry">
+            <p><strong class="pseudo"><?php echo $com['pseudo']; ?></strong>
+            <?php if($_widget_data['admin']){
+                echo ' ('.$com['ip'].')';
+                ?><a href="index.php?p=dcom&amp;c=<?php echo $com['id']; ?>">Supprimer ce commentaire</a><?php
+            } ?>
+            <br/>
+            <small><?php echo $com['heure']; ?></small><br/>
+            <div class="com_content"><?php echo nl2br(stripslashes(htmlspecialchars($com['commentaire']))); ?></div></p>
+            <hr/>
+        </div>
+    <?php } ?>
+</div>

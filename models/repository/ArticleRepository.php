@@ -43,10 +43,10 @@ class ArticleRepository extends Repository {
             $req .= ' AND pubdate < NOW() ';
         }
         if ($year) {
-            $req .= ' AND YEAR(date) = '.(int)$year;
+            $req .= ' AND YEAR(pubdate) = '.(int)$year;
         }
         if ($month) {
-            $req .= ' AND MONTH(year) = '.(int)$month;
+            $req .= ' AND MONTH(pubdate) = '.(int)$month;
         }
         $sql = $this->mysql_connector->fetchOne($req);
         return $sql['cpt'];

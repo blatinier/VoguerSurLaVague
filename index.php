@@ -27,6 +27,23 @@ if (!empty($controller) && !empty($action)) {
         // Include parent controller
         include_once 'libraries/Controller.php';
         include_once 'libraries/Widget.php';
+
+        // Processing data for the widgets
+        foreach ($_activated_widgets as $widget) {
+            ob_start();
+            include_once 'widgets/' . $widget . '/controller.php';
+            $_wid_ctrl = new $widget($cfg, $mysql_connector);
+            $_wid_ctrl->_do_($action);
+            $_widgets_ctrl[$widget] = ob_get_contents();
+            ob_end_clean();
+
+            //Fetching widget view
+            $_widget_data = $_wid_ctrl->data;
+            ob_start();
+            include_once 'widgets/' . $widget . '/view.phtml';
+            $_widgets[$widget] = ob_get_contents();
+            ob_end_clean();
+        }
         
         // Include called controller
         $ctrlName = $controllers[$controller];
@@ -48,22 +65,6 @@ if (!empty($controller) && !empty($action)) {
         $_view_str = ob_get_contents();
         ob_end_clean();
 
-        foreach ($_activated_widgets as $widget) {
-            // Processing data for the widget
-            ob_start();
-            include_once 'widgets/' . $widget . '/controller.php';
-            $_wid_ctrl = new $widget($cfg, $mysql_connector);
-            $_wid_ctrl->_do_($action);
-            $_widgets_ctrl[$widget] = ob_get_contents();
-            ob_end_clean();
-
-            //Fetching widget view
-            $_widget_data = $_wid_ctrl->data;
-            ob_start();
-            include_once 'widgets/' . $widget . '/view.phtml';
-            $_widgets[$widget] = ob_get_contents();
-            ob_end_clean();
-        }
         include_once 'libraries/Layout.php';
         if (!empty($_controller_str)) {
             echo "<pre>";

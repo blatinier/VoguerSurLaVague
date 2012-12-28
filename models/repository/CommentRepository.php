@@ -24,6 +24,15 @@ class CommentRepository extends Repository {
         return $this->mysql_connector->fetchOne($req);
     }
 
+    public function add($idarticle, $pseudo,
+        $comment, $site, $ip) {
+        $req = "INSERT INTO mellismelau_com(idarticle, moment, pseudo,
+                    commentaire, site, ip)
+                VALUES(%i, NOW(), %s, %s, %s, %s)";
+        return $this->mysql_connector->insert($req, $idarticle, $pseudo,
+                    $comment, $site, $ip);
+    }
+
     public function mark_all_read () {
         $req = "TRUNCATE TABLE voguer_newcom";
         $this->mysql_connector->execute($req);
@@ -32,6 +41,15 @@ class CommentRepository extends Repository {
     public function mark_read ($com_id) {
         $req = "DELETE FROM voguer_newcom WHERE idcom=%i";
         $this->mysql_connector->delete($req, $com_id);
+    }
+
+    public function get_by_art_id($id) {
+        $req = "SELECT id, idarticle, moment, pseudo,
+                    commentaire, site, ip, DATE_FORMAT(moment,'à %H:%%i \l\e %%d/%c/%y') AS heure
+                FROM mellismelau_com WHERE idarticle=".(int)$id."
+                ORDER BY moment";
+        $coms = $this->mysql_connector->fetchAll($req);
+        return $coms;
     }
 }
 ?>

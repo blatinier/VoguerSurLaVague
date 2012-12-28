@@ -50,13 +50,6 @@ foreach ($view->articles as $art) {
             ?>
                 Écrit le <?php echo $art->post_date; ?> par <?php echo stripslashes($art->auteur); ?>
             </span>
-			<div id="com<?php echo $art->id; ?>">
-				<?php
-				if(!empty($art->id)){
-					include("modules/com/commentaire.php");
-				}
-				?>
-			</div>
 		</div>
 		<br/>
 	</div>
@@ -66,18 +59,22 @@ foreach ($view->articles as $art) {
 } ?>
 <div>
 	<?php
-    $page = (!empty($_GET['page'])) ? $_GET['page'] : 1;
+    $page = (!empty($_GET['page'])) ? $_GET['page'] : 0;
     $nb_pages = $view->nb_pages;
 	$suiv = ($nb_pages > 1 && $page != $nb_pages);
-	$prec = ($nb_pages > 1 && !empty($page) && $page > 1);
-    $year = (!empty($_GET['y'])) ? '&y='.$_GET['y'] : '';
-    $month = (!empty($_GET['m'])) ? '&m='.$_GET['m'] : '';
+	$prec = ($nb_pages > 1 && !empty($page) && $page > 0);
+    $year = (!empty($_GET['year'])) ? '-'.$_GET['year'] : '';
+    $month = (!empty($_GET['month'])) ? '-'.$_GET['month'] : '';
 	if($prec){
-		$lien = "index.php?page=".($page-1).$year.$month;
+        if ($page == 1) {
+            $lien = "/"; //home page = first page
+        } else {
+    		$lien = "archive".$month.$year."-page-".($page-1);
+        }
 		echo '<span style="float:left;" class="page_link"><a href="'.$lien.'"><span class="arrow">←</span> NEWER</a></span>';
 	}
 	if($suiv){
-		$lien = "index.php?page=".($page+1).$year.$month;
+		$lien = "archive".$month.$year."-page-".($page+1);
 		echo '<span style="float:right;" class="page_link"><a href="'.$lien.'">OLDER <span class="arrow">→</span></a></span>';
 	}
 	?>

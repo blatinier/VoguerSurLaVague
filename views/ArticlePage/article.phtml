@@ -36,18 +36,8 @@ $captcha_com = $view->article->captcha_com;
         ?>
             Écrit le <?php echo $view->article->post_date; ?> par <?php echo stripslashes($view->article->auteur); ?>
         </span>
-        <div id="com<?php echo $view->article->id; ?>">
-            <?php
-            if(!empty($view->article->id)){
-                include("modules/com/commentaire.php");
-            }
-            ?>
-        </div>
-        <?php
-        if (!$closed_com) {
-            include("modules/com/newcom.php");
-        }
-        ?>
+        <?php echo $_widgets['view_comments'];
+        echo $_widgets['new_comment']; ?>
     </div>
     <br/>
 </div>
