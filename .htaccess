@@ -1,6 +1,7 @@
 RewriteEngine On
 
-RewriteRule ^cat-(.*)-([0-9]+)$ index.php?controller=listing&action=category&cat=$2 [L] 
+RewriteRule ^cat-(.*)-([0-9]+)-page-([0-9]+)$ index.php?controller=listing&action=category&category_id=$2&page=$3 [L] 
+RewriteRule ^cat-(.*)-([0-9]+)$ index.php?controller=listing&action=category&category_id=$2 [L] 
 RewriteRule ^art-(.*)-([0-9]+)$ index.php?controller=article&action=article&art=$2 [L] 
 RewriteRule ^diy-(.*)-([0-9]+)$ index.php?controller=article&action=diy&art=$2 [L] 
 

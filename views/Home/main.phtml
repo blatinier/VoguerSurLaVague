@@ -65,16 +65,23 @@ foreach ($view->articles as $art) {
 	$prec = ($nb_pages > 1 && !empty($page) && $page > 0);
     $year = (!empty($_GET['year'])) ? '-'.$_GET['year'] : '';
     $month = (!empty($_GET['month'])) ? '-'.$_GET['month'] : '';
+    if (!empty($view->std_page_link)) {
+        $lien_base = $view->std_page_link;
+        $lien_base_home = $view->std_page_link;
+    } else {
+        $lien_base = "archive".$month.$year;
+        $lien_base_home = "/";
+    }
 	if($prec){
         if ($page == 1) {
-            $lien = "/"; //home page = first page
+            $lien = $lien_base_home; //home page = first page
         } else {
-    		$lien = "archive".$month.$year."-page-".($page-1);
+    		$lien = $lien_base."-page-".($page-1);
         }
 		echo '<span style="float:left;" class="page_link"><a href="'.$lien.'"><span class="arrow">←</span> NEWER</a></span>';
 	}
 	if($suiv){
-		$lien = "archive".$month.$year."-page-".($page+1);
+		$lien = $lien_base."-page-".($page+1);
 		echo '<span style="float:right;" class="page_link"><a href="'.$lien.'">OLDER <span class="arrow">→</span></a></span>';
 	}
 	?>

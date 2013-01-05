@@ -35,7 +35,7 @@ class ArticleRepository extends Repository {
         return $articles;
     }
 
-    public function count($is_admin, $year=false, $month=false) {
+    public function count($is_admin, $year=false, $month=false, $category_id=false) {
         $req = 'SELECT COUNT(*) as cpt
             FROM mellismelau_articles
             WHERE 1 ';
@@ -48,12 +48,20 @@ class ArticleRepository extends Repository {
         if ($month) {
             $req .= ' AND MONTH(pubdate) = '.(int)$month;
         }
+        if ($category_id) {
+            $req .= ' AND cat = '.(int)$category_id;
+        }
         $sql = $this->mysql_connector->fetchOne($req);
         return $sql['cpt'];
     }
 
     public function page_count($is_admin, $year=false, $month=false) {
         $nb_art = $this->count($is_admin, $year, $month);
+        return ceil($nb_art / 5);
+    }
+
+    public function page_count_category($is_admin, $category_id) {
+        $nb_art = $this->count($is_admin, false, false, $category_id);
         return ceil($nb_art / 5);
     }
 
@@ -94,6 +102,26 @@ class ArticleRepository extends Repository {
             FROM mellismelau_articles
             WHERE YEAR(pubdate) = '.$year.'
                 AND MONTH(pubdate) = '.$month;
+        if (!$is_admin) {
+            $req .= ' AND pubdate < NOW() ';
+        }
+        $req .= ' ORDER BY pubdate DESC LIMIT '.$offset.', 5';
+        $art_sql = $this->mysql_connector->fetchAll($req);
+        $articles = array();
+        foreach($art_sql as $article_data) {
+            $articles[] = Article::load($article_data);
+        }
+        return $articles;
+    }
+
+    public function get_category_articles($is_admin, $page, $category_id) {
+        $offset = $page * 5;
+        $page = (int)$page;
+        $category_id = (int)$category_id;
+        $req = 'SELECT id, auteur, titre, url, texte,
+            pubdate, cat, captcha_com, closed_com, is_diy
+            FROM mellismelau_articles
+            WHERE cat = '.$category_id;
         if (!$is_admin) {
             $req .= ' AND pubdate < NOW() ';
         }
