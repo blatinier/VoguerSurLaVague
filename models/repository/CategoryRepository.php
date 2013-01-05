@@ -19,7 +19,8 @@ class CategoryRepository extends Repository {
     public function get_by_id($id, $type=0) {
         $req = 'SELECT id, titre, slug, abstract, type
             FROM voguer_cat
-            WHERE type = '.(int)$type;
+            WHERE type = '.(int)$type.'
+                AND id = '.(int)$id;
         $cat_sql = $this->mysql_connector->fetchOne($req);
         $category = Category::load($cat_sql);
         return $category;
