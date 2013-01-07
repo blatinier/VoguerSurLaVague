@@ -31,7 +31,7 @@ class Comments extends Controller {
         $com_id = $this->_getParam('com_id', 0);
         $com_repo = new CommentRepository();
         $com_repo->mark_read($com_id);
-        header('Location: http://www.melmelboo.fr/admin');
+        header('Location: http://www.melmelboo.fr/last_comments');
         die();
     }
 
@@ -43,7 +43,7 @@ class Comments extends Controller {
         }
         $com_repo = new CommentRepository();
         $com_repo->mark_all_read();
-        header('Location: http://www.melmelboo.fr/admin');
+        header('Location: http://www.melmelboo.fr/last_comments');
         die();
     }
 }

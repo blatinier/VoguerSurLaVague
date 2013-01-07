@@ -1,4 +1,7 @@
 <?php
+if (!empty($_widget_data['err_msg'])) {
+    echo '<p class="error">'.$_widget_data['err_msg'].'</p>';
+}
 if (!$_widget_data['closed_com']) {
 ?>
 <div id="combox" style="line-height:2em;">

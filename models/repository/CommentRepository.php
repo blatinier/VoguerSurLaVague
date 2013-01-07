@@ -24,13 +24,27 @@ class CommentRepository extends Repository {
         return $this->mysql_connector->fetchOne($req);
     }
 
+    public function get_banned_ip () {
+        $req = "SELECT ip FROM blacklist";
+        return $this->mysql_connector->fetchAll($req);
+    }
+
+    public function get_banned_words () {
+        $req = "SELECT word FROM banned_words";
+        return $this->mysql_connector->fetchAll($req);
+    }
+
     public function add($idarticle, $pseudo,
         $comment, $site, $ip) {
         $req = "INSERT INTO mellismelau_com(idarticle, moment, pseudo,
                     commentaire, site, ip)
                 VALUES(%i, NOW(), %s, %s, %s, %s)";
-        return $this->mysql_connector->insert($req, $idarticle, $pseudo,
+        $com = $this->mysql_connector->insert($req, $idarticle, $pseudo,
                     $comment, $site, $ip);
+        $req = "INSERT INTO voguer_newcom(idcom, idarticle)
+                VALUES(%s, %s)";
+        $mark = $this->mysql_connector->insert($req, $com['insert_id'], $idarticle);
+        return $com;
     }
 
     public function mark_all_read () {
