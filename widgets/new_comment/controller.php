@@ -9,6 +9,8 @@ class new_comment extends Widget {
         $art = $this->_getParam('art', 0);
         $error = false;
         $this->data['err_msg'] = "";
+        $com_repo = new CommentRepository();
+        $this->data['closed_com'] = true;
         if ($art != 0) {
             $art_repo = new ArticleRepository();
             $article = $art_repo->get_by_id($admin, $art);
@@ -18,7 +20,6 @@ class new_comment extends Widget {
                 if (substr($_POST['site'], 0, 7) == 'http://') {
                     $site = $_POST['site'];
                 }
-                $com_repo = new CommentRepository();
                 $black_ip = $com_repo->get_banned_ip();
                 foreach ($black_ip as $ip) {
                     if ($ip['ip'] == $_SERVER['REMOTE_ADDR']) {
@@ -41,7 +42,7 @@ class new_comment extends Widget {
                 $error = true;
             }
         }
-        if (!$error) {
+        if (!empty($_POST) && !$error) {
             $com_repo->add($art, htmlentities($_POST['pseudo']),
                 htmlentities($_POST['commentaire']), htmlentities($site), $_SERVER['REMOTE_ADDR']);
         }
