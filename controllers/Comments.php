@@ -29,9 +29,12 @@ class Comments extends Controller {
             die();
         }
         $com_id = $this->_getParam('com_id', 0);
+        $art_id = $this->_getParam('art_id', 0);
         $com_repo = new CommentRepository();
         $com_repo->mark_read($com_id);
-        header('Location: http://www.melmelboo.fr/last_comments');
+        $art_repo = new ArticleRepository();
+        $article = $art_repo->get_by_id($admin, $art_id);
+        header('Location: http://www.melmelboo.fr/art-'.$article->url.'-'.$art_id);
         die();
     }
 

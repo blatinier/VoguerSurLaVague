@@ -4,7 +4,9 @@ $captcha_com = $view->article->captcha_com;
 ?>
 <div class="post">
     <span class="categorie">
-        <?php echo $view->article->category->titre; ?>
+        <a href="cat-<?php echo $view->article->category->slug; ?>-<?php echo $view->article->category->id; ?>">
+            <?php echo $view->article->category->titre; ?>
+        </a>
     </span>
     <h2 class="postTitle">
         <a href="art-<?php echo $view->article->url; ?>-<?php echo $view->article->id; ?>">

@@ -38,6 +38,10 @@ class new_comment extends Widget {
                         }
                     }
                 }
+                if (!$error && !$admin && strtolower($_POST['pseudo']) == "melmelboo") {
+                    $error = true;
+                    $this->data['err_msg'] = "Ce pseudo est réservé.";
+                }
             } else {
                 $error = true;
             }

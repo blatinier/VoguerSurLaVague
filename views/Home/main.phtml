@@ -3,7 +3,9 @@ foreach ($view->articles as $art) {
 	?>
 	<div class="post">
 		<span class="categorie">
-			<?php echo $art->category->titre; ?>
+			<a href="cat-<?php echo $art->category->slug; ?>-<?php echo $art->category->id; ?>">
+                <?php echo $art->category->titre; ?>
+            </a>
 		</span>
 		<h2 class="postTitle">
 			<a href="art-<?php echo $art->url; ?>-<?php echo $art->id; ?>">
