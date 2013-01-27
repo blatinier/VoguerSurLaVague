@@ -1,0 +1,43 @@
+<?php
+if(!empty($view->msg)){
+	echo "<p>".$view->msg."</p>";
+}
+?>
+<p>
+<form method="post" action="">
+	<fieldset>
+	<legend>Ajout d'une catégorie</legend>
+	<table>
+		<tr>
+			<td><label for="titre">Titre</label></td>
+			<td><input type="text" name="titre" id="titre" value="<?php echo (!empty($view->cat_titre)) ? $view->cat_titre : ""; ?>"/></td>
+		</tr>
+		<tr>
+			<td><label for="type">Type</label></td>
+			<td>
+				<select name="type" id="type">
+				<?php
+				foreach($view->list_cat as $k => $l){
+                    if ($k == $view->cat_type) {
+                        $s = "selected";
+                    } else {
+                        $s = "";
+                    }
+					echo '<option value="'.$k.'" '.$s.'>'.$l.'</option>';
+				}
+				?>
+				</select>
+			</td>
+		</tr>
+		<tr>
+			<td colspan="2"><label for="abstract">Le résumé</label></td>
+		</tr>
+		<tr>
+			<td colspan="2"><textarea name="abstract" id="abstract" rows="10" cols="85"><?php echo (!empty($view->cat_abstract)) ? $view->cat_abstract : ""; ?></textarea></td>
+		</tr>
+		<tr>
+			<td colspan="2"><input type="submit" value="Envoyer" /><td>
+		</tr>
+	</table>
+	</fieldset>
+</form>

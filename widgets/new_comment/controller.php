@@ -15,7 +15,7 @@ class new_comment extends Widget {
             $art_repo = new ArticleRepository();
             $article = $art_repo->get_by_id($admin, $art);
             $this->data['closed_com'] = $article->closed_com;
-            if (!empty($_POST) && !$article->closed_com) {
+            if (!empty($_POST) && !empty($_POST['commentaire']) && !$article->closed_com) {
                 $site = null;
                 if (substr($_POST['site'], 0, 7) == 'http://') {
                     $site = $_POST['site'];
@@ -46,7 +46,7 @@ class new_comment extends Widget {
                 $error = true;
             }
         }
-        if (!empty($_POST) && !$error) {
+        if (!empty($_POST) && !empty($_POST['commentaire']) && !$error) {
             $com_repo->add($art, htmlentities($_POST['pseudo']),
                 htmlentities($_POST['commentaire']), htmlentities($site), $_SERVER['REMOTE_ADDR']);
         }

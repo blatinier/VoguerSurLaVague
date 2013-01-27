@@ -65,5 +65,10 @@ class CommentRepository extends Repository {
         $coms = $this->mysql_connector->fetchAll($req);
         return $coms;
     }
+
+    public function delete($id) {
+        $req = "DELETE FROM mellismelau_com WHERE id = %i";
+        $this->mysql_connector->delete($req, $id);
+    }
 }
 ?>

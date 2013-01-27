@@ -11,6 +11,7 @@ if (!empty($controller) && !empty($action)) {
         'article' => 'ArticlePage',
         'comments' => 'Comments',
         'listing' => 'Listing',
+        'category' => 'CategoryPage',
         'staticpages' => 'Staticpages',
         'ajax' => 'Ajax',
     );

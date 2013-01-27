@@ -16,6 +16,9 @@ class Category extends Model {
     }
 
     public static function load($dict) {
+        if (empty($dict['id'])) {
+            $dict['id'] = null;
+        }
         return new Category($dict['id'],
             $dict['titre'],
             $dict['slug'],
