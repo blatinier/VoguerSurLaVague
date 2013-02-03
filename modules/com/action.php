@@ -23,7 +23,7 @@ if (!empty($_POST) && !empty($_POST['captcha_com'])) {
     }
 }
 if (!empty($_POST) && !empty($ida)) {
-    $open_com_query = "SELECT closed_com FROM mellismelau_com WHERE id=".$ida;
+    $open_com_query = "SELECT closed_com FROM comments WHERE id=".$ida;
     $q = mysql_query($open_com_query);
     $open_line = mysql_fetch_assoc($q);
     if (!empty($open_line) && $open_com_query['closed_com'] == 1) {
@@ -82,10 +82,10 @@ if(!empty($pseudo) && !empty($commentaire) && !$err){
     }
 
     if (!in_array($_SERVER['REMOTE_ADDR'], $blacklist)) {
-    	mysql_query("INSERT INTO mellismelau_com(id,idarticle,moment,pseudo,commentaire,site,ip) 
+    	mysql_query("INSERT INTO comments(id,idarticle,moment,pseudo,commentaire,site,ip) 
                      VALUES('',".$ida.",NOW(),'".$pseudo."','".$commentaire."','".$site."','".$_SERVER['REMOTE_ADDR']."')")or die(mysql_error());
     	$idc = mysql_insert_id();
-    	mysql_query("INSERT INTO voguer_newcom(id,idcom,idarticle) VALUES('','".$idc."','".$ida."')")or die(mysql_error());
+    	mysql_query("INSERT INTO new_comments(id,idcom,idarticle) VALUES('','".$idc."','".$ida."')")or die(mysql_error());
     	$sent = true;
     }
 }

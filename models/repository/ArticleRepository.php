@@ -8,7 +8,7 @@ class ArticleRepository extends Repository {
     public function get_by_id($is_admin, $id) {
         $req = 'SELECT id, auteur, titre, url, texte,
             pubdate, cat, captcha_com, closed_com, is_diy
-            FROM mellismelau_articles
+            FROM articles
             WHERE id = '.(int)$id;
         if (!$is_admin) {
             $req .= ' AND pubdate < NOW() ';
@@ -22,7 +22,7 @@ class ArticleRepository extends Repository {
         $offset = $page * 5;
         $req = 'SELECT id, auteur, titre, url, texte,
             pubdate, cat, captcha_com, closed_com, is_diy
-            FROM mellismelau_articles';
+            FROM articles';
         if (!$is_admin) {
             $req .= ' WHERE pubdate < NOW() ';
         }
@@ -37,7 +37,7 @@ class ArticleRepository extends Repository {
 
     public function count($is_admin, $year=false, $month=false, $category_id=false) {
         $req = 'SELECT COUNT(*) as cpt
-            FROM mellismelau_articles
+            FROM articles
             WHERE 1 ';
         if (!$is_admin) {
             $req .= ' AND pubdate < NOW() ';
@@ -67,7 +67,7 @@ class ArticleRepository extends Repository {
 
     public function get_years($is_admin) {
         $req = 'SELECT DISTINCT YEAR(pubdate) AS name 
-            FROM mellismelau_articles
+            FROM articles
             WHERE pubdate > "2000-01-01 00:00:00"';
         // this condition is to exclude 0 dates from
         // cached articles
@@ -80,7 +80,7 @@ class ArticleRepository extends Repository {
 
     public function get_months($is_admin, $year) {
         $req = 'SELECT DISTINCT MONTH(pubdate) AS month_int
-            FROM mellismelau_articles
+            FROM articles
             WHERE pubdate > "2000-01-01 00:00:00"
                 AND YEAR(pubdate) = '.(int)$year;
         // this condition is to exclude 0 dates from
@@ -99,7 +99,7 @@ class ArticleRepository extends Repository {
         $page = (int)$page;
         $req = 'SELECT id, auteur, titre, url, texte,
             pubdate, cat, captcha_com, closed_com, is_diy
-            FROM mellismelau_articles
+            FROM articles
             WHERE YEAR(pubdate) = '.$year.'
                 AND MONTH(pubdate) = '.$month;
         if (!$is_admin) {
@@ -120,7 +120,7 @@ class ArticleRepository extends Repository {
         $category_id = (int)$category_id;
         $req = 'SELECT id, auteur, titre, url, texte,
             pubdate, cat, captcha_com, closed_com, is_diy
-            FROM mellismelau_articles
+            FROM articles
             WHERE cat = '.$category_id;
         if (!$is_admin) {
             $req .= ' AND pubdate < NOW() ';
@@ -136,7 +136,7 @@ class ArticleRepository extends Repository {
 
     public function save($article) {
         if (!empty($article->id)) {
-            $req = "UPDATE mellismelau_articles SET
+            $req = "UPDATE articles SET
                         auteur = %s,
                         titre = %s,
                         url = %s,
@@ -152,7 +152,7 @@ class ArticleRepository extends Repository {
                 $article->pubdate, $article->cat, $article->is_diy,
                 $article->captcha_com, $article->closed_com, $article->id);
         } else {
-            $req = "INSERT INTO mellismelau_articles
+            $req = "INSERT INTO articles
                         (id, auteur, titre, url,
                          texte, pubdate, cat,
                          is_diy, captcha_com,
@@ -172,7 +172,7 @@ class ArticleRepository extends Repository {
     }
 
     public function delete($article_id) {
-        $req = "DELETE FROM mellismelau_articles WHERE id = %d";
+        $req = "DELETE FROM articles WHERE id = %d";
         $this->mysql_connector->delete($req, $article_id);
     }
 }

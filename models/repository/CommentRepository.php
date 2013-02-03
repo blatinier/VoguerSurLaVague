@@ -7,20 +7,20 @@ class CommentRepository extends Repository {
 
     public function count($id_art) {
         $req = "SELECT COUNT(*) as cpt FROM
-            mellismelau_com WHERE idarticle=%i";
+            comments WHERE idarticle=%i";
         $sql = $this->mysql_connector->fetchOne($req, $id_art);
         return $sql['cpt'];
     }
 
     public function get_last_unread() {
-        $req = "SELECT idcom, idarticle FROM voguer_newcom";
+        $req = "SELECT idcom, idarticle FROM new_comments";
         return $this->mysql_connector->fetchAll($req);
     }
 
     public function get_by_id($id) {
         $req = "SELECT id, idarticle, moment, pseudo,
                     commentaire, site, ip 
-                FROM mellismelau_com WHERE id=".(int)$id;
+                FROM comments WHERE id=".(int)$id;
         return $this->mysql_connector->fetchOne($req);
     }
 
@@ -36,38 +36,38 @@ class CommentRepository extends Repository {
 
     public function add($idarticle, $pseudo,
         $comment, $site, $ip) {
-        $req = "INSERT INTO mellismelau_com(idarticle, moment, pseudo,
+        $req = "INSERT INTO comments(idarticle, moment, pseudo,
                     commentaire, site, ip)
                 VALUES(%i, NOW(), %s, %s, %s, %s)";
         $com = $this->mysql_connector->insert($req, $idarticle, $pseudo,
                     $comment, $site, $ip);
-        $req = "INSERT INTO voguer_newcom(idcom, idarticle)
+        $req = "INSERT INTO new_comments(idcom, idarticle)
                 VALUES(%s, %s)";
         $mark = $this->mysql_connector->insert($req, $com['insert_id'], $idarticle);
         return $com;
     }
 
     public function mark_all_read () {
-        $req = "TRUNCATE TABLE voguer_newcom";
+        $req = "TRUNCATE TABLE new_comments";
         $this->mysql_connector->execute($req);
     }
 
     public function mark_read ($com_id) {
-        $req = "DELETE FROM voguer_newcom WHERE idcom=%i";
+        $req = "DELETE FROM new_comments WHERE idcom=%i";
         $this->mysql_connector->delete($req, $com_id);
     }
 
     public function get_by_art_id($id) {
         $req = "SELECT id, idarticle, moment, pseudo,
                     commentaire, site, ip, DATE_FORMAT(moment,'à %H:%%i \l\e %%d/%c/%y') AS heure
-                FROM mellismelau_com WHERE idarticle=".(int)$id."
+                FROM comments WHERE idarticle=".(int)$id."
                 ORDER BY moment";
         $coms = $this->mysql_connector->fetchAll($req);
         return $coms;
     }
 
     public function delete($id) {
-        $req = "DELETE FROM mellismelau_com WHERE id = %i";
+        $req = "DELETE FROM comments WHERE id = %i";
         $this->mysql_connector->delete($req, $id);
     }
 }

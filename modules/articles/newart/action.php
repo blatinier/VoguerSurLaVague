@@ -1,5 +1,5 @@
 <?php
-$list_cat_q = "SELECT titre,id FROM voguer_cat WHERE type=0";
+$list_cat_q = "SELECT titre,id FROM category WHERE type=0";
 $list_cat_q = mysql_query($list_cat_q)or die(mysql_error());
 if (!empty($_POST['auteur']) && !empty($_POST['titre']) && !empty($_POST['cat']) && !empty($_POST['texte'])) {
 	if (!empty($_POST['mini'])) {

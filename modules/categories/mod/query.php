@@ -5,7 +5,7 @@ function get_list_typecat(){
 
 function get_cat_byId($id){
 	$id = (int)$id;
-	$q = "SELECT titre, type, abstract FROM voguer_cat WHERE id=".$id;
+	$q = "SELECT titre, type, abstract FROM category WHERE id=".$id;
 	$q = mysql_query($q);
 	return $q;
 } 
@@ -15,6 +15,6 @@ function mod_cat($id, $titre, $abstract, $type){
 	$abstract = mysql_real_escape_string($abstract);
 	$type = (int)$type;
 	$id = (int)$id;
-	mysql_query("UPDATE voguer_cat SET titre='".$titre."', abstract='".$abstract."', type='".$type."' WHERE id=".$id);
+	mysql_query("UPDATE category SET titre='".$titre."', abstract='".$abstract."', type='".$type."' WHERE id=".$id);
 }
 ?>

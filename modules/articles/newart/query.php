@@ -19,13 +19,13 @@ function poster_articles($auteur, $titre, $texte, $cat, $pub, $is_diy){
     $cat = mysql_real_escape_string($cat); 
     $is_diy = ($is_diy == 'on') ? 1 : 0;
  
-    mysql_query("INSERT INTO mellismelau_articles(id, auteur, titre, url, texte, pubdate, cat, is_diy)
+    mysql_query("INSERT INTO articles(id, auteur, titre, url, texte, pubdate, cat, is_diy)
                 VALUES('','".$auteur."','".$titre."', '".sanitize_string($titre)."','".$texte."','".$pub."','".$cat."', ".$is_diy.")"); 
     return mysql_insert_id(); 
 } 
 
 function get_list_cat_img(){
-	$q = "SELECT id,titre FROM voguer_cat WHERE type=0";
+	$q = "SELECT id,titre FROM category WHERE type=0";
 	$req = mysql_query($q)or die(mysql_error());
 	$array = array();
 	while($res = mysql_fetch_assoc($req)){

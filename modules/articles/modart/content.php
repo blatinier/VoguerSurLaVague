@@ -20,7 +20,7 @@ $res['titre'] = str_replace('\"',"",$res['titre']);
 	<label for="titre">Titre</label><br />
 	<select class="input_com" name="cat">
 	<?php
-	$list_cat_q = "SELECT titre,id FROM voguer_cat WHERE type=0";
+	$list_cat_q = "SELECT titre,id FROM category WHERE type=0";
 	$list_cat_q = mysql_query($list_cat_q)or die(mysql_error());
 	while($r = mysql_fetch_assoc($list_cat_q)){
 		if($r['id']==$res['cat'])

@@ -1,7 +1,7 @@
 <?php
 function del_cat($id){
 	$id = (int)$id;
-	mysql_query("DELETE FROM voguer_cat WHERE id=".$id);
+	mysql_query("DELETE FROM category WHERE id=".$id);
 }
 
 function get_cat_byId($id){
@@ -11,7 +11,7 @@ function get_cat_byId($id){
 							titre,
 							type,
 							abstract
-							FROM voguer_cat WHERE id=".$id);
+							FROM category WHERE id=".$id);
 }
 function get_list_typecat(){
 	return	array("Article","Astuces","Galerie");	
