@@ -1,20 +1,21 @@
 <?php
 foreach ($view->articles as $art) {
 	?>
-	<div class="post">
+	<div class="post" itemprop='blogPost' itemscope='itemscope' itemtype='http://schema.org/BlogPosting'>
+        <meta content='<?php echo $art->id; ?>' itemprop='postId'/>
 		<span class="categorie">
 			<a href="cat-<?php echo $art->category->slug; ?>-<?php echo $art->category->id; ?>">
                 <?php echo $art->category->titre; ?>
             </a>
 		</span>
-		<h2 class="postTitle">
+		<h2 class="postTitle" itemprop='name'>
 			<a href="art-<?php echo $art->url; ?>-<?php echo $art->id; ?>">
 				<?php echo stripslashes($art->titre); ?>
 			</a>
 		</h2>
 		<br/><br/>
 		<div class="mainpost">
-			<div class="postcontent">
+			<div class="postcontent" itemprop='description articleBody'>
 				<?php echo stripslashes($art->texte); ?>
 				<br/><br/>
 			</div>
@@ -50,7 +51,13 @@ foreach ($view->articles as $art) {
                     echo "<span style=\"color:red;\"> Cet article sera publié dans ".$jour." jours ".$heure." heures et ".$minutes." minutes.</span><br/>";
                 }
             ?>
-                Écrit le <?php echo $art->post_date; ?> par <?php echo stripslashes($art->auteur); ?>
+                Écrit le <span itemprop='datePublished' title='<?php echo str_replace(' ', 'T', $art->pubdate); ?>'><?php echo $art->post_date; ?></span>
+                par <span itemprop='author' itemscope='itemscope' itemtype='http://schema.org/Person'>
+                    <meta content='http://www.melmelboo.fr/about' itemprop='url'/>
+                    <a href='http://www.melmelboo.fr/about' rel='author' title='author profile'>
+                        <span itemprop='name'><?php echo stripslashes($art->auteur); ?></span>
+                    </a>
+                </span>
             </span>
 		</div>
 		<br/>
