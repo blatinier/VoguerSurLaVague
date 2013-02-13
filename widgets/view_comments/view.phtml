@@ -6,19 +6,35 @@
     <?php
     foreach ($_widget_data['comments'] as $com) {
         if (strtolower($com['pseudo']) == "melmelboo") {
-            $com['pseudo'] = '<a class="melmelboo" href="http://www.melmelboo.fr">'.$com['pseudo'].'</a>';
+            $site = "http://www.melmelboo.fr";
+            $class = "melmelboo";
         } elseif(!empty($com['site'])) {
-            $com['pseudo'] = '<a href="'.$com['site'].'">'.$com['pseudo'].'</a>';
+            if (strlen($com['site']) > 10) {
+                $site = $com['site'];
+            } else {
+                $site = "";
+            }
+            $class = "";
         } ?>
-        <div class="entry">
-            <p><strong class="pseudo"><?php echo $com['pseudo']; ?></strong>
+        <div class="entry" itemprop="UserComments" itemscope="itemscope" itemtype="http://schema.org/UserComments">
+            <p><strong class="pseudo">
+                <span itemprop="creator" itemscope="itemscope" itemtype="Person">
+                    <?php if (!empty($site)) { ?>
+                        <meta content="<?php echo $site; ?>" itemprop="url"/>
+                        <a class="<?php echo $class; ?>" href="<?php echo $site; ?>">
+                        <span itemprop="name"><?php echo $com['pseudo']; ?></span></a>
+                    <?php } else { ?>
+                        <span itemprop="name"><?php echo $com['pseudo']; ?></span>
+                    <?php } ?>
+                </span>
+              </strong>
             <?php if($_widget_data['admin']){
                 echo ' ('.$com['ip'].')';
                 ?><a href="delete_comment/<?php echo $com['id']; ?>">Supprimer ce commentaire</a><?php
             } ?>
             <br/>
-            <small><?php echo $com['heure']; ?></small><br/>
-            <div class="com_content"><?php echo nl2br(stripslashes(htmlspecialchars($com['commentaire']))); ?></div></p>
+            <small><span itemprop="commentTime"><?php echo $com['heure']; ?></span></small><br/>
+            <div class="com_content" itemprop="commentText"><?php echo nl2br(stripslashes(htmlspecialchars($com['commentaire']))); ?></div></p>
             <hr/>
         </div>
     <?php } ?>

@@ -3,6 +3,7 @@ foreach ($view->articles as $art) {
 	?>
 	<div class="post" itemprop='blogPost' itemscope='itemscope' itemtype='http://schema.org/BlogPosting'>
         <meta content='<?php echo $art->id; ?>' itemprop='postId'/>
+        <meta itemprop="inLanguage" content="fr-FR"/>
 		<span class="categorie">
 			<a href="cat-<?php echo $art->category->slug; ?>-<?php echo $art->category->id; ?>">
                 <?php echo $art->category->titre; ?>
