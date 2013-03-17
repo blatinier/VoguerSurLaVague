@@ -13,7 +13,7 @@ if (!empty($view->sent)) {
         <?php } else { ?>
             <h3 id="leavecom"><a href="#">Ajouter un article</a></h3>
         <?php } ?>
-        <input class="input_com" type="text" name="auteur" id="auteur" value="<?php echo (!empty($view->auteur)) ? $view->auteur : '';?>" />
+        <input class="input_com" type="text" name="auteur" id="auteur" value="<?php echo (!empty($view->auteur)) ? $view->auteur : 'Melmelboo';?>" />
         <label for="auteur">Auteur</label><br />
         <input class="input_com" type="text" name="titre" id="titre" value="<?php echo (!empty($view->titre)) ? $view->titre : '';?>" />
         <label for="titre">Titre</label><br />
