@@ -10,6 +10,9 @@
         <script type="text/javascript" src="/js/common.js"></script>
         <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
         <link rel="stylesheet" type="text/css" href="/tools/shadowbox/shadowbox.css">
+        <?php if (!empty($layout->canonical)) { ?>
+        <link rel="canonical" href="<?php echo $layout->canonical; ?>"/>
+        <?php } ?>
         <script type="text/javascript" src="/tools/shadowbox/shadowbox.js"></script>
         <script type="text/javascript">
             Shadowbox.init();

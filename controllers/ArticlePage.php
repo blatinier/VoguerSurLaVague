@@ -15,6 +15,8 @@ class ArticlePage extends Controller {
         $article = $art_repo->get_by_id($admin, $art);
         $article->category = $cats_repo->get_by_id($article->cat);
         $this->view->article = $article;
+        $this->layout->title = $article->titre;
+        $this->layout->canonical = $this->config['root_url']."/art-".$article->url."-".$article->id;
     }
 
     public function new_art () {
