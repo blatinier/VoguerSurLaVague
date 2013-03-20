@@ -46,6 +46,9 @@ class Staticpages extends Controller {
 
     public function admin () {
         $this->view->connected = false;
+        if (empty($_SESSION['ok'])) {
+            $_SESSION['ok'] = 0;
+        }
         if ($_SESSION['ok'] == 1) {
             $this->view->connected = true;
         }
