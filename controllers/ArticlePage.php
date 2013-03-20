@@ -23,7 +23,7 @@ class ArticlePage extends Controller {
         $admin = (!empty($_SESSION['ok']) && $_SESSION['ok'] == 1);
         $art_repo = new ArticleRepository();
         if ($admin && !empty($_POST)) {
-            $art_id = $_POST['art_id'];
+            $art_id = !empty($_POST['art_id']) ? $_POST['art_id'] : null;
             $auteur = utf8_decode($_POST['auteur']);
             $titre = utf8_decode($_POST['titre']);
             $texte = utf8_decode($_POST['texte']);
