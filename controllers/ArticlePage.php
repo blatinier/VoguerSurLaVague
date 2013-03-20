@@ -71,7 +71,7 @@ class ArticlePage extends Controller {
             $art_repo = new ArticleRepository();
             $article = $art_repo->get_by_id($admin, $art_id);
             $this->view->art = $article->titre;
-            if (strtolower($_POST['confirmation']) == "oui") {
+            if (!empty($_POST) && strtolower($_POST['confirmation']) == "oui") {
                 $art_repo->delete($art_id);
                 $this->view->deleted = true;
             }
