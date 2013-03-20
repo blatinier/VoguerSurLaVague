@@ -21,6 +21,7 @@ class ArticlePage extends Controller {
 
     public function new_art () {
         $admin = (!empty($_SESSION['ok']) && $_SESSION['ok'] == 1);
+        $art_repo = new ArticleRepository();
         if ($admin && !empty($_POST)) {
             $art_id = $_POST['art_id'];
             $auteur = utf8_decode($_POST['auteur']);
@@ -40,40 +41,26 @@ class ArticlePage extends Controller {
                                 'closed_com' => 0,
                                 'is_diy' => $is_diy);
             $art = Article::load($art_values);
-            $art_repo = new ArticleRepository();
             $art = $art_repo->save($art);
             $_POST['art_id'] = $art->id;
-            $_SESSION['auteur'] = utf8_encode($auteur);
-            $_SESSION['titre'] = utf8_encode($titre);
-            $_SESSION['art'] = utf8_encode($texte);
-            $_SESSION['cat'] = $cat;
-            $_SESSION['pub'] = $pub;
-            $_SESSION['is_diy'] = $is_diy;
+            $this->view->art_id = $art->id;
             $this->view->sent = true;
+        }
+        if (!empty($_GET['art_id'])) {
+            $this->view->art_id = (int)$_GET['art_id'];
+        }
+        if (!empty($this->view->art_id)) {
+            $art = $art_repo->get_by_id($admin, $this->view->art_id);
+            $this->view->auteur = $art->auteur;
+            $this->view->url = $art->url;
+            $this->view->titre = $art->titre;
+            $this->view->art = $art->texte;
+            $this->view->cat = $art->cat;
+            $this->view->is_diy = $art->is_diy;
         }
         $cat_repo = new CategoryRepository();
         $this->view->list_cat = $cat_repo->get_all();
         $this->view->now = date("Y-m-d H:i:s",time()+3600*24);
-        if (empty($this->view->art_id) && !empty($_POST['art_id'])) {
-            $this->view->art_id = (int)$_POST['art_id'];
-        } elseif (empty($this->view->art_id) && !empty($_GET['art_id'])) {
-            $this->view->art_id = (int)$_GET['art_id'];
-        }
-        if (empty($this->view->auteur) && !empty($_SESSION['auteur'])) {
-            $this->view->auteur = $_SESSION['auteur'];
-        }
-        if (empty($this->view->titre) && !empty($_SESSION['titre'])) {
-            $this->view->titre = $_SESSION['titre'];
-        }
-        if (empty($this->view->art) && !empty($_SESSION['art'])) {
-            $this->view->art = $_SESSION['art'];
-        }
-        if (empty($this->view->cat) && !empty($_SESSION['cat'])) {
-            $this->view->cat = $_SESSION['cat'];
-        }
-        if (empty($this->view->is_diy) && !empty($_SESSION['is_diy'])) {
-            $this->view->is_diy = $_SESSION['is_diy'];
-        }
     }
 
     public function delete_art () {
