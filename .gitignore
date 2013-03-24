@@ -6,3 +6,4 @@ img/
 modules/visitstat/config_allmystats.php
 modules/allmystats/config_allmystats.php
 modules/allmystats/cache/
+sitemap.xml
