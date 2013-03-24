@@ -57,6 +57,7 @@ class ArticlePage extends Controller {
             $this->view->art = $art->texte;
             $this->view->cat = $art->cat;
             $this->view->is_diy = $art->is_diy;
+            $this->view->pubdate = $art->pubdate;
         }
         $cat_repo = new CategoryRepository();
         $this->view->list_cat = $cat_repo->get_all();
