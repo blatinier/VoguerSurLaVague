@@ -14,6 +14,7 @@ class ArticlePage extends Controller {
         $com_repo = new CommentRepository();
         $article = $art_repo->get_by_id($admin, $art);
         $article->category = $cats_repo->get_by_id($article->cat);
+        $article->nb_likes = $art_repo->get_likes($article->id);
         $this->view->article = $article;
         $this->layout->title = $article->titre;
         $this->layout->canonical = $this->config['root_url']."/art-".$article->url."-".$article->id;
@@ -77,6 +78,27 @@ class ArticlePage extends Controller {
                 $this->view->deleted = true;
             }
         }
+    }
+
+    public function like () {
+        $ip = $_SERVER['REMOTE_ADDR'];
+        $id_article = (int)$_GET['art'];
+        $error = false;
+        $com_repo = new CommentRepository();
+        $black_ip = $com_repo->get_banned_ip();
+        foreach ($black_ip as $bip) {
+            if ($bip['ip'] == $ip) {
+                $error = true;
+                $this->view->msg = "Votre adresse IP n'est pas autorisée à poster des commentaires.";
+                break;
+            }
+        }
+        if (!$error) {
+            $art_repo = new ArticleRepository();
+            $art_repo->like($id_article, $ip);
+            $this->view->msg = "Vous avez aimé cet article. Merci :)";
+        }
+        $this->layout_tpl = "ajax_html.phtml";
     }
 }
 ?>

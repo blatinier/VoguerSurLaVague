@@ -175,5 +175,24 @@ class ArticleRepository extends Repository {
         $req = "DELETE FROM articles WHERE id = %d";
         $this->mysql_connector->delete($req, $article_id);
     }
+
+    public function like($article_id, $ip) {
+        $existing_like = 'SELECT article_id, ip FROM `like` WHERE article_id = %d AND ip = %s';
+        $existing_like = $this->mysql_connector->fetchOne($existing_like, $article_id, $ip);
+        if (empty($existing_like)) {
+            $req = "INSERT INTO `like`(article_id, ip) VALUES(%d, %s)";
+            $this->mysql_connector->insert($req, $article_id, $ip);
+        }
+    }
+
+    public function get_likes($article_id) {
+        $req = "SELECT COUNT(*) AS nb_like FROM `like` WHERE article_id = %d";
+        $nb = $this->mysql_connector->fetchOne($req, $article_id);
+        if (!empty($nb)) {
+            return (int)$nb['nb_like'];
+        } else {
+            return 0;
+        }
+    }
 }
 ?>

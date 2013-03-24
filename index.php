@@ -55,6 +55,7 @@ if (!empty($controller) && !empty($action)) {
         ob_end_clean();
 
         ob_start();
+        $_speedmsg = $_ctrl->speedmsg;
         $view = $_ctrl->view;
         $layout = $_ctrl->layout;
         $layout_tpl = $_ctrl->layout_tpl;

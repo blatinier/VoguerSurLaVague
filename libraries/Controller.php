@@ -11,6 +11,7 @@ class Controller {
         // Instanciate database connection
         $this->config = $cfg;
         $this->view = null;
+        $this->speedmsg = array();
         $this->layout = null;
         $this->layout->keywords = array();
         $this->layout_tpl = null;

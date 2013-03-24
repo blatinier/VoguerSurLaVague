@@ -37,6 +37,13 @@
             </header>
             <div id="main">
                 <div id="contenu">
+                    <?php if (!empty($_speedmsg)) { ?>
+                        <p>
+                            <?php foreach ($_speedmsg as $msg) {
+                                echo $msg."<br />";
+                            } ?>
+                        </p>
+                    <?php } ?>
                     <?php echo $_view_str; ?>
                 </div>
                 <aside>
