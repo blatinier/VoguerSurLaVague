@@ -2,4 +2,4 @@ User-agent: *
 Disallow: /allmystats/
 Disallow: /phpmyadmin/
 Disallow: /admin/
-#Sitemap: http://www.melmelboo.fr/sitemap.xml
+Sitemap: http://www.melmelboo.fr/sitemap.xml
