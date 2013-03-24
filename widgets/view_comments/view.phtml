@@ -16,8 +16,10 @@
             }
             $class = "";
         } ?>
-        <div class="entry" itemprop="UserComments" itemscope="itemscope" itemtype="http://schema.org/UserComments">
-            <p><strong class="pseudo">
+        <article class="entry" itemprop="UserComments" itemscope="itemscope" itemtype="http://schema.org/UserComments">
+            <p>
+                <header>
+                <strong class="pseudo">
                 <span itemprop="creator" itemscope="itemscope" itemtype="Person">
                     <?php if (!empty($site)) { ?>
                         <meta content="<?php echo $site; ?>" itemprop="url"/>
@@ -27,15 +29,21 @@
                         <span itemprop="name"><?php echo $com['pseudo']; ?></span>
                     <?php } ?>
                 </span>
-              </strong>
-            <?php if($_widget_data['admin']){
-                echo ' ('.$com['ip'].')';
-                ?><a href="delete_comment/<?php echo $com['id']; ?>">Supprimer ce commentaire</a><?php
-            } ?>
-            <br/>
-            <small><span itemprop="commentTime"><?php echo $com['heure']; ?></span></small><br/>
-            <div class="com_content" itemprop="commentText"><?php echo nl2br(stripslashes(htmlspecialchars($com['commentaire']))); ?></div></p>
+                </strong>
+                <?php if($_widget_data['admin']){
+                    echo ' ('.$com['ip'].')';
+                    ?><a href="delete_comment/<?php echo $com['id']; ?>">Supprimer ce commentaire</a><?php
+                } ?>
+                <br/>
+                <small><span itemprop="commentTime"><?php echo $com['heure']; ?></span></small><br/>
+                </header>
+                <div class="com_content" itemprop="commentText">
+                    <?php echo nl2br(
+                               stripslashes(
+                               htmlspecialchars($com['commentaire']))); ?>
+                </div>
+            </p>
             <hr/>
-        </div>
+        </article>
     <?php } ?>
 </div>

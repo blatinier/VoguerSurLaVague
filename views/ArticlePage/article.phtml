@@ -2,25 +2,30 @@
 $closed_com = $view->article->closed_com;
 $captcha_com = $view->article->captcha_com;
 ?>
-<div class="post">
-    <span class="categorie">
-        <a href="cat-<?php echo $view->article->category->slug; ?>-<?php echo $view->article->category->id; ?>">
-            <?php echo $view->article->category->titre; ?>
-        </a>
-    </span>
-    <h2 class="postTitle">
-        <a href="art-<?php echo $view->article->url; ?>-<?php echo $view->article->id; ?>">
-            <?php echo stripslashes($view->article->titre); ?>
-        </a>
-    </h2>
+<article class="post" itemprop='blogPost' itemscope='itemscope' itemtype='http://schema.org/BlogPosting'>
+    <meta content='<?php echo $view->article->id; ?>' itemprop='postId'/>
+    <meta itemprop="inLanguage" content="fr-FR"/>
+    <header>
+        <span class="categorie">
+            <a href="cat-<?php echo $view->article->category->slug; ?>-<?php echo $view->article->category->id; ?>">
+                <?php echo $view->article->category->titre; ?>
+            </a>
+        </span>
+        <h2 class="postTitle" itemprop='name'>
+            <a href="art-<?php echo $view->article->url; ?>-<?php echo $view->article->id; ?>">
+                <?php echo stripslashes($view->article->titre); ?>
+            </a>
+        </h2>
+    </header>
     <br/><br/>
     <div class="mainpost">
-        <div class="postcontent">
-            <?php echo stripslashes($view->article->texte); ?>
+        <div class="postcontent" itemprop='description articleBody'>
+            <?php echo stripslashes(
+                       str_replace('</br>', '<br />', $view->article->texte)); ?>
             <br/><br/>
         </div>
     </div>
-    <div class="comconteneur">
+    <footer class="comconteneur">
         <?php 
         if(!empty($_SESSION['ok']) && $_SESSION['ok'] == 1){
             echo " - <a class=\"comlink\" href=\"article_edit-".$view->article->id."\">Editer</a> - 
@@ -28,18 +33,26 @@ $captcha_com = $view->article->captcha_com;
         }
         ?>
         <span class="postDate">
-        <?php
+            <?php
             if($view->article->ecart < 0){
                 $jour = floor(-$view->article->ecart/(3600*24));
                 $heure = floor((-$view->article->ecart-$jour*3600*24)/3600);
                 $minutes = floor((-$view->article->ecart-$jour*3600*24-$heure*3600)/60);
                 echo "<span style=\"color:red;\"> Cet article sera publié dans ".$jour." jours ".$heure." heures et ".$minutes." minutes.</span><br/>";
             }
-        ?>
-            Écrit le <?php echo $view->article->post_date; ?> par <?php echo stripslashes($view->article->auteur); ?>
-        </span>
-        <?php echo $_widgets['view_comments'];
-        echo $_widgets['new_comment']; ?>
-    </div>
-    <br/>
-</div>
+            ?>
+            Écrit le <span itemprop='datePublished' title='<?php echo str_replace(' ', 'T', $art->pubdate); ?>'><?php echo $view->article->post_date; ?></span>
+			par <span itemprop='author' itemscope='itemscope' itemtype='http://schema.org/Person'>
+				<meta content='http://www.melmelboo.fr/about' itemprop='url'/>
+				<a href='http://www.melmelboo.fr/about' rel='author' title='author profile'>
+					<span itemprop='name'><?php echo stripslashes($view->article->auteur); ?></span>
+				</a>
+	        </span>
+	    </span>
+        <section>
+            <?php echo $_widgets['view_comments'];
+            echo $_widgets['new_comment']; ?>
+        </section>
+    </footer>
+<br/>
+</article>

@@ -1,9 +1,10 @@
 <?php
 foreach ($view->articles as $art) {
 	?>
-	<div class="post" itemprop='blogPost' itemscope='itemscope' itemtype='http://schema.org/BlogPosting'>
+	<article class="post" itemprop='blogPost' itemscope='itemscope' itemtype='http://schema.org/BlogPosting'>
         <meta content='<?php echo $art->id; ?>' itemprop='postId'/>
         <meta itemprop="inLanguage" content="fr-FR"/>
+	    <header>
 		<span class="categorie">
 			<a href="cat-<?php echo $art->category->slug; ?>-<?php echo $art->category->id; ?>">
                 <?php echo $art->category->titre; ?>
@@ -14,14 +15,16 @@ foreach ($view->articles as $art) {
 				<?php echo stripslashes($art->titre); ?>
 			</a>
 		</h2>
+	    </header>
 		<br/><br/>
 		<div class="mainpost">
 			<div class="postcontent" itemprop='description articleBody'>
-				<?php echo stripslashes($art->texte); ?>
+				<?php echo stripslashes(
+						   str_replace('</br>', '<br />', $art->texte)); ?>
 				<br/><br/>
 			</div>
 		</div>
-		<div class="comconteneur">
+		<footer class="comconteneur">
 			<?php 
 			if (empty($_GET['art'])) {
                 if(!$art->closed_com){
@@ -60,9 +63,9 @@ foreach ($view->articles as $art) {
                     </a>
                 </span>
             </span>
-		</div>
+		</footer>
 		<br/>
-	</div>
+	</article>
 	<br/>
 	<hr/>
 	<?php

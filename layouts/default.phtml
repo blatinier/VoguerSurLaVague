@@ -1,4 +1,4 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
     <head>
         <meta http-equiv="content-type" content="text/html; charset=utf-8" />
@@ -22,25 +22,24 @@
                 });
             });
         </script>
-        <script type="text/javascript">
-            <?php echo (!empty($fm_javascript)) ? $fm_javascript : ""; ?>
-        </script>
         <link href='http://fonts.googleapis.com/css?family=Anton' rel='stylesheet' type='text/css'>
     </head> 
     <body>
         <div id="conteneur" itemscope='itemscope' itemtype='http://schema.org/Blog'>
             <meta content='Voguer sur la vague et divaguer' itemprop='name'/>
-            <div id="menuH">
-                <a href="/">HOME</a> / 
-                <a href="/about">ABOUT</a> / 
-                <a href="/contact">CONTACT</a>
-            </div>
-            <div id="header" onclick="location.href='/'">Melmelboo</div>
+            <header>
+                <nav class="main_nav">
+                    <a href="/">HOME</a> / 
+                    <a href="/about">ABOUT</a> / 
+                    <a href="/contact">CONTACT</a>
+                </nav>
+                <div id="header" onclick="location.href='/'">Melmelboo</div>
+            </header>
             <div id="main">
                 <div id="contenu">
                     <?php echo $_view_str; ?>
                 </div>
-                <div id="menuV">
+                <aside>
                     <div class="menuBlock">
                         <a href="/about">
                             <img style="width:237px;" src="/images/Moi.png" alt="À propos" />
@@ -48,18 +47,18 @@
                     </div>
                     <hr />
                     <?php echo $_widgets['last_art']; ?>
-                    <div id="menuBlockRight">
+                    <nav id="menuBlockRight">
                         <?php echo $_widgets['categories']; ?>
-                    </div>
-                    <div id="menuBlockLeft">
+                    </nav>
+                    <nav id="menuBlockLeft">
                         <?php echo $_widgets['archives']; ?>
-                    </div>
+                    </nav>
                     <?php echo $_widgets['links']; ?>
-                </div>
+                </aside>
             </div>
-            <div id="footer">
+            <footer id="footer">
                 <a href="/admin">- Admin -</a>
-            </div>
+            </footer>
         </div>
     </body> 
 </html> 
