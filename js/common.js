@@ -24,4 +24,15 @@ $(document).ready(function () {
             $(".archive_month_list").remove();
         }
     }
+
+    $(".like_link").click(function () {
+        var art_id = $(this).attr('href');
+        $.ajax({
+            type: "GET",
+            url: "/like-" + art_id
+        }).done(function (html) {
+            $('#likes-' + art_id).html(html)
+        });
+        return false;
+    });
 });

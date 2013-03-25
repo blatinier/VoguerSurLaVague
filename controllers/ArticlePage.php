@@ -96,7 +96,7 @@ class ArticlePage extends Controller {
         if (!$error) {
             $art_repo = new ArticleRepository();
             $art_repo->like($id_article, $ip);
-            $this->view->msg = "Vous avez aimé cet article. Merci :)";
+            $this->view->nb_likes = $art_repo->get_likes($id_article);
         }
         $this->layout_tpl = "ajax_html.phtml";
     }

@@ -26,6 +26,9 @@ $captcha_com = $view->article->captcha_com;
         </div>
     </div>
     <footer class="comconteneur">
+        <a class="like_link" href="<?php echo $view->article->id; ?>">
+            J'aime (<span id="likes-<?php echo $view->article->id; ?>"><?php echo $view->article->nb_likes; ?></span>)
+        </a>
         <?php 
         if(!empty($_SESSION['ok']) && $_SESSION['ok'] == 1){
             echo " - <a class=\"comlink\" href=\"article_edit-".$view->article->id."\">Editer</a> - 
