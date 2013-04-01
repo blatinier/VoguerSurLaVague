@@ -26,9 +26,9 @@ foreach ($view->articles as $art) {
 		</div>
 		<footer class="comconteneur">
             <a class="like_link" href="<?php echo $art->id; ?>">
-                J'aime (<span id="likes-<?php echo $art->id; ?>"><?php echo $art->nb_likes; ?></span>)
+               J'aime (<span id="likes-<?php echo $art->id; ?>"><?php echo $art->nb_likes; ?></span>)
             </a>
-             - 
+            -
 			<?php 
             if(!$art->closed_com){
                 ?>
@@ -39,9 +39,9 @@ foreach ($view->articles as $art) {
             <?php
             }
             ?>
-                <a href="art-<?php echo $art->url; ?>-<?php echo $art->id; ?>">
-                    Lire les commentaires (<?php echo $art->nb_comment; ?>)
-                </a>
+            <a href="art-<?php echo $art->url; ?>-<?php echo $art->id; ?>">
+                Lire les commentaires (<?php echo $art->nb_comment; ?>)
+            </a>
             <?php
 			if(!empty($_SESSION['ok']) && $_SESSION['ok'] == 1){
 				echo " - <a class=\"comlink\" href=\"article_edit-".$art->id."\">Editer</a> - 

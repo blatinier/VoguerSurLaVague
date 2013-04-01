@@ -351,3 +351,11 @@ input[type="submit"] {
 textarea.new_art#commentaire {
     height: 450px;
 }
+
+.like_link {
+    display: inline-block;
+    font-family: Arial,sans-serif;
+    height: 21px;
+    text-align: center;
+    width: 85px;
+}

@@ -5,8 +5,11 @@ RewriteRule ^config.*$ / [R=301,L]
 RewriteRule ^cat-(.*)-([0-9]+)-page-([0-9]+)$ index.php?controller=listing&action=category&category_id=$2&page=$3 [L] 
 RewriteRule ^cat-(.*)-([0-9]+)$ index.php?controller=listing&action=category&category_id=$2 [L] 
 RewriteRule ^art-(.*)-([0-9]+)$ index.php?controller=article&action=article&art=$2 [L] 
-RewriteRule ^diy-(.*)-([0-9]+)$ index.php?controller=article&action=diy&art=$2 [L] 
 RewriteRule ^like-([0-9]+)$ index.php?controller=article&action=like&art=$1 [L] 
+
+#DIY
+RewriteRule ^diy$ index.php?controller=home&action=main&diy=1 [L] 
+RewriteRule ^diy-page-([0-9]+)$ index.php?controller=home&action=main&page=$1&diy=1 [L]
 
 # Static pages
 RewriteRule ^contact$ index.php?controller=staticpages&action=contact [L] 
@@ -20,6 +23,7 @@ RewriteRule ^last_comments$ index.php?controller=comments&action=last_unread [L]
 RewriteRule ^mark_comment/([0-9]+)/([0-9]+)$ index.php?controller=comments&action=mark_read&com_id=$1&art_id=$2 [L] 
 RewriteRule ^mark_read_all_comments$ index.php?controller=comments&action=mark_all_read [L] 
 RewriteRule ^delete_comment/([0-9]+)$ index.php?controller=comments&action=delete&com_id=$1 [L] 
+
 # Admin categories
 RewriteRule ^new_cat$ index.php?controller=category&action=new_cat [L] 
 RewriteRule ^list_cat$ index.php?controller=category&action=list_cat [L] 
@@ -32,9 +36,9 @@ RewriteRule ^article_edit-([0-9]+)$ index.php?controller=article&action=new_art&
 RewriteRule ^article_delete-([0-9]+)$ index.php?controller=article&action=delete_art&art_id=$1 [L] 
 
 # Archives
-RewriteRule ^get_months$ index.php?controller=ajax&action=get_months [L] 
+RewriteRule ^get_months$ index.php?controller=ajax&action=get_months [L]
 RewriteRule ^archive-page-([0-9]+)$ index.php?controller=home&action=main&page=$1 [L]
-RewriteRule ^archive-([0-9]+)-([0-9]+)$ index.php?controller=listing&action=month&month=$1&year=$2 [L] 
+RewriteRule ^archive-([0-9]+)-([0-9]+)$ index.php?controller=listing&action=month&month=$1&year=$2 [L]
 RewriteRule ^archive-([0-9]+)-([0-9]+)-page-([0-9]+)$ index.php?controller=listing&action=month&page=$3&month=$1&year=$2 [L]
 
 AuthType Basic

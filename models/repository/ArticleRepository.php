@@ -18,14 +18,19 @@ class ArticleRepository extends Repository {
         return $article;
     }
 
-    public function get_articles($is_admin, $page) {
+    public function get_articles($is_admin, $page, $is_diy=false) {
         $offset = $page * 5;
         $req = 'SELECT id, auteur, titre, url, texte,
             pubdate, cat, captcha_com, closed_com, is_diy
             FROM articles';
+        $where = array();
         if (!$is_admin) {
-            $req .= ' WHERE pubdate < NOW() ';
+            $where[] = 'pubdate < NOW()';
         }
+        if ($is_diy) {
+            $where[] = 'is_diy = 1';
+        }
+        $req .= " WHERE ".implode(" AND ", $where);
         $req .= ' ORDER BY pubdate DESC LIMIT '.$offset.', 5';
         $art_sql = $this->mysql_connector->fetchAll($req);
         $articles = array();
@@ -37,20 +42,21 @@ class ArticleRepository extends Repository {
 
     public function count($is_admin, $year=false, $month=false, $category_id=false) {
         $req = 'SELECT COUNT(*) as cpt
-            FROM articles
-            WHERE 1 ';
+            FROM articles';
+        $where = array();
         if (!$is_admin) {
-            $req .= ' AND pubdate < NOW() ';
+            $where[] = 'pubdate < NOW()';
         }
         if ($year) {
-            $req .= ' AND YEAR(pubdate) = '.(int)$year;
+            $where[] = 'YEAR(pubdate) = '.(int)$year;
         }
         if ($month) {
-            $req .= ' AND MONTH(pubdate) = '.(int)$month;
+            $where[] = 'MONTH(pubdate) = '.(int)$month;
         }
         if ($category_id) {
-            $req .= ' AND cat = '.(int)$category_id;
+            $where[] = 'cat = '.(int)$category_id;
         }
+        $req .= " WHERE ".implode(" AND ", $where);
         $sql = $this->mysql_connector->fetchOne($req);
         return $sql['cpt'];
     }
