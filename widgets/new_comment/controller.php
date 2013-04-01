@@ -47,8 +47,8 @@ class new_comment extends Widget {
             }
         }
         if (!empty($_POST) && !empty($_POST['commentaire']) && !$error) {
-            $com_repo->add($art, htmlentities($_POST['pseudo']),
-                htmlentities($_POST['commentaire']), htmlentities($site), $_SERVER['REMOTE_ADDR']);
+            $com_repo->add($art, utf8_decode($_POST['pseudo']),
+                utf8_decode($_POST['commentaire']), htmlentities($site), $_SERVER['REMOTE_ADDR']);
         }
     }
 }

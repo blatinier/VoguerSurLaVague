@@ -24,9 +24,9 @@
                     <?php if (!empty($site)) { ?>
                         <meta content="<?php echo $site; ?>" itemprop="url"/>
                         <a class="<?php echo $class; ?>" href="<?php echo $site; ?>">
-                        <span itemprop="name"><?php echo $com['pseudo']; ?></span></a>
+                        <span itemprop="name"><?php echo htmlspecialchars($com['pseudo']); ?></span></a>
                     <?php } else { ?>
-                        <span itemprop="name"><?php echo $com['pseudo']; ?></span>
+                        <span itemprop="name"><?php echo htmlspecialchars($com['pseudo']); ?></span>
                     <?php } ?>
                 </span>
                 </strong>
