@@ -16,6 +16,7 @@ class Home extends Controller {
             $is_diy = true;
             $this->layout->title = "DIY";
             $this->layout->keywords[] = "diy";
+            $this->view->std_page_link = "diy";
         } else {
             $is_diy = false;
         }
@@ -31,7 +32,6 @@ class Home extends Controller {
         }
         $this->view->nb_pages = $art_repo->page_count($admin);
         $this->view->articles = $articles;
-        $this->view->std_page_link = "diy";
     }
 }
 ?>
