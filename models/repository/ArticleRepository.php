@@ -30,7 +30,9 @@ class ArticleRepository extends Repository {
         if ($is_diy) {
             $where[] = 'is_diy = 1';
         }
-        $req .= " WHERE ".implode(" AND ", $where);
+        if (!empty($where)) {
+            $req .= " WHERE ".implode(" AND ", $where);
+        }
         $req .= ' ORDER BY pubdate DESC LIMIT '.$offset.', 5';
         $art_sql = $this->mysql_connector->fetchAll($req);
         $articles = array();
@@ -56,7 +58,9 @@ class ArticleRepository extends Repository {
         if ($category_id) {
             $where[] = 'cat = '.(int)$category_id;
         }
-        $req .= " WHERE ".implode(" AND ", $where);
+        if (!empty($where)) {
+            $req .= " WHERE ".implode(" AND ", $where);
+        }
         $sql = $this->mysql_connector->fetchOne($req);
         return $sql['cpt'];
     }
