@@ -30,7 +30,7 @@ class ArticlePage extends Controller {
             $texte = utf8_decode($_POST['texte']);
             $cat = $_POST['cat'];
             $pub = $_POST['pub'];
-            $is_diy = ($_POST['is_diy'] == 'on') ? 1 : 0;
+            $is_diy = int(!empty($_POST['is_diy']) && $_POST['is_diy'] == 'on');
             $art_values = array('id' => $art_id,
                                 'auteur' => $auteur,
                                 'titre' => $titre,
