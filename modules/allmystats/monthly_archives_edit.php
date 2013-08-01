@@ -1,16 +1,16 @@
 <?php
 /*
   -------------------------------------------------------------------------
- AllMyStats V1.75 - Statistiques site web - Web traffic analysis
+ AllMyStats V1.80 - Statistiques site web - Web traffic analysis
  -------------------------------------------------------------------------
- Copyright (C) 2008-2010 - Herve Seywert
+ Copyright (C) 2008 - 2013 - Herve Seywert
  copyright-GNU-xx.txt
  -------------------------------------------------------------------------
  Web:    http://allmystats.wertronic.com - http://www.wertronic.com
  -------------------------------------------------------------------------
 */
-	// ---------------- Ne doit pas être appelé directement -------------------
-	if(strrchr($_SERVER['PHP_SELF'] , '/' ) == '/monthly_archives_edit.php' ){ 
+	// ---------------- Should not be called directly -------------------
+	if(strrchr($_SERVER['PHP_SELF'] , '/' ) == '/'.FILENAME_MONTHLY_ARCHIVES_EDIT ){ 
 		header('Location: index.php');
 	}
 	// ------------------------------------------------------------------------
@@ -21,21 +21,22 @@ $time_test = false; //affiche les temps d'exécution
 // ARCHIVAGE - SI true Ne delete pas le mois des tables MySQL et simule un archivage sur le mois en cours avec écriture du fichier en /cache
 $archivage_test = false;
 //----------------------------------------------------------
+
 //---------- Config Limit affichage ------------------------
 //Limite pour l'archivage et 1ere edition en cours
-$first_limit_keywords = '50'; //for each search engine
-$first_limit_pages = '100'; //200
+$small_limit_keywords = '50'; //for each search engine
+$small_limit_pages_view = '100'; //200
 		
 //Limite affichage liste complète
-$complete_list_limit_keywords = '2000';
-$complete_list_limit_pages = '300';
+$max_limit_keywords = '2000';
+$max_limit_pages_view = '300';
 		
 //Limite archives
 $archives_limit_keywords = '1000';
 $archives_limit_pages = '400';
+
 include_once('includes/display_keys_pages_limit.php');
 //----------------------------------------------------------
-
 
 //------------------------------------------------------------------------------
 	//Only monthly_archives_edit.php
@@ -206,7 +207,7 @@ include_once('includes/display_keys_pages_limit.php');
 
 			  <td style=\"text-align: right;\">";	  
 
-			if ($switch_short_complete_list && $differents_pages >= $first_limit_pages) {
+			if ($switch_short_complete_list && $differents_pages >= $small_limit_pages_view) {
 			  $show_cumul_page .= "	 
 				<form name=\"form_limi_pages\" method=\"post\" action=\"".FILENAME_INDEX_FRAME."\">
 				  <input type=\"hidden\" name=\"type\" value=\"cumulpage\">
@@ -216,7 +217,7 @@ include_once('includes/display_keys_pages_limit.php');
 				  <input class=\"submit\" name=\"submit_limit_pages\" type=\"submit\" value=\"".$value_button_pages."\" alt=\"".$value_button_pages."\" title=\"".$value_button_pages."\">
 				</form>";		  
 
-				if ( ($differents_pages > $first_limit_pages && $value_button_pages == MSG_COMPLETE_LIST) || ($$differents_pages > $complete_list_limit_pages && $value_button_pages == MSG_SHORTLIST) ) {
+				if ( ($differents_pages > $small_limit_pages_view && $value_button_pages == MSG_COMPLETE_LIST) || ($$differents_pages > $max_limit_pages_view && $value_button_pages == MSG_SHORTLIST) ) {
 					$show_cumul_page .= '<br />Limited pages to : '.$limit_pages.'&nbsp;&nbsp;&nbsp;';
 				}
 			} else {
@@ -292,7 +293,7 @@ include_once('includes/display_keys_pages_limit.php');
 		$start = (float) array_sum(explode(' ',microtime())); 
 	}
 
-	$result = mysql_query("select count(country) as visitors_by_country, sum(visits) as pages_by_country, country from ".TABLE_UNIQUE_VISITOR." where date like '%".$month_year_displayed."' GROUP BY country ORDER BY visitors_by_country DESC ".$country_limit."");
+	$result = mysql_query("select count(country) as visitors_by_country, sum(visits) as pages_by_country, country from ".TABLE_UNIQUE_VISITOR." where date like '%".$month_year_displayed."' GROUP BY country ORDER BY visitors_by_country DESC ");
 	$total_differents_countries = mysql_num_rows($result);
 
 
@@ -364,7 +365,7 @@ $show_cumul_page .= '
 				"</td>";	
 				
 				//Only $first_show_countries				
-				if ($nb_countries >$first_show_countries) {
+				if ($nb_countries > $first_show_countries) {
 					$Country_visitors_pie[$first_show_countries] = $Country_visitors_pie[$first_show_countries] + $row['visitors_by_country'];
 				} else {
 					$Country_visitors_pie[] = $row['visitors_by_country'];
@@ -382,187 +383,149 @@ $show_cumul_page .= '
 			$show_cumul_page = '';
 			//--------------------------------------------------- 
 
-	//##################################################################
-	//################ CAMENBERT With GD ###############################
-		
-		if ($gdv = gdVersion()) {
-			if ($gdv >=2) {
-				//echo 'TrueColor functions may be used.';
-				$GD_ver = 'TrueColor';
-			} else {
-				//echo 'GD version is 1.  Avoid the TrueColor functions.';
-				$GD_ver = 'NOT_TrueColor';
-			}
-		} else {
-			//echo "The GD extension isn't loaded.";
-			$GD_ver = 'NOT_loaded';
-		}
-		//--------------------------------------------------------------------------------------------------------------------------------------------     
-		
-		if ($GD_ver == 'TrueColor' && $total_differents_countries > 0) {
-		
-			///* ---------------------------------------------------- 
-			//Commenter tout ci-dessous si gd non utilisé
-			 
-			 $pChart_path = 'lib/pChart.1.27d_GD';	
-			 
-			 // Standard inclusions   
-			 include_once($pChart_path.'/pChart/pData.class');
-			 include_once($pChart_path.'/pChart/pChart.class');
-			
-			 // Dataset definition 
-			 $DataSet = new pData;
-			
-			 $DataSet->AddPoint($Country_visitors_pie,"Serie1");
-			 $DataSet->AddPoint($Country_name_pie,"Serie2");
-			
-			 $DataSet->AddAllSeries();
-			 $DataSet->SetAbsciseLabelSerie("Serie2");
-			
-			 // Initialise the graph
-			 $Test = new pChart(550,350);
-			
-			 $Test->loadColorPalette($pChart_path.'/includes/tones-20c.txt'); // Ajouter pour le camenbert couleurs cycliques
-			 // Draw the pie chart
-			 $Test->setShadowProperties(0,0,200,200,200); // Ajouter
-			 $Test->setFontProperties($pChart_path.'/Fonts/tahoma.ttf',7);
-			 $Test->AntialiasQuality = 0;
-			 //														position hrz camenbert, position hauteur camenbert, diamètre, PIE_PERCENTAGE_LABEL,FALSE, perspective,hauteur camenbert, espace tranches
-			 $Test->drawPieGraph($DataSet->GetData(),$DataSet->GetDataDescription(),270,180,200,PIE_PERCENTAGE_LABEL,TRUE,50,20,5); //
-		
-			//Graph TITLE
-			if ($nb_countries > $first_show_countries) {	
-				$Test->setFontProperties($pChart_path.'/Fonts/tahoma.ttf',10);  
-				$Test->setShadowProperties(1,1,0,0,0);  
-				$Test->drawTitle(0,0,"Top ".$first_show_countries." Countries",0,0,0,550,50,TRUE); 
-				$Test->clearShadow();  
-			}
-			
-			 $Test->Render("cache/graph_org_geo_".$format_date_file_name.".png");
-			
-			 $show_cumul_page .= "
-			 		<tr>
+			//##################################################################
+			//################ CAMENBERT With GD ###############################
+			if($total_differents_countries > 0) {
+				create_img_piegraph('graph_org_geo_'.$format_date_file_name.'.png', $Country_visitors_pie, $Country_name_pie, $first_show_countries, $total_differents_countries);
+	
+				$rand = rand(); // To force refresh img.png if mod expire is insatlled on server and cache img.png
+				$show_cumul_page .= "
+					<tr>
 					<td colspan=\"3\" style=\"".$td_data_CSS." text-align: center;\">
-						<img src=\"".$path_allmystats_abs."/cache/graph_org_geo_".$format_date_file_name.".png\"/>
+						<img src=\"".$path_allmystats_abs."/cache/graph_org_geo_".$format_date_file_name.".png?rand=".$rand."\"/>
 					</td>
 					</tr>";
-		
-		}
-		//--------------------------------------------------------------------------------
+			}
+			//--------------------------------------------------------------------------------
 		  
-		$show_cumul_page .= '</table></td></tr></table></td></tr></table><br />';
-
-		if($time_test == true) {
-			$end = (float) array_sum(explode(' ',microtime()));  
-			echo '<pre>										Org Géo Traitement + GD Traitement: '.sprintf("%.4f", $end-$start) . ' sec</pre>';
-		}
-
-		//---------- AFFICHAGE OR ARCHIVAGE ------------
-		if ($year_today.$month_today == $year_displayed.$month_displayed) { 
-			echo $show_cumul_page;
-		} elseif ($year_today.$month_today > $year_displayed.$month_displayed) {
-			fwrite($inF, $show_cumul_page);
-		}
-		$show_cumul_page = '';
-		//---------------------------------------------- 
-
-	//##################################################################
-	//################### BROWSER, OS, BAD AGENT #######################
-		
-		//---------- AFFICHAGE OR ARCHIVAGE ------------
-		$display_operating_system = true;
-		$display_browsers = true;
-		$display_bad_user_agent = true;
-		$when_date = $month_year_displayed; // date d/m/Y or m/Y
-
-		$show_page_os_nav_robots = '';
-		include(FILENAME_DISPLAY_OS_BROWSER);
-		if ($year_today.$month_today == $year_displayed.$month_displayed) { 
-			echo $show_page_os_nav_robots;
-		} elseif ($year_today.$month_today > $year_displayed.$month_displayed) {
-			fwrite($inF, $show_page_os_nav_robots);
-		}
-		$show_page_os_nav_robots = '';
-		//---------------------------------------------- 
-
-		//################################################################
-		//################### BOTS #######################################
-
-		$when_date = '%'.$month_year_displayed; // date d/m/Y or m/Y
-		$display_bots = true;
-		$affiche_only_other_bots = false;
-		include(FILENAME_DISPLAY_BOTS);
-		//---------- AFFICHAGE --- OR ARCHIVAGE ------------
-		if ($year_today.$month_today == $year_displayed.$month_displayed) { 
-			echo $show_page_os_nav_robots;
-		} elseif ($year_today.$month_today > $year_displayed.$month_displayed) {
-			fwrite($inF, $show_page_os_nav_robots);
-		}
-		$show_page_os_nav_robots = '';
-		//--------------------------------------------------- 
-		
-		//###################################################################################################
-		//###################################################################################################
-
-		//################## IF archivage write footer & close file ######################
-		if ($year_today.$month_today > $year_displayed.$month_displayed) { 
-			$page_html = $show_footer.'</td>
-			</tr>
-			</table></body></html>';
-			fwrite($inF, $page_html);
-			fclose($inF); 
-		
-		//################################################################################
-		//############### Archive tables allmystats MySQL & delete ############################
-
-			$Total_visits = $total_nb_visiteurs + $Total_distinct_ip_bots;
-			$Total_pages_view = $total_nb_pages_visitees + $Total_pages_bots;
+			$show_cumul_page .= '</table></td></tr></table></td></tr></table><br />';
 	
-			if (!$archivage_test) {	//TEST - Archivage
-				$result = mysql_query("insert into ".TABLE_ARCHIVE." (annee, mois, visite, visiteur, visites_hors_bot, pages_hors_bot, visites_robot,pages_robots) 
-				values('".$year_displayed."','".$month_displayed."','".$Total_pages_view."','".$Total_visits."','".$total_nb_visiteurs."','".$total_nb_pages_visitees."','".$Total_distinct_ip_bots."','".$Total_pages_bots."')") or die('Erreur SQL! TABLE_ARCHIVE: '.$result.'<br>'.mysql_error()); 
-		
-				$result = mysql_query("delete from ".TABLE_MONTHLY_KEYWORDS." where date='".$month_year_displayed."'") or die('Erreur SQL! TABLE_MONTHLY_KEYWORDS: '.$result.'<br>'.mysql_error()); ;
-				
-				$result = mysql_query("delete from ".TABLE_DAYS_KEYWORDS." where date like '%".$month_year_displayed."'") or die('Erreur SQL! TABLE_DAYS_KEYWORDS: TABLE_DAYS_PAGES: '.$result.'<br>'.mysql_error()); ;
-				$result = mysql_query("delete from ".TABLE_DAYS_PAGES." where date like '%".$month_year_displayed."'") or die('Erreur SQL! '.$result.'<br>'.mysql_error()); ;
-				
-				$result = mysql_query("delete from ".TABLE_UNIQUE_VISITOR." where date like '%".$month_year_displayed."'") or die('Erreur SQL! TABLE_UNIQUE_VISITOR: '.$result.'<br>'.mysql_error()); ;
-				$result = mysql_query("delete from ".TABLE_PAGE_VISITOR." where code like '".$year_displayed.$month_displayed."%'") or die('Erreur SQL! TABLE_PAGE_VISITOR: '.$result.'<br>'.mysql_error()); ;
-		
-				$result = mysql_query("delete from ".TABLE_UNIQUE_BOT." where date like '%".$month_year_displayed."'") or die('Erreur SQL! TABLE_UNIQUE_BOT: '.$result.'<br>'.mysql_error());
-				$result = mysql_query("delete from ".TABLE_PAGE_BOT." where code like '".$year_displayed.$month_displayed."%'") or die('Erreur SQL! TABLE_PAGE_BOT: '.$result.'<br>'.mysql_error());
-		
-				$result = mysql_query("delete from ".TABLE_UNIQUE_BAD_AGENT." where date like '%".$month_year_displayed."'") or die('Erreur SQL! TABLE_UNIQUE_BAD_AGENT: '.$result.'<br>'.mysql_error());
-				$result = mysql_query("delete from ".TABLE_PAGE_BAD_AGENT." where code like '".$year_displayed.$month_displayed."%'") or die('Erreur SQL! TABLE_PAGE_BAD_AGENT: '.$result.'<br>'.mysql_error());
-	
-				//If allmystats_days_keywords & allmystats_monthly_keywords empty --> Set to 0 autoincrement
-				$result = mysql_query("select * from ".TABLE_DAYS_KEYWORDS);
-				if (mysql_num_rows($result) == 0) {
-					mysql_query("ALTER TABLE ".TABLE_DAYS_KEYWORDS." AUTO_INCREMENT=0");
-				}
-				$result = mysql_query("select * from ".TABLE_MONTHLY_KEYWORDS);
-				if (mysql_num_rows($result) == 0) {
-					mysql_query("ALTER TABLE ".TABLE_MONTHLY_KEYWORDS." AUTO_INCREMENT=0");
-				}
+			if($time_test == true) {
+				$end = (float) array_sum(explode(' ',microtime()));  
+				echo '<pre>										Org Géo Traitement + GD Traitement: '.sprintf("%.4f", $end-$start) . ' sec</pre>';
 			}
 	
-			//---------------------------------------------------------------------------------------
-			
-			//	Archivage terminé - Redirect to month cache
-			msg_waiting_hidden("waiting");
-			echo '
-			<table align="center" width="50%"  border="0">
-			  <tr>
-				<td align="center"><b>'.MSG_MONTH_COMPLETED_CACHE_FILE.' : '.$month_year_displayed.'</b><br><br>';
+			//---------- AFFICHAGE OR ARCHIVAGE ------------
+			if ($year_today.$month_today == $year_displayed.$month_displayed) { 
+				echo $show_cumul_page;
+			} elseif ($year_today.$month_today > $year_displayed.$month_displayed) {
+				fwrite($inF, $show_cumul_page);
+			}
+			$show_cumul_page = '';
+			//---------------------------------------------- 
 	
-				if (file_exists($Fnm)) {
-					echo '				
-						<form name="form1" method="post" action="'.FILENAME_INDEX_FRAME.'">
-						<input type="hidden" name="type" value="cumul">
-						<input name="datemois" class="submitDate" type="submit" size="1" value="&nbsp;OK&nbsp;" title="OK">
-					</form>';
-				} 
+			//##################################################################
+			//################### BROWSER, OS, BAD AGENT #######################
+	
+			//---------- AFFICHAGE OR ARCHIVAGE ------------
+			$when_date = $month_year_displayed; // date d/m/Y or m/Y
+	
+			$display_bad_user_agent = true;
+			$display_bads_agents = '';
+			include(FILENAME_DISPLAY_BAD_AGENTS);
+	
+			$display_operating_system = true;
+			$display_browsers = true;
+			$show_page_os_nav_robots = '';
+			include(FILENAME_DISPLAY_OS_BROWSER);
+	
+			$display_BadAgent_OSbrowser = $display_bads_agents.$show_page_os_nav_robots;
+	
+			if ($year_today.$month_today == $year_displayed.$month_displayed) { 
+				echo $display_BadAgent_OSbrowser;
+			} elseif ($year_today.$month_today > $year_displayed.$month_displayed) {
+				fwrite($inF, $display_BadAgent_OSbrowser);
+			}
+			$show_page_os_nav_robots = '';
+			//----------------------------------------------
+	
+			//################################################################
+			//################### BOTS #######################################
+	
+			$when_date = '%'.$month_year_displayed; // date d/m/Y or m/Y
+			$display_bots = true;
+			$affiche_only_other_bots = false;
+			include(FILENAME_DISPLAY_BOTS);
+			//---------- AFFICHAGE --- OR ARCHIVAGE ------------
+			if ($year_today.$month_today == $year_displayed.$month_displayed) { 
+				echo $show_page_os_nav_robots;
+			} elseif ($year_today.$month_today > $year_displayed.$month_displayed) {
+				fwrite($inF, $show_page_os_nav_robots);
+			}
+			$show_page_os_nav_robots = '';
+			//--------------------------------------------------- 
+			
+			//###################################################################################################
+			//###################################################################################################
+	
+			//################## IF archivage write footer & close file ######################
+			if ($year_today.$month_today > $year_displayed.$month_displayed) { 
+				$page_html = $show_footer.'</td>
+				</tr>
+				</table></body></html>';
+				fwrite($inF, $page_html);
+				fclose($inF); 
+			
+				//################################################################################
+				//############### Archive tables allmystats MySQL & delete ############################
+				$Total_visits = $total_nb_visiteurs + $Total_distinct_ip_bots;
+				$Total_pages_view = $total_nb_pages_visitees + $Total_pages_bots;
+		
+				if (!$archivage_test) {	//TEST - Archivage
+					$result = mysql_query("insert into ".TABLE_ARCHIVE." (annee, mois, visite, visiteur, visites_hors_bot, pages_hors_bot, visites_robot,pages_robots) 
+					values('".$year_displayed."','".$month_displayed."','".$Total_pages_view."','".$Total_visits."','".$total_nb_visiteurs."','".$total_nb_pages_visitees."','".$Total_distinct_ip_bots."','".$Total_pages_bots."')") or die('Erreur SQL! TABLE_ARCHIVE: '.$result.'<br>'.mysql_error()); 
+			
+					$result = mysql_query("delete from ".TABLE_MONTHLY_KEYWORDS." where date='".$month_year_displayed."'") or die('Erreur SQL! TABLE_MONTHLY_KEYWORDS: '.$result.'<br>'.mysql_error()); ;
+					
+					$result = mysql_query("delete from ".TABLE_DAYS_KEYWORDS." where date like '%".$month_year_displayed."'") or die('Erreur SQL! TABLE_DAYS_KEYWORDS: TABLE_DAYS_PAGES: '.$result.'<br>'.mysql_error()); ;
+					$result = mysql_query("delete from ".TABLE_DAYS_PAGES." where date like '%".$month_year_displayed."'") or die('Erreur SQL! '.$result.'<br>'.mysql_error()); ;
+					
+					$result = mysql_query("delete from ".TABLE_UNIQUE_VISITOR." where date like '%".$month_year_displayed."'") or die('Erreur SQL! TABLE_UNIQUE_VISITOR: '.$result.'<br>'.mysql_error()); ;
+					$result = mysql_query("delete from ".TABLE_PAGE_VISITOR." where code like '".$year_displayed.$month_displayed."%'") or die('Erreur SQL! TABLE_PAGE_VISITOR: '.$result.'<br>'.mysql_error()); ;
+			
+					$result = mysql_query("delete from ".TABLE_UNIQUE_BOT." where date like '%".$month_year_displayed."'") or die('Erreur SQL! TABLE_UNIQUE_BOT: '.$result.'<br>'.mysql_error());
+					$result = mysql_query("delete from ".TABLE_PAGE_BOT." where code like '".$year_displayed.$month_displayed."%'") or die('Erreur SQL! TABLE_PAGE_BOT: '.$result.'<br>'.mysql_error());
+			
+					//$result = mysql_query("delete from ".TABLE_UNIQUE_BAD_AGENT." where date like '%".$month_year_displayed."'") or die('Erreur SQL! TABLE_UNIQUE_BAD_AGENT: '.$result.'<br>'.mysql_error());
+					// 2013-04-16 - Standardization of the date (here is already by month eg : xx/xxxx)
+					$exd_month_date = explode('/', $month_year_displayed);
+					if (isset($exd_month_date[2]) && $exd_month_date[2]) { // by day
+						$MySQL_month_date = $exd_month_date[2].'-'.$exd_month_date[1].'-'.$exd_month_date[0];
+					} else { // by month
+						$MySQL_month_date = $exd_month_date[1].'-'.$exd_month_date[0];
+					}
+					$query_delete = mysql_query("delete from ".TABLE_UNIQUE_BAD_AGENT." where date like '".$MySQL_month_date."%'") or die('Erreur SQL! TABLE_UNIQUE_BAD_AGENT: '.$query_delete.'<br>'.mysql_error());
+
+
+					$result = mysql_query("delete from ".TABLE_PAGE_BAD_AGENT." where code like '".$year_displayed.$month_displayed."%'") or die('Erreur SQL! TABLE_PAGE_BAD_AGENT: '.$result.'<br>'.mysql_error());
+		
+					//If allmystats_days_keywords & allmystats_monthly_keywords empty --> Set to 0 autoincrement
+					$result = mysql_query("select * from ".TABLE_DAYS_KEYWORDS);
+					if (mysql_num_rows($result) == 0) {
+						mysql_query("ALTER TABLE ".TABLE_DAYS_KEYWORDS." AUTO_INCREMENT=0");
+					}
+					$result = mysql_query("select * from ".TABLE_MONTHLY_KEYWORDS);
+					if (mysql_num_rows($result) == 0) {
+						mysql_query("ALTER TABLE ".TABLE_MONTHLY_KEYWORDS." AUTO_INCREMENT=0");
+					}
+				}
+		
+				//---------------------------------------------------------------------------------------
+				
+				//	Archivage terminé - Redirect to month cache
+				msg_waiting_hidden("waiting");
+				echo '
+				<table align="center" width="50%"  border="0">
+				  <tr>
+					<td align="center"><b>'.MSG_MONTH_COMPLETED_CACHE_FILE.' : '.$month_year_displayed.'</b><br><br>';
+		
+					if (file_exists($Fnm)) {
+						echo '				
+							<form name="form1" method="post" action="'.FILENAME_INDEX_FRAME.'">
+							<input type="hidden" name="type" value="cumul">
+							<input name="datemois" class="submitDate" type="submit" size="1" value="&nbsp;OK&nbsp;" title="OK">
+						</form>';
+					} 
 
 		} // END ($year_today.$month_today > $year_displayed.$month_displayed) { 
 				?>

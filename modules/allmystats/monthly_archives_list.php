@@ -1,15 +1,15 @@
 <?php
 /*
   -------------------------------------------------------------------------
- AllMyStats V1.75 - Statistiques site web - Web traffic analysis
+ AllMyStats V1.80 - Statistiques site web - Web traffic analysis
  -------------------------------------------------------------------------
- Copyright (C) 2008-2010 - Herve Seywert
+ Copyright (C) 2008 - 2013 - Herve Seywert
  copyright-GNU-xx.txt
  -------------------------------------------------------------------------
  Web:    http://allmystats.wertronic.com - http://www.wertronic.com
  -------------------------------------------------------------------------
 */
-	// ---------------- Ne doit pas être appelé directement -------------------
+	// ---------------- Should not be called directly -------------------
 	if(strrchr($_SERVER['PHP_SELF'] , '/' ) == '/monthly_archives_list.php' ){ 
 		header('Location: index.php');
 	}
@@ -54,23 +54,33 @@
 					  </tr>';
 		
 		unset($data_year_graph);
-
 		while($booleen == 1){
 			$date = "%/".$mois_encours."/".$annee;
 
 			$result = mysql_query("select * from ".TABLE_UNIQUE_VISITOR." where date like '".$date."'");
 			$Visits_HorsBots = mysql_num_rows($result);
 			
+			if($Visits_HorsBots == 0){
+				$booleen = 0;
+			}
+			
 			$result = mysql_query("select sum(p.visits) as somme from ".TABLE_UNIQUE_VISITOR." v,".TABLE_PAGE_VISITOR." p where date like '".$date."' and p.code=v.code");
 			$row = mysql_fetch_array($result);
 			$PagesView_HorsBots = $row['somme'];
-
-			//On ajoute Visitors et pages visitées des user agent inconnus
-			$result = mysql_query("select count(*) as nb_visitors, sum(visits) as total_pages_view from ".TABLE_UNIQUE_BAD_AGENT." where date like '".$date."' and type='I'"); 
+/*
+			//On ajoute Visitors et pages visitées des user agent inconnus --> NO NO
+			// 2013-04-16 - Standardization of the date
+			$exd_month_date = explode('/', $date);
+			if (isset($exd_month_date[2]) && $exd_month_date[2]) { // by day
+				$MySQL_month_date = $exd_month_date[2].'-'.$exd_month_date[1].'-'.$exd_month_date[0];
+			} else { // by month
+				$MySQL_month_date = $exd_month_date[1].'-'.$exd_month_date[0];
+			}
+			$result = mysql_query("select count(*) as nb_visitors, sum(visits) as total_pages_view from ".TABLE_UNIQUE_BAD_AGENT." where date like '".$MySQL_month_date."%' and type='I'"); 
 			$row_bad_agent = mysql_fetch_array($result);
 			$PagesView_HorsBots = $PagesView_HorsBots + $row_bad_agent['total_pages_view'];
 			$Visits_HorsBots =  $Visits_HorsBots + $row_bad_agent['nb_visitors'];
-
+*/
 			$result = mysql_query("select * from ".TABLE_UNIQUE_BOT." where date like '".$date."'");
 			$Visits_robots = mysql_num_rows($result);
 			
@@ -131,8 +141,6 @@
 				if($row[0] == '0'){ $mois_en_cache = -1; } else { $mois_en_cache = 1; }
 			}
 			if ($Min_date > $annee."/".$mois_encours) { $booleen = 0; }
-
-
 
 			//---------------------------------------------------------------
 			//Ajout break pour mois en cours
@@ -214,8 +222,6 @@
 			$year_displayed = $row['annee'];
 			$month_displayed = $row['mois'];
 
-			//echo $month_year_displayed.'<br>';
-
 			$query_delete = mysql_query("delete from ".TABLE_MONTHLY_KEYWORDS." where date='".$month_year_displayed."'") or die('Erreur SQL! TABLE_MONTHLY_KEYWORDS: '.$query_delete.'<br>'.mysql_error());
 			
 			$query_delete = mysql_query("delete from ".TABLE_DAYS_KEYWORDS." where date like '%".$month_year_displayed."'") or die('Erreur SQL! TABLE_DAYS_KEYWORDS: TABLE_DAYS_PAGES: '.$query_delete.'<br>'.mysql_error()); ;
@@ -227,8 +233,20 @@
 			$query_delete = mysql_query("delete from ".TABLE_UNIQUE_BOT." where date like '%".$month_year_displayed."'") or die('Erreur SQL! TABLE_UNIQUE_BOT: '.$query_delete.'<br>'.mysql_error());
 			$query_delete = mysql_query("delete from ".TABLE_PAGE_BOT." where code like '".$year_displayed.$month_displayed."%'") or die('Erreur SQL! TABLE_PAGE_BOT: '.$query_delete.'<br>'.mysql_error());
 	
-			$query_delete = mysql_query("delete from ".TABLE_UNIQUE_BAD_AGENT." where date like '%".$month_year_displayed."'") or die('Erreur SQL! TABLE_UNIQUE_BAD_AGENT: '.$query_delete.'<br>'.mysql_error());
+			//$query_delete = mysql_query("delete from ".TABLE_UNIQUE_BAD_AGENT." where date like '%".$month_year_displayed."'") or die('Erreur SQL! TABLE_UNIQUE_BAD_AGENT: '.$query_delete.'<br>'.mysql_error());
+			//$query_delete = mysql_query("delete from ".TABLE_PAGE_BAD_AGENT." where code like '".$year_displayed.$month_displayed."%'") or die('Erreur SQL! TABLE_PAGE_BAD_AGENT: '.$query_delete.'<br>'.mysql_error());
+
+			// 2013-04-16 - Standardization of the date
+			$exd_month_date = explode('/', $month_year_displayed);
+			if (isset($exd_month_date[2]) && $exd_month_date[2]) { // by day
+				$MySQL_month_date = $exd_month_date[2].'-'.$exd_month_date[1].'-'.$exd_month_date[0];
+			} else { // by month
+				$MySQL_month_date = $exd_month_date[1].'-'.$exd_month_date[0];
+			}
+			$query_delete = mysql_query("delete from ".TABLE_UNIQUE_BAD_AGENT." where date like '".$MySQL_month_date."%'") or die('Erreur SQL! TABLE_UNIQUE_BAD_AGENT: '.$query_delete.'<br>'.mysql_error());
+			
 			$query_delete = mysql_query("delete from ".TABLE_PAGE_BAD_AGENT." where code like '".$year_displayed.$month_displayed."%'") or die('Erreur SQL! TABLE_PAGE_BAD_AGENT: '.$query_delete.'<br>'.mysql_error());
+
 			//------------------------------------------------------------------------------------------
 
 			if ($row['mois'] == "01") {
@@ -243,7 +261,6 @@
 
 			echo '<tr>
 			<td style="'.$td_data_CSS.' text-align: center;"><b>';
-			//if ($row['mois'] < 10){ $row['mois'] = "0".$row['mois']; }
 			
 			$format_date_file_name = $row['annee'].'-'.$row['mois'];
 			

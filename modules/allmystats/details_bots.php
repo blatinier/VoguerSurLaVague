@@ -1,15 +1,15 @@
 <?php
 /*
   -------------------------------------------------------------------------
- AllMyStats V1.75 - Statistiques site web - Web traffic analysis
+ AllMyStats V1.80 - Statistiques site web - Web traffic analysis
  -------------------------------------------------------------------------
- Copyright (C) 2008-2010 - Herve Seywert
+ Copyright (C) 2008 - 2013 - Herve Seywert
  copyright-GNU-xx.txt
  -------------------------------------------------------------------------
  Web:    http://allmystats.wertronic.com - http://www.wertronic.com
  -------------------------------------------------------------------------
 */
-	// ---------------- Ne doit pas être appelé directement -------------------
+	// ---------------- Should not be called directly -------------------
 	if(strrchr($_SERVER['PHP_SELF'] , '/' ) == '/details_bots.php' ){ 
 		header('Location: index.php');
 	}
@@ -27,11 +27,9 @@
 			require_once(dirname(__FILE__).'/lib/geoip/geoip_add.inc');
 		}
 
-
 if($when==""){
 	$when = date('d/m/Y',strtotime($UTC." hours", strtotime(date("Y-m-d H:i:s"))));
 }
-
 	
 		echo '		
 		<table style="'.$table_border_CSS.'">
@@ -50,7 +48,6 @@ if($when==""){
 				</tr>
 		</table>
 		</td></tr></table></td></tr></table><br />';
-
 
 		//#########################################################################################
 		//------------------------- Include tableau details robots ------------------------------
@@ -100,6 +97,11 @@ if($when==""){
 	$code_unique_hre22 = array();
 	$code_unique_hre23 = array();
 	$code_unique_hre24 = array();
+
+	$hauteur = '';
+	$MaxHauteur = '';
+	$EchyMin_visitors = '';
+	$echy_pages_MaxHauteur = '';
 	//#############################################################
 
 		$code_unique = array();
@@ -163,7 +165,6 @@ if($when==""){
 			$i++;
 		}
 
-
 			//Hauteur graph
 			$height_graph = 100.00; //150
 
@@ -174,7 +175,6 @@ if($when==""){
 			//Espace entre les barres
 			$bar_space = '1';
 			$td_width_x = $width_bar_graph + $bar_space;
-			
 
 			//Pour affichage echelle
 			$EchyMin = '0';
@@ -204,7 +204,7 @@ if($when==""){
 				 		<td style=\"".$table_title_CSS."\">".MSG_BOTS_GRAPH_HOUR."</td>
 						</tr>
 						<tr>
-						  <td colspan=\"2\" style=\"".$td_simple_CSS."\">
+						  <td colspan=\"2\">
 							<table style=\"".$table_data_CSS."\">
 								<tr>
 									<!-- vertical space -->
@@ -358,7 +358,6 @@ if($when==""){
 		$total_pages = $total_pages + $row['total_pages'];
 	}
 
-
 echo '
 <table style="'.$table_border_CSS.'">
   <tr>
@@ -380,8 +379,6 @@ echo '
 						<th style="'.$td_data_CSS.'">'.MSG_VISITORS.'</th>
 						<th style="'.$td_data_CSS.'">'.MSG_VISITED_PAGES.'</th>
 						<th style="'.$td_data_CSS.'">'.MSG_PAGES_PERCENTAGE.'</th></tr>';
-
-
 
 	//----------------------------------------
 
@@ -405,17 +402,12 @@ echo '
 
 	echo '</table></td></tr></table></td></tr></table><br>';
 
-
 	//##############################################################################
 	//				ORIGINE GEO DAY
 	//#############################################################################
-/*	
-	$result = mysql_query("select count(country) as visitors_by_country, sum(visits) as pages_by_country, country from ".TABLE_UNIQUE_BOT." where date='".$when."' GROUP BY country ORDER BY pages_by_country DESC");
-	$total_differents_countries = mysql_num_rows($result);
-		
-	$row = mysql_fetch_array($result);
-	$indice = @bcdiv(1, ($row['pages_by_country']/300), 2); //proportion en rapport au plus grand nb de pages visités
-*/
+
+$Country_visitors_pie = array();
+$Country_name_pie = array();
 
 	$result = mysql_query("select count(country) as visitors_by_country, sum(visits) as pages_by_country, country from ".TABLE_UNIQUE_BOT." where date='".$when."' GROUP BY country ORDER BY visitors_by_country DESC");
 	$total_differents_countries = mysql_num_rows($result);
@@ -423,7 +415,6 @@ echo '
 	$result_max_pages = mysql_query("select sum(visits) as pages_by_country from ".TABLE_UNIQUE_BOT." where date='".$when."' GROUP BY country ORDER BY pages_by_country DESC");
 	$row_max_pages = mysql_fetch_array($result_max_pages); //Car on tri mintenant sur lrs visiteurs donc 1er pas obligatoirement OK
 	$indice = @bcdiv(1, ($row_max_pages['pages_by_country']/200), 3); //proportion en rapport au plus grand nb de pages visités
-
 
 echo '
 <table style="'.$table_border_CSS.'">
@@ -444,7 +435,6 @@ echo '
                <th style="'.$td_data_CSS.'">'.MSG_NB_VISITORS.'</th>
                <th style="'.$td_data_CSS.'">'.MSG_VISITED_PAGES.'</th>
 			 </tr>';
-
 
 			@mysql_data_seek($result, 0); //reset($result) to 0;
 			$nb_countries = 0;
@@ -501,82 +491,21 @@ echo '
 
 			}
 
-
-#####################################################################################################################################
-################################################## CAMENBERT With GD ################################################################
-
-	if ($gdv = gdVersion()) {
-		if ($gdv >=2) {
-			//echo 'TrueColor functions may be used.';
-			$GD_ver = 'TrueColor';
-		} else {
-			//echo 'GD version is 1.  Avoid the TrueColor functions.';
-			$GD_ver = 'NOT_TrueColor';
-		}
-	} else {
-		//echo "The GD extension isn't loaded.";
-		$GD_ver = 'NOT_loaded';
-	}
-
-//--------------------------------------------------------------------------------------------------------------------------------------------     
-if ($GD_ver == 'TrueColor' && $total_differents_countries > 0) {
-
-	///* ---------------------------------------------------- 
-	//Commenter tout ci-dessous si gd non utilisé
-	
-	//    Example10 : A 3D exploded pie graph
-	
-	 $pChart_path = 'lib/pChart.1.27d_GD';
-	 // Standard inclusions   
-	 include_once($pChart_path.'/pChart/pData.class');
-	 include_once($pChart_path.'/pChart/pChart.class');
-	
-	 // Dataset definition 
-	 $DataSet = new pData;
-	
-	 $DataSet->AddPoint($Country_visitors_pie,"Serie1");
-	 $DataSet->AddPoint($Country_name_pie,"Serie2");
-	
-	 $DataSet->AddAllSeries();
-	 $DataSet->SetAbsciseLabelSerie("Serie2");
-	
-	 // Initialise the graph
-	 $Test = new pChart(550,350);
-	 $Test->loadColorPalette($pChart_path.'/includes/tones-20c.txt'); // Ajouter pour le camenbert + de couleurs cycliques
-	
-	 // Draw the pie chart
-	 $Test->setShadowProperties(0,0,200,200,200); // Ajouter
-	 $Test->setFontProperties($pChart_path.'/Fonts/tahoma.ttf',7);
-	 $Test->AntialiasQuality = 0;
-	
-	 //														position hrz camenbert, position hte camenbert, diamètre, PIE_PERCENTAGE_LABEL, FALSE, perspective, hauteur camenbert, espace tranches
-	 $Test->drawPieGraph($DataSet->GetData(),$DataSet->GetDataDescription(),270,150,180,PIE_PERCENTAGE_LABEL,TRUE,50,20,5); //(org = TRUE,60,20,5);) --> pas mal TRUE,40,20,5);
-	
-	//Graph TITLE
-	if ($nb_countries > $first_show_countries) {	
-		$Test->setFontProperties($pChart_path.'/Fonts/tahoma.ttf',10);  
-		$Test->setShadowProperties(1,1,0,0,0);  
-		$Test->drawTitle(0,0,"Top ".$first_show_countries." Countries",0,0,0,550,50,TRUE); 
-		$Test->clearShadow();  
-	}
-
-	//Le répertoire cache n'est pas dans le pack l'install, car si update pour ne pas vider le cache du client  
-	if (!is_dir(dirname(__FILE__)."/cache")) {
-		mkdir (dirname(__FILE__)."/cache");
-	}
-
-	 $Test->Render("cache/graph_org_geo_day_temp.png");
-	
-     echo "
-	 <tr>
-	 <td colspan=\"3\" style=\"".$td_data_CSS." text-align: center;\">
-	 	<img src=\"cache/graph_org_geo_day_temp.png\"/>
-	</td>
-	</tr>";
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------     
-	 
-	 echo '</table></td></tr></table></td></tr></table><br />';
-
-
-#####################################################################################################################################
+			################################################################
+			################### CAMENBERT With GD ##########################
+			
+			if($total_differents_countries > 0) {
+				create_img_piegraph('graph_org_geo_day_temp.png', $Country_visitors_pie, $Country_name_pie, $first_show_countries, $total_differents_countries);
+			
+				$rand = rand(); // To force refresh img.png if mod expire is insatlled on server and cache img.png
+				echo "
+				<tr>
+				<td colspan=\"3\" style=\"".$td_data_CSS." text-align: center;\">
+					<img src=\"cache/graph_org_geo_day_temp.png?rand=".$rand."\"/>
+				</td>
+				</tr>";
+			}
+			//---------------------------------------------------------------  
+		 
+			echo '</table></td></tr></table></td></tr></table><br />';
+?>

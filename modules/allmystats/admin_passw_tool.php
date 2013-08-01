@@ -1,27 +1,26 @@
 <?php
 /*
   -------------------------------------------------------------------------
- AllMyStats V1.75 - Statistiques site web - Web traffic analysis
+ AllMyStats V1.80 - Statistiques site web - Web traffic analysis
  -------------------------------------------------------------------------
- Copyright (C) 2008-2010 - Herve Seywert
+ Copyright (C) 2008 - 2013 - Herve Seywert
  copyright-GNU-xx.txt
  -------------------------------------------------------------------------
  Web:    http://allmystats.wertronic.com - http://www.wertronic.com
  -------------------------------------------------------------------------
 */
 
-	// ---------------- Ne doit pas être appelé directement -------------------
+	// ---------------- Should not be called directly -------------------
 	if(strrchr($_SERVER['PHP_SELF'] , '/' ) == '/admin_passw_tool.php' ){ 
 		header('Location: index.php');
 	}
 	// ------------------------------------------------------------------------
 
-$submitchgtpasslog = $_POST["submitchgtpasslog"];
-$DeleteCookie = $_POST["DeleteCookie"];
-$newuserlogin = $_POST["newuserlogin"];
-$newuserpass = $_POST["newuserpass"];
-$comfirmuserpass = $_POST["comfirmuserpass"];
-$content = $_POST["content"];
+if(isset($_POST["submitchgtpasslog"])) { $submitchgtpasslog = $_POST["submitchgtpasslog"]; }
+if(isset( $_POST["newuserlogin"])) { $newuserlogin = $_POST["newuserlogin"]; }
+if(isset($_POST["newuserpass"])) { $newuserpass = $_POST["newuserpass"]; }
+if(isset($_POST["comfirmuserpass"])) { $comfirmuserpass = $_POST["comfirmuserpass"]; }
+if(isset($_POST["content"])) { $content = $_POST["content"]; }
 
 echo '
 	<table style="'.$table_border_CSS.'">

@@ -1,80 +1,31 @@
 <?php
 /*
   -------------------------------------------------------------------------
- AllMyStats V1.75 - Statistiques site web - Web traffic analysis
+ AllMyStats V1.80 - Statistiques site web - Web traffic analysis
  -------------------------------------------------------------------------
- Copyright (C) 2008-2010 - Herve Seywert
+ Copyright (C) 2008 - 2013 - Herve Seywert
  copyright-GNU-xx.txt
  -------------------------------------------------------------------------
  Web:    http://allmystats.wertronic.com - http://www.wertronic.com
  -------------------------------------------------------------------------
-French
-tats_in.php permet d'afficher publiquement les sections de vos statistiques souhaitées dans les pages de votre site web
-Le cache de fichiers est déclenché par les visiteurs en fonction de la valeur de «$ time_update_cache". 
-Cette solution ne recalcule pas chaque visiteur toutes les statistiques.
-
-Un exemple d'utilisation est disponible dans:
-/sample_stats_in/sample_stats_in_utf8.php
-/sample_stats_in/sample_stats_in_iso.php
------------------------------------------
-
-English
-stats_in.php allows the publicly display  the sections of your statistics desired in the pages of your website
-The files cache is triggered by visitors according of value of "$time_update_cache". 
-This solution does not recalculate every visitor all the statistics.
-
-An example of usage is available in 
-/sample_stats_in/sample_stats_in_utf8.php
-/sample_stats_in/sample_stats_in_iso.php
 */
-//######################################################## Configuration #######################################################################
 	
-	// ---------------- Ne doit pas être appelé directement -------------------
+	// ---------------- Should not be called directly -------------------
 	if(strrchr($_SERVER['PHP_SELF'] , '/' ) == '/stats_in.php' ){ 
 		header('Location: index.php');
 	}
 	// ------------------------------------------------------------------------
 
+require(dirname(__FILE__).'/config_stats_in.php');
 
-	$public_StatsIn = false; 	//true pour accès public, si false --> Affiche Vous n'êtes pas autorisé à visiter cette section
-								//true for public access, if false --> You are not allowed to visit this section
-
-	$included_in_page_charset = 'iso-8859-1'; //utf-8, iso-8859-1 Charset des pages qui appellent stats_in
-											  // charset pages that calls stats_in
-											  
-	$display_adword_links = 'false'; //'true' --> Affiche les liens Adwords réseau de contenu si Google adwords est utilisé, false --> non affichés
-								  	 //true -> Displays links AdWords content network if Google adwords is used, false -> not displayed
-
-	$not_display_keyword_pos = true; // true --> N'affiche pas la position des mots clé
-									 // true --> Do not display keyword position
-	$StatsIn_in_prot_dir = 'N'; 	// N, Y (Default N) Si AllMyStats est dans un répertoire protégé par .htaccess, les images ne peuvent être affichées. Icônes et graphiques 
-									// If AllMyStats is in a protected directory with .htaccess, the images can be displayed. Icons and graphics
-
-	$html_body = false; //Si nouvelle page --> true - Si intégré dans une page existante --> false
-						//If new page --> true - If integrated into an existing page --> false
-						
-//----------------------------------- style Stats in (only) ---------------------
-	$txt12pxbold = 'font-family: Verdana, Arial, sans-serif; font-weight: bold; font-size: 12px;';
-	$txt11px = 'font-family: Verdana, Arial, sans-serif; font-size: 11px;';
-
-//--------------------------- style table (for Admin && Stats in) ---------------
-	$table_border_CSS = 'border: 1px solid #000000; border-collapse: collapse; margin-left: auto; margin-right: auto; background-color: #99CCFF; width: 570px;';
-	$table_frame_CSS = 'border: 0px solid #000000; border-collapse: collapse; margin-top: 3px; background-color: #99CCFF; width: 100%;'; 
-	$table_data_CSS = 'border: 1px solid #000000; border-collapse: collapse; margin-top: 3px; margin-bottom: 3px; margin-left: 3px; margin-right: 3px; background-color: #FAFAFA; color: #000000; font-family: Verdana, Arial, sans-serif; font-size: 10px; font-style: normal; width: 99%;'; //width: 100%; margin-left: auto; margin-right: auto;
-	$td_data_CSS = 'border-width: 1px 1px 0px 0px; border-color: #000000;  border-style: solid; border-collapse: collapse; padding: 3px; font-family: Verdana, Arial, sans-serif; font-size: 10px;'; 
-	$table_title_CSS = 'border: 0px solid #000000; font-family: Verdana, Arial, sans-serif; font-size: 14px; font-weight: bold; text-align:center; vertical-align:middle;';
-
-//--------------------------- Style Graph (for Admin && Stats in)---------------
-	$page_view = 'color: #2000FF; font-family: Verdana, Arial, sans-serif; font-size: 10px; font-style: normal;';
-	$style_visits = 'color: #8F0080; font-family: Verdana, Arial, sans-serif; font-size: 10px; font-style: normal;'; 
-	$td_txt_CSS = 'color: #000000; font-family: Verdana, Arial, sans-serif; font-size: 10px; font-style: normal;';
-//------------------------------------------------------------------------------
-
-//#############################################################################################################################################
-//#############################################################################################################################################
+// PHP5.4 Suppress DateTime warnings (if not set in php.ini) => date_default_timezone_set -> UTC
+if(function_exists("date_default_timezone_set") and function_exists("date_default_timezone_get")) {
+	date_default_timezone_set(@date_default_timezone_get());
+}
 
 //dirname(__FILE__); //Path of file same if in include
 require(dirname(__FILE__).'/config_allmystats.php');
+require(dirname(__FILE__).'/includes/filename.php');
 require(dirname(__FILE__).'/includes/mysql_tables.php');
 require(dirname(__FILE__).'/includes/languages/'.$langue.'/main.php');
 require(dirname(__FILE__).'/includes/functions/general.php');
@@ -96,28 +47,28 @@ require(dirname(__FILE__).'/version.php');
 		//---------- Construction du suffixe fichier cache -------------------
 		$suffixe = "";
 		if ($display_graph_by_day) {
-		$suffixe .= "gd";
+			$suffixe .= "gd";
 		}
 		if ($display_keywords) {
-		$suffixe .= "kw";
+			$suffixe .= "kw";
 		}
 		if ($display_keywords_by_day) {
-		$suffixe .= "kwd";
+			$suffixe .= "kwd";
 		}
 		if ($display_page_view) {
-		$suffixe .= "pv";
+			$suffixe .= "pv";
 		}
 		if ($display_org_geo) {
-		$suffixe .= "ge";
+			$suffixe .= "ge";
 		}
 		if ($display_operating_system) {
-		$suffixe .= "os";
+			$suffixe .= "os";
 		}
 		if ($display_browsers) {
-		$suffixe .= "na";
+			$suffixe .= "na";
 		}
 		if ($display_bots) {
-		$suffixe .= "ro";
+			$suffixe .= "ro";
 		}
 		
 		$cache_mois_in = "";
@@ -129,8 +80,17 @@ require(dirname(__FILE__).'/version.php');
 		$MsgNotAllowedThisSection = MSG_NOT_ALLOWED_THIS_SECTION;						
 	} 
 
+?>
+
+<?php
 	if($public_StatsIn == false )	{
-		echo '<br /><br /><center><strong>'.$MsgNotAllowedThisSection.'</strong></center><br />';
+		echo '<br /><br /><table  border="0" align="center" cellpadding="0" cellspacing="0" bgcolor="#CCCCCC">
+		  <tr>
+			<td>
+				<center>Stats_in<br /><strong>MSG_NOT_ALLOWED_THIS_SECTION</strong></center>
+			</td>
+		  </tr>
+		</table><br />';
 		exit;
 	} else {
 		if ( date('YmdHi') > date("YmdHi", @filemtime(dirname(__FILE__)."/cache/stats_in/stats_".$site."_".$format_date_file_name."-".$suffixe.".php")) + $time_update_cache || isset($archive_encours) ){
@@ -143,40 +103,29 @@ require(dirname(__FILE__).'/version.php');
 			include_once(dirname(__FILE__)."/cache/stats_in/stats_".$site."_".$format_date_file_name."-".$suffixe.".php");
 		}
 	}
+
+?>	
+
+<?php
 		//-------------------------------------------------------------------
 		//############################################################# End init ###########################################
 
 if ($action_cache_mois_in) {
 
-/*
-				//--------- Pour éviter de lancer le script par plusieurs visiteurs ------------
-				 $nbSlashes = substr_count($_SERVER['SCRIPT_NAME'], '/'); // on compte le nombre total de slashes contenu dans le lien relatif du fichier courant
-				 $nbSlashes --; // on ne compte pas le slash de la racine (placé au début du lien relatif)
-				 $root_site = ''; // on initialise la remontée dans l'arborescence
-				 for($i = 0; $i < $nbSlashes; $i++)
-				 {
-					 $root_site .= '../';
-				 }
-				//---------------------------------------
-				//Supprime 1er "/" de $path_allmystats_abs Important si $root_site = ""
-				$path_allmystats_rel = substr($path_allmystats_abs, 1);
-				$Fnm = $root_site.$path_allmystats_rel."cache/stats_in/stats_".$site."_".$format_date_file_name."-".$suffixe.".php";
-*/					
-				$Fnm = dirname(__FILE__)."/cache/stats_in/stats_".$site."_".$format_date_file_name."-".$suffixe.".php";
+	$Fnm = strtolower(dirname(__FILE__)."/cache/stats_in/stats_".$site."_".$format_date_file_name."-".$suffixe.".php");
 
-				//$time = time() - 30; //ajoute 30 seconde //date du fichier = + 30 secondes à la date actuelle 
-				@touch($Fnm); // modifie date du fichier sur la date actuelle
-				//-----------------------------------------------------------------------------
+	//$time = time() - 30; //ajoute 30 seconde //date du fichier = + 30 secondes à la date actuelle 
+	@touch($Fnm); // modifie date du fichier sur la date actuelle
 
 	// -------------------------------------- Affichage -----------------------------------------------------------------------
 	
 	if ($included_in_page_charset == 'iso-8859-1') {						
-		$show_footer = '<div style="'.$txt11px.' text-align: center;"><a href="http://allmystats.wertronic.com" target="_blank">AllMyStats '.VERSION.'</a> '.utf8_decode(MSG_DEVELOPED_BY).' <a href="http://www.wertronic.com" target="_blank">Wertronic</a></div><br />';
+		$show_footer = '<div style="'.$txt11px.' text-align: center;"><a href="http://allmystats.wertronic.com" target="_blank">AllMyStats '.VERSION.'</a> '.utf8_decode(MSG_DEVELOPED_BY).' <a href="http://www.wertronic.com" target="_blank">Wertronic</a></div>';
 	} else { //utf-8
-		$show_footer = '<div style="'.$txt11px.' text-align: center;"><a href="http://allmystats.wertronic.com" target="_blank">AllMyStats '.VERSION.'</a> '.MSG_DEVELOPED_BY.' <a href="http://www.wertronic.com" target="_blank">Wertronic</a></div><br />';
+		$show_footer = '<div style="'.$txt11px.' text-align: center;"><a href="http://allmystats.wertronic.com" target="_blank">AllMyStats '.VERSION.'</a> '.MSG_DEVELOPED_BY.' <a href="http://www.wertronic.com" target="_blank">Wertronic</a></div>';
 	} 
 
-	$show_cumul_page = $show_footer;
+	$show_cumul_page = '';
 
 	//###################################################################################################################
 	//										GRAPH DU MOIS PAR JOUR
@@ -184,7 +133,6 @@ if ($action_cache_mois_in) {
 
 	if ($display_graph_by_day && $StatsIn_in_prot_dir <> 'Y') { 
 		// ################## GRAPH DU MOIS PAR JOUR ######################
-		require(dirname(__FILE__).'/includes/filename.php');	
 		$mois = $month_year_displayed;
 		include(FILENAME_GRAPH_MONTH_DAYS);
 		$show_cumul_page .= $graph_byday;
@@ -200,8 +148,8 @@ if ($action_cache_mois_in) {
 	//############################################################################################	
 
 	if ($display_keywords_by_day) {
-		$first_limit_keywords = $display_top_keywords;
-		$val_limit_keywords = $first_limit_keywords+1;
+		$small_limit_keywords = $display_top_keywords;
+		$val_limit_keywords = $small_limit_keywords+1;
 		$limit_keywords = 'LIMIT '.$val_limit_keywords;		
 		$when_day = date('d/m/Y',strtotime($UTC." hours", strtotime(date("Y-m-d H:i:s"))));		
 		include_once(FILENAME_KEYWORDS_REFERERS_DAY);
@@ -212,10 +160,10 @@ if ($action_cache_mois_in) {
 	//############################################################################################	
 
 	if ($display_keywords) {
-		$first_limit_keywords = $display_top_keywords;
-		$val_limit_keywords = $first_limit_keywords+1;
+		$small_limit_keywords = $display_top_keywords;
+		$val_limit_keywords = $small_limit_keywords+1;
 		$limit_keywords = 'LIMIT '.$val_limit_keywords;		
-		include('keywords_referers_month.php');
+		include_once(FILENAME_KEYWORDS_REFERERS_MONTH);
 	} 
 
 	//############################################################################################
@@ -273,7 +221,7 @@ if ($display_page_view) {
 
 				$show_cumul_page .= '
 				<tr>
-					<td style="'.$td_data_CSS.'">'.$charset_pages_name.'</td>
+					<td style="'.$td_data_CSS.' text-align: left; vertical-align: top;">'.$charset_pages_name.'</td>
 					<td style="'.$td_data_CSS.' text-align: center;">'.$row['total_visitors'].'</td>
 					<td style="'.$td_data_CSS.' text-align: center;">'.$row['total_pages'].'</td>
 					<td style="'.$td_data_CSS.' text-align: center;">'.$percents.'%</td></tr>';
@@ -358,17 +306,17 @@ if ($display_page_view) {
 						
 					$show_cumul_page .= "
 					<tr>
-						<td style=\"".$td_data_CSS." white-space: nowrap;\"> 
+						<td style=\"".$td_data_CSS." text-align: left; vertical-align: top; white-space: nowrap;\"> 
 						<b>".$Country."</b>
 						</td>
-						<td style=\"".$td_data_CSS." white-space: nowrap;\">
+						<td style=\"".$td_data_CSS." text-align: left; vertical-align: top; white-space: nowrap;\">
 						<img src=\"".$path_allmystats_abs."images/histo-h.gif\" width=\""; 
 						$hauteur = @bcmul($row['visitors_by_country'] , $indice, 2);  
 					$show_cumul_page .= $hauteur .	"\" height=\"8\" alt=\"".$row['visitors_by_country']."\" title=\"".$row['visitors_by_country']."\">".$row['visitors_by_country'].
 						"</td>
-						<td style=\"".$td_data_CSS." white-space: nowrap;\">
+						<td style=\"".$td_data_CSS." text-align: left; vertical-align: top; white-space: nowrap;\">
 						<img src=\"".$path_allmystats_abs."images/histo-h.gif\" width=\""; 
-						$hauteur = bcmul($row['pages_by_country'], $indice, 2);  
+						$hauteur = @bcmul($row['pages_by_country'], $indice, 2);  
 					$show_cumul_page .= $hauteur."\" height=\"8\" alt=\"".$row['pages_by_country']."\" title=\"".$row['pages_by_country']."\">".$row['pages_by_country'].
 						"</td>
 						</tr>";	
@@ -388,22 +336,20 @@ if ($display_page_view) {
 		//			display_operating_system display_browsers display_bad_user_agent
 		//############################################################################################
 
-	if( ($display_operating_system || $display_browsers || $display_bad_user_agent) && $StatsIn_in_prot_dir <> 'Y'){
-		require_once("includes/filename.php");
+	if($display_bad_user_agent) {
+		$when_date = $month_year_displayed; // date d/m/Y or m/Y
+		$display_bad_user_agent = true;
+		$display_bads_agents = '';
+		include(FILENAME_DISPLAY_BAD_AGENTS);
+		$show_cumul_page .= $display_bads_agents;		
+	}
+
+	if( ($display_operating_system || $display_browsers) && $StatsIn_in_prot_dir <> 'Y'){
 		$dislpay_button_tool_bots = "false"; //Important "false" entre guillemets car affiche le bouton si  $dislpay_button_tool_bots = "";
-		?>
-		<table width="90%" border="0" align="center">
-		  <tr>
-			<td align="center"><?php  
-				$when_date = $month_year_displayed; // date d/m/Y or m/Y
-				$show_page_os_nav_robots = '';
-				include(dirname(__FILE__).'/'.FILENAME_DISPLAY_OS_BROWSER);	 
-				$show_cumul_page .= $show_page_os_nav_robots;
-				?>
-			</td>
-		  </tr>
-		</table>
-		<?php
+		$when_date = $month_year_displayed; // date d/m/Y or m/Y
+		$show_page_os_nav_robots = '';
+		include(dirname(__FILE__).'/'.FILENAME_DISPLAY_OS_BROWSER);	 
+		$show_cumul_page .= $show_page_os_nav_robots;
 	} elseif (($display_operating_system || $display_browsers || $display_bad_user_agent) && $StatsIn_in_prot_dir == 'Y') { 
 		$show_cumul_page .= '<table><tr><td>If stats_in is in a protected directory, it is not possible to display "OS, Browser, Bad User Agent"</td></tr></table><br /><br />';
 	}
@@ -432,7 +378,7 @@ if ($display_page_view) {
 		//########################################## AFFICHAGE ##########################################
 		
 			//echo $show_cumul_page;	// Affichage des tableaux
-
+			if(!isset($msg)) { $msg = ''; }
 			message($msg , "");		//efface le message Patientez
 	
 			//--------- Footer -------------------
@@ -469,7 +415,7 @@ if ($display_page_view) {
 				$Mois_Annee = explode("/", $mois_Visualise);
 				$format_date_file_name = $Mois_Annee[1].'-'.$Mois_Annee[0];
 				
-				$Fnm = dirname(__FILE__)."/cache/stats_in/stats_".$site."_".$format_date_file_name."-".$suffixe.".php";
+				$Fnm = strtolower(dirname(__FILE__)."/cache/stats_in/stats_".$site."_".$format_date_file_name."-".$suffixe.".php");
 
 				if (!$inF = @fopen($Fnm,"w")){
 					echo "Erreur create file<br />";
@@ -527,18 +473,42 @@ if ($display_page_view) {
 						<meta http-equiv="Content-Type" content="text/html; charset='.$included_in_page_charset.'">
 						</head>
 						<body>
-							<table style="align: center; width:100%; border: 0px;">
-								<tr>
-									<td style="'.$txt12pxbold.' text-align: center;">'.MSG_WEBSITE_STATISTICS.' '.$site." - ".MSG_MONTH." ".$mois_Visualise.'<br /><br /></td>
-								</tr>
-								<tr>
-									<td style="'.$txt12pxbold.' text-align: center;">'.MSG_LAST_UPDATE.' '.date('d/m/Y - H:i').'<br /><br /></td>
-								</tr>
-								<tr>
-									<td>'.$show_cumul_page . $show_footer.'</td>
-								</tr>
-							</table>
-						</body></html>';
+						<table style="align: center; width:100%; border: 0px;">
+							<tr>
+								<td>
+									<div align="center">
+									<table style="'.$table_border_CSS.'">
+										<tr>
+										  <td style="text-align: center;" >'
+										  	.$show_footer;
+										  	if (!$tagcloud_optimized) {
+												$page_html .= MSG_WEBSITE_STATISTICS.' '.$site; 
+											}											
+											
+											$page_html .= "
+											- Mois: ".$mois_Visualise.'
+											<br />'.MSG_LAST_UPDATE.' '.date('d/m/Y - H:i').'
+										  </td>
+										 </tr>
+									</table>
+									</div>
+								</td>
+							</tr>
+							<tr>
+								<td>'
+								.$show_cumul_page.'								
+									<table style="'.$table_border_CSS.'">
+										<tr>
+										  <td style="text-align: center;" >'
+										  	.$show_footer.'
+										  </td>
+										 </tr>
+									</table>								
+								</td>
+							</tr>
+						</table>
+						</body>
+						</html>';
 				} else {
 					$page_html = 
 		'<?php
@@ -558,16 +528,39 @@ if ($display_page_view) {
 		//###############################################################################################
 		//###############################################################################################
 		?>
-				
+
 						<table style="align: center; width:100%; border: 0px;">
 							<tr>
-								<td style="'.$txt12pxbold.' text-align: center;">'.MSG_WEBSITE_STATISTICS.' '.$site." - Mois: ".$mois_Visualise.'</td>
+								<td>
+									<div align="center">
+									<table style="'.$table_border_CSS.'">
+										<tr>
+										  <td style="text-align: center;" >'
+										  	.$show_footer;
+										  	if (!$tagcloud_optimized) {
+												$page_html .= MSG_WEBSITE_STATISTICS.' '.$site; 
+											}											
+											
+											$page_html .= "
+											- Mois: ".$mois_Visualise.'
+											<br />'.MSG_LAST_UPDATE.' '.date('d/m/Y - H:i').'
+										  </td>
+										 </tr>
+									</table>
+									</div>
+								</td>
 							</tr>
 							<tr>
-								<td style="'.$txt12pxbold.' text-align: center;">'.MSG_LAST_UPDATE.' '.date('d/m/Y - H:i').'<br /><br /></td>
-							</tr>
-							<tr>
-								<td>'.$show_cumul_page . $show_footer.'</td>
+								<td>'
+								.$show_cumul_page .'
+									<table style="'.$table_border_CSS.'">
+										<tr>
+										  <td style="text-align: center;" >'
+										  	.$show_footer.'
+										  </td>
+										 </tr>
+									</table>
+								</td>
 							</tr>
 						</table>';
 				}

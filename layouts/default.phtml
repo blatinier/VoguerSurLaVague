@@ -3,7 +3,7 @@
     <head>
         <meta http-equiv="content-type" content="text/html; charset=utf-8" />
         <meta charset="UTF-8" />
-        <title>Voguer sur la vague et divaguer<?php echo (!empty($layout->title)) ? " - " . $layout->title : ""; ?></title>
+        <title>Melmelboo<?php echo (!empty($layout->title)) ? " - " . $layout->title : ""; ?></title>
         <meta name="description" content="<?php echo (!empty($layout->description)) ? $layout->description : "Le blog de Melmelboo !"; ?>" /> 
         <meta name="keywords" content="blog, melmelboo, frippes, ecolo, ecologie, recyclage, naturel, astuces, bricolage, truc, bloubiboulga<?php echo (!empty($layout->keywords)) ? implode(",", $layout->keywords) : ""; ?>" /> 
         <link href="/CSS/default.css" rel="stylesheet" type="text/css" media="screen" />
@@ -27,7 +27,7 @@
     </head> 
     <body>
         <div id="conteneur" itemscope='itemscope' itemtype='http://schema.org/Blog'>
-            <meta content='Voguer sur la vague et divaguer' itemprop='name'/>
+            <meta content='Melmelboo' itemprop='name'/>
             <header>
                 <nav class="main_nav">
                     <a href="/">HOME</a> / 
@@ -74,5 +74,5 @@
 <?php
 $Racine_abs = str_replace($_SERVER['PHP_SELF'],"",$_SERVER['SCRIPT_FILENAME']);
 $nom_page=$_SERVER['REQUEST_URI'];
-require $Racine_abs.'/allmystats/visiteur.php';
+require $Racine_abs.'/modules/allmystats/visiteur.php';
 ?> 

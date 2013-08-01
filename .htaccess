@@ -41,7 +41,7 @@ RewriteRule ^archive-page-([0-9]+)$ index.php?controller=home&action=main&page=$
 RewriteRule ^archive-([0-9]+)-([0-9]+)$ index.php?controller=listing&action=month&month=$1&year=$2 [L]
 RewriteRule ^archive-([0-9]+)-([0-9]+)-page-([0-9]+)$ index.php?controller=listing&action=month&page=$3&month=$1&year=$2 [L]
 
-AuthType Basic
-AuthName "Danger zone"
-AuthUserFile /home/camille/melmelboo.fr/test/.htpasswd
-Require valid-user
+#AuthType Basic
+#AuthName "Danger zone"
+#AuthUserFile /home/camille/melmelboo.fr/test/.htpasswd
+#Require valid-user

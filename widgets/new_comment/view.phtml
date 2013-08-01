@@ -13,7 +13,12 @@ if (!$_widget_data['closed_com']) {
 		<label for="site">Site web </label><br/>
 		<textarea name="commentaire" id="commentaire"></textarea><br/>
 		Sauvegarder mes informations : <input type="checkbox" name="savedata" /><br/>
-		<input type="submit" value="Poster"/>
+        <p id="add_submit" class="right_aligned"></p>
+<script>
+jQuery(function ($) {
+    $('#add_submit').html('<input type="submit" value="Poster" />')
+});
+</script>
 	</form>
 </div>
 <?php

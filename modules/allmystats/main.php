@@ -1,33 +1,42 @@
 <?php
 /*
   -------------------------------------------------------------------------
- AllMyStats V1.75 - Statistiques site web - Web traffic analysis
+ AllMyStats V1.80 - Statistiques site web - Web traffic analysis
  -------------------------------------------------------------------------
- Copyright (C) 2008-2010 - Herve Seywert
+ Copyright (C) 2008 - 2013 - Herve Seywert
  copyright-GNU-xx.txt
  -------------------------------------------------------------------------
  Web:    http://allmystats.wertronic.com - http://www.wertronic.com
  -------------------------------------------------------------------------
 */
-	// ---------------- Ne doit pas être appelé directement -------------------
-	if(strrchr($_SERVER['PHP_SELF'] , '/' ) == '/main.php' ){ 
-		header('Location: index.php');
-	}
-	// ------------------------------------------------------------------------
+
+// ----- Should not be called directly ----------------
+if(strrchr($_SERVER['PHP_SELF'] , '/' ) == '/'.FILENAME_MAIN ){ 
+	header('Location: index.php');
+}
 
 //---------- Config Limit affichage ------------------------
+// Number of display top referer
+if(!isset($number_top_display)) {
+	$number_top_display = 40;
+}
+
 //Limite pour l'archivage et 1ere edition en cours
-$first_limit_keywords = '50'; // For each search engine
-$first_limit_pages = '100'; 
+$small_limit_keywords = '50'; // For each search engine
+$small_limit_pages_view = '100'; 
 
 //Limite affichage liste complète
-$complete_list_limit_keywords = '2000';
-$complete_list_limit_pages = '300';
+$max_limit_keywords = '2000';
+$max_limit_pages_view = '300';
+
 include_once('includes/display_keys_pages_limit.php');
 //----------------------------------------------------------
 
-require_once(dirname(__FILE__).'/includes/functions/'.FILENAME_SEARCH_ENGINE);
+if (isset($_POST['not_display_keyword_pos']) && isset($limit_keywords)) {
+	$not_display_keyword_pos = $_POST['not_display_keyword_pos'];
+}
 
+require_once(dirname(__FILE__).'/includes/functions/'.FILENAME_VISTORS_FUNCTIONS);
 
 		if(!function_exists('geoip_open')) { //To avoid Fatal error: Cannot redeclare geoip_load_shared_mem() (previously declared in if in page
 			require_once(dirname(__FILE__).'/lib/geoip/geoip.inc');
@@ -39,7 +48,7 @@ require_once(dirname(__FILE__).'/includes/functions/'.FILENAME_SEARCH_ENGINE);
 		if($when == ""){ // seulement lorsque 1er appel page
 			$when = date('d/m/Y',strtotime($UTC." hours", strtotime(date("Y-m-d H:i:s"))));
 		}
-		
+
 ?>
 <style type="text/css">
 <!--
@@ -99,7 +108,6 @@ require_once(dirname(__FILE__).'/includes/functions/'.FILENAME_SEARCH_ENGINE);
 		} ?> 
 		<?php
 
-
 				//##############################################################################
 				//						 TABLEAU DE BORD
 				//##############################################################################
@@ -111,13 +119,20 @@ require_once(dirname(__FILE__).'/includes/functions/'.FILENAME_SEARCH_ENGINE);
 		$row = mysql_fetch_array($result);
 		$NbpageVues_HorsBots = $row['total_pages_view'];
 		$NbVisites_HorsBots = $row['nb_visitors'];
-
-		//On ajoute Visitors et pages visitées des user agent inconnus
-		$result = mysql_query("select count(*) as nb_visitors, sum(visits) as total_pages_view from ".TABLE_UNIQUE_BAD_AGENT." where date like '%".$when."' and type='I'"); 
+/*
+		//On ajoute Visitors et pages visitées des user agent inconnus --> NO NO
+		// 2013-04-16 - Standardization of the date
+		$exd_month_date = explode('/', $when);
+		if (isset($exd_month_date[2]) && $exd_month_date[2]) { // by day
+			$MySQL_month_date = $exd_month_date[2].'-'.$exd_month_date[1].'-'.$exd_month_date[0];
+		} else { // by month
+			$MySQL_month_date = $exd_month_date[1].'-'.$exd_month_date[0];
+		}
+		$result = mysql_query("select count(*) as nb_visitors, sum(visits) as total_pages_view from ".TABLE_UNIQUE_BAD_AGENT." where date like '".$MySQL_month_date."%' and type='I'"); 
 		$row_bad_agent = mysql_fetch_array($result);
 		$NbpageVues_HorsBots = $NbpageVues_HorsBots + $row_bad_agent['total_pages_view'];
 		$NbVisites_HorsBots =  $NbVisites_HorsBots + $row_bad_agent['nb_visitors'];
-
+*/
 		//Visites bots
 		$result = mysql_query("select count(*) as nb_visitors, sum(visits) as total_pages_view from ".TABLE_UNIQUE_BOT." where date like '".$when."'");
 		$row_bots = mysql_fetch_array($result);
@@ -134,12 +149,13 @@ require_once(dirname(__FILE__).'/includes/functions/'.FILENAME_SEARCH_ENGINE);
 		//Heure premier, heure dernier et Nb de page vue, PREMIER VISITEUR (hors bot)
 		$result = mysql_query("select p.hour from ".TABLE_UNIQUE_VISITOR." v, ".TABLE_PAGE_VISITOR." p where date like '".$when."' and v.code=p.code order by hour");
 		//$nb_visite = 0;
-		$heure_premier = "";
+		$heure_premier = '';
+		$heure_dernier = '';
 		while($row = mysql_fetch_array($result)){
 			if($heure_premier == ""){
 				$heure_premier = $row['hour'];
 			}
-			//$nb_visite = $nb_visite + $row['nb_visite']; // A VOIR
+
 			$heure_dernier = $row['hour'];
 		}
 
@@ -177,9 +193,12 @@ require_once(dirname(__FILE__).'/includes/functions/'.FILENAME_SEARCH_ENGINE);
 		// on test aussi $_SESSION['ALEXA'][0] && $_SESSION['PAGERANK'] if in php.ini allow_url_fopen = off
 		//get_cfg_var donne la valeur dans php.ini et ini_get la valeur courante (qui peut avoir été modifiée) 
 		*/
-	if( ($display_alexa_pagerank == 'true' || $display_alexa_pagerank == '') && ini_get('allow_url_fopen')) {
-		$alexa = '<a href="http://www.alexa.com/siteinfo/'.$site.'" target="_blank">Alexa Traffic</a> (3 month)<br />Rank : '.$_SESSION['ALEXA'][0].'<br />Change : '.$_SESSION['ALEXA'][2];
+	if( ($display_alexa_pagerank == 'true' || $display_alexa_pagerank == '') && ini_get('allow_url_fopen') && isset($_SESSION['ALEXA'][0]) && isset($_SESSION['PAGERANK'])) {
+		$alexa = '<a href="http://www.alexa.com/siteinfo/'.$site.'" target="_blank">Alexa Traffic</a> (3 month)<br />Rank : '.$_SESSION['ALEXA'][0].'<br />Change : '.$_SESSION['ALEXA'][2].'<br />Links : '.$_SESSION['ALEXA'][3];
 		$PageRank =	'Google PageRank<br />'.$_SESSION['PAGERANK'];
+	} else {
+		$alexa = '';
+		$PageRank =	'';
 	}
 
 echo '
@@ -303,7 +322,7 @@ echo '
 				&nbsp;&nbsp;<img src="'.$path_allmystats_abs.'images/icons/icon_top.gif" height="32px" alt="'.MSG_TOP.' '.MSG_VISITEURS.'" title="'.MSG_TOP.' '.MSG_VISITEURS.'">
 			</td>
           	<td style="'.$table_title_CSS.'">
-		  		'.MSG_TOP.' 20 '.MSG_VISITEURS.' ('.MSG_EXCLUDED_BOTS.')
+		  		'.MSG_TOP.' '.$number_top_display.' '.MSG_VISITEURS.' ('.MSG_EXCLUDED_BOTS.')
 		  	</td>
         </tr>
         <tr>
@@ -323,11 +342,12 @@ echo '
 				exit;
 			}
 	
-		while($Nb_lignes_affichees < 20 && $row = mysql_fetch_array($result)){
+		$Nb_lignes_affichees = 0;
+		while($Nb_lignes_affichees < $number_top_display && $row = mysql_fetch_array($result)){
 	
 			$Nb_lignes_affichees = $Nb_lignes_affichees + 1;
 			$max = 25;	 // Nombre de caractères max
-			$coupe ="";
+			$coupe = "";
 			if(mb_strlen($row['reverse_dns'],'utf-8') >= $max)  {
 				$coupe = 25; 
 			}
@@ -360,25 +380,35 @@ echo '
 				
 			//col referer
 			echo '<td style="'.$td_data_CSS.' white-space: nowrap;">&nbsp;&nbsp;';
-			$host = parse_url($row["referer"]);
 
+			if($host = @parse_url($row["referer"])) {
+				$host = parse_url($row["referer"]);
+			} else {
+				$host = parse_url('http://Invalid URL');
+			}
+  
 			//24-10-2011
-			$keyword = trim(MotsCles($row["referer"])); // $start_page global in MotsCles
+			$keyword = trim(search_keyword_in($row["referer"])); // $start_page global in search_keyword_in
 			$delimiter = '|;|';
 			$exp_keyword = explode($delimiter, $keyword);
 			$keyword = stripslashes($exp_keyword[0]);
+			$nb_characters = 60; //Maximum characters for keywords and referrers
+			if (mb_strlen($keyword,'utf-8') > $nb_characters) { 
+				$keyword = mb_substr($keyword, 0, $nb_characters,'utf-8').'...';
+			} 
+
 			$keyword_search = strtr(substr($keyword, 1, -1)," ","+"); //remove first [ and last ] and replace space by +
 
 			$keyword_position = '';
-			if ($exp_keyword[1] && $exp_keyword[2]) {
+			if (@$exp_keyword[1] && @$exp_keyword[2]) {
 				$keyword_position = '(pos '.$exp_keyword[1].' page '.$exp_keyword[2].')';
-			} elseif ($exp_keyword[1]) {
+			} elseif (@$exp_keyword[1]) {
 				$keyword_position = '(pos '.$exp_keyword[1].')';
-			} elseif ($exp_keyword[2]) {
+			} elseif (@$exp_keyword[2]) {
 				$keyword_position = '(page '.$exp_keyword[2].')';
 			}
 
-			if($host["host"] <> $_SERVER['SERVER_NAME']){
+			if(isset($host["host"]) && $host["host"] <> $_SERVER['SERVER_NAME']){
 				$aff_referer = $row['referer'];
 
 				// Google Adwords
@@ -398,7 +428,7 @@ echo '
 				
 				// Google Adwords
 				} elseif (strstr($row["referer"], '/aclk') || strstr($row["referer"], 'googlesyndicKeywordGCLID=1')) { //Mot clé envoyés par Google Adwords - Test on url? ou /aclk or both ?
-					// $start_page global in MotsCles
+					// $start_page global in search_keyword_in
 					$Google_link_format = 'http://'.$host['host'].'/search?q='.$keyword_search.'&start='.$start_page; //See if $start ok for AdWord Keyword
 					$aff_New_link_google = $Google_link_format;
 					if (mb_strlen($aff_New_link_google, 'utf-8') > 40) {
@@ -409,7 +439,7 @@ echo '
 				
 				// Google Search				
 				} elseif (strstr($host['host'], 'google') && strstr($row["referer"], 'source=web')) { //source=web, on a la position du keyword
-					// $start_page global in MotsCles
+					// $start_page global in search_keyword_in
 					$Google_link_format = 'http://'.$host['host'].'/search?q='.$keyword_search.'&start='.$start_page;
 					$aff_New_link_google = $Google_link_format;
 					if (mb_strlen($aff_New_link_google, 'utf-8') > 40) {
@@ -485,7 +515,7 @@ echo '
 		$pages_cumul = $row['total_pages']; // Total Pages
 
 		//$result = mysql_query("select * from ".TABLE_DAYS_PAGES." where date='".$when."' order by visited_pages DESC, pages_name ASC"); //Sort by visited page
-		$result = mysql_query("select * from ".TABLE_DAYS_PAGES." where date='".$when."' order by visitors DESC, pages_name ASC  ".$limit_pages."");		//Sort by visitors
+		$result = mysql_query("select * from ".TABLE_DAYS_PAGES." where date='".$when."' order by visitors DESC, pages_name ASC ".$limit_pages."");		//Sort by visitors
 
 echo '
 <table style="'.$table_border_CSS.'">
@@ -504,7 +534,7 @@ echo '
 				  </td>
 
 			<td style="text-align: right;">';		  
-			if ($switch_short_complete_list && $row['nb_diff_pages'] >= $first_limit_pages) {
+			if ($switch_short_complete_list && $row['nb_diff_pages'] >= $small_limit_pages_view) {
 			  echo "	 
 				<form name=\"form_limi_pages\" method=\"post\" action=\"".$_SERVER['PHP_SELF']."\">
 				  <input type=\"hidden\" name=\"type\" value=\"\">
@@ -514,7 +544,7 @@ echo '
 				  <input class=\"submit\" name=\"submit_limit_pages\" type=\"submit\" value=\"".$value_button_pages."\" alt=\"".$value_button_pages."\" title=\"".$value_button_pages."\">
 				</form>";		  
 
-				if ( ($row['nb_diff_pages'] > $first_limit_pages && $value_button_pages == MSG_COMPLETE_LIST) || ($row['nb_diff_pages'] > $complete_list_limit_pages && $value_button_pages == MSG_SHORTLIST) ) {
+				if ( ($row['nb_diff_pages'] > $small_limit_pages_view && $value_button_pages == MSG_COMPLETE_LIST) || ($row['nb_diff_pages'] > $max_limit_pages_view && $value_button_pages == MSG_SHORTLIST) ) {
 					echo '<br />Limited pages to : '.$limit_pages.'&nbsp;&nbsp;&nbsp;';
 				}
 			}
@@ -557,10 +587,15 @@ echo '
 
 
 		//########## Affichage Operating system, navigateurs ##################
+		$when_date = $when; // date d/m/Y or m/Y
+
+		$display_bad_user_agent = true;
+		$display_bads_agents = '';
+		include(FILENAME_DISPLAY_BAD_AGENTS);
+		echo $display_bads_agents;		
+		
 		$display_operating_system = true;
 		$display_browsers = true;
-		$display_bad_user_agent = true;
-		$when_date = $when; // date d/m/Y or m/Y
 		include(FILENAME_DISPLAY_OS_BROWSER);
 		echo $show_page_os_nav_robots;
 
@@ -570,7 +605,7 @@ echo '
 		//###############################################################################		
 		
 	//$result = mysql_query("select count(country) as visitors_by_country, sum(visits) as pages_by_country, country from ".TABLE_UNIQUE_VISITOR." where date='".$when."' GROUP BY country ORDER BY pages_by_country DESC");
-	$result = mysql_query("select count(country) as visitors_by_country, sum(visits) as pages_by_country, country from ".TABLE_UNIQUE_VISITOR." where date='".$when."' GROUP BY country ORDER BY visitors_by_country DESC ".$country_limit."");
+	$result = mysql_query("select count(country) as visitors_by_country, sum(visits) as pages_by_country, country from ".TABLE_UNIQUE_VISITOR." where date='".$when."' GROUP BY country ORDER BY visitors_by_country DESC ");
 	$total_differents_countries = mysql_num_rows($result);
 		
 	$result_max_pages = mysql_query("select sum(visits) as pages_by_country from ".TABLE_UNIQUE_VISITOR." where date='".$when."' GROUP BY country ORDER BY pages_by_country DESC");
@@ -622,7 +657,6 @@ echo '
 					} else {
 						$Country_name_pie[] = $row['country'];
 					}
-
 				}
 				
 			echo "
@@ -651,97 +685,21 @@ echo '
 				$nb_countries++;
 			}
 
-
-#####################################################################################################################################
-################################################## CAMENBERT With GD ################################################################
-
-	if ($gdv = gdVersion()) {
-		if ($gdv >=2) {
-			//echo 'TrueColor functions may be used.';
-			$GD_ver = 'TrueColor';
-		} else {
-			//echo 'GD version is 1.  Avoid the TrueColor functions.';
-			$GD_ver = 'NOT_TrueColor';
-		}
-	} else {
-		//echo "The GD extension isn't loaded.";
-		$GD_ver = 'NOT_loaded';
-	}
-
-//--------------------------------------------------------------------------------------------------------------------------------------------     
-if ($GD_ver == 'TrueColor' && $total_differents_countries > 0) {
-
-	///* ---------------------------------------------------- 
-
-/*
-	//Todo 
-	- https://limesurvey.svn.sourceforge.net/svnroot/limesurvey/source/limesurvey/classes/pchart/pchart/
-	- http://wiki.pchart.net/doc.installation.html --> pchart 2.0
-	- http://www.pchart.net/download
-
-	 $pChart_path = 'lib/pChart2.1.0';
-	 
-	 // Standard inclusions   v2.1.0
-	 include_once($pChart_path.'/class/pData.class.php');
-	 include_once($pChart_path.'/class/pDraw.class.php');
-	 include_once($pChart_path.'/class/pImage.class.php');
-*/
-
-	
-	//    Example10 : A 3D exploded pie graph
-	
-	 $pChart_path = 'lib/pChart.1.27d_GD';
-
-	 // Standard inclusions   v1.27
-	 include_once($pChart_path.'/pChart/pData.class');
-	 include_once($pChart_path.'/pChart/pChart.class');
-	
-	 // Dataset definition 
-	 $DataSet = new pData;
-	
-	 $DataSet->AddPoint($Country_visitors_pie,"Serie1");
-	 $DataSet->AddPoint($Country_name_pie,"Serie2");
-	
-	 $DataSet->AddAllSeries();
-	 $DataSet->SetAbsciseLabelSerie("Serie2");
-	
-	 // Initialise the graph
-	 $Test = new pChart(550,350);
-	 $Test->loadColorPalette($pChart_path.'/includes/tones-20c.txt'); // Ajouter pour le camenbert + de couleurs cycliques
-	
-	 // Draw the pie chart
-	 $Test->setShadowProperties(0,0,200,200,200); // Ajouter
-	 $Test->setFontProperties($pChart_path.'/Fonts/tahoma.ttf',7);
-	 $Test->AntialiasQuality = 0;
-	
-	 //														position hrz camenbert, position hte camenbert, diamètre, PIE_PERCENTAGE_LABEL, FALSE, perspective, hauteur camenbert, espace tranches
-	 $Test->drawPieGraph($DataSet->GetData(),$DataSet->GetDataDescription(),270,150,180,PIE_PERCENTAGE_LABEL,TRUE,50,20,5); //(org = TRUE,60,20,5);) --> pas mal TRUE,40,20,5);
-	
-	//Graph TITLE
-	if ($nb_countries > $first_show_countries) {	
-		$Test->setFontProperties($pChart_path.'/Fonts/tahoma.ttf',10);  
-		$Test->setShadowProperties(1,1,0,0,0);  
-		$Test->drawTitle(0,0,"Top ".$first_show_countries." Countries",0,0,0,550,50,TRUE); 
-		$Test->clearShadow();  
-	}
-
-	//Le répertoire cache n'est pas dans le pack d'install, car si update pour ne pas vider le cache du client  
-	if (!is_dir(dirname(__FILE__)."/cache")) {
-		mkdir (dirname(__FILE__)."/cache");
-	}
-
-	 $Test->Render("cache/graph_org_geo_day_temp.png");
-	
-     echo "
-	 <tr>
-	 <td colspan=\"3\" style=\"".$td_data_CSS." text-align: center;\">
-	 	<img src=\"cache/graph_org_geo_day_temp.png\"/>
-	</td>
-	</tr>";
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------     
-	 
-	 echo '</table></td></tr></table></td></tr></table><br />';
-
-
+			################################################################
+			################### CAMENBERT With GD ##########################
+		
+			if($total_differents_countries > 0) {
+				create_img_piegraph('graph_org_geo_day_temp.png', $Country_visitors_pie, $Country_name_pie, $first_show_countries, $total_differents_countries);
+			
+				$rand = rand(); // To force refresh img.png if mod expire is insatlled on server and cache img.png
+				echo "
+				<tr>
+				<td colspan=\"3\" style=\"".$td_data_CSS." text-align: center;\">
+					<img src=\"cache/graph_org_geo_day_temp.png?rand=".$rand."\"/>
+				</td>
+				</tr>";
+			}
+			// ---------------------------------------------------
+		 
+			echo '</table></td></tr></table></td></tr></table><br />';
 ?>    

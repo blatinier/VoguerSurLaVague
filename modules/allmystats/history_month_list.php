@@ -1,16 +1,16 @@
 <?php
 /*
   -------------------------------------------------------------------------
- AllMyStats V1.75 - Statistiques site web - Web traffic analysis
+ AllMyStats V1.80 - Statistiques site web - Web traffic analysis
  -------------------------------------------------------------------------
- Copyright (C) 2008-2010 - Herve Seywert
+ Copyright (C) 2008 - 2013 - Herve Seywert
  copyright-GNU-xx.txt
  -------------------------------------------------------------------------
  Web:    http://allmystats.wertronic.com - http://www.wertronic.com
  -------------------------------------------------------------------------
 */
 
-	// ---------------- Ne doit pas être appelé directement -------------------
+	// ---------------- Should not be called directly -------------------
 	if(strrchr($_SERVER['PHP_SELF'] , '/' ) == '/history_month_list.php' ){ 
 		header('Location: index.php');
 	}
@@ -42,12 +42,20 @@
 				$row = mysql_fetch_array($result);
 				$PagesView_HorsBots = $row['total_pages_view'];
 				$Visits_HorsBots = $row['nb_visitors'];
-		
-				//On ajoute Visitors et pages visitées des user agent inconnus
-				$result = mysql_query("select count(*) as nb_visitors, sum(visits) as total_pages_view from ".TABLE_UNIQUE_BAD_AGENT." where date like '%".$row_date['date']."' and type='I'"); 
+/*		
+				//On ajoute Visitors et pages visitées des user agent inconnus --> NO NO
+				// 2013-04-16 - Standardization of the date
+				$exd_month_date = explode('/', $row_date['date']);
+				if (isset($exd_month_date[2]) && $exd_month_date[2]) { // by day
+					$MySQL_month_date = $exd_month_date[2].'-'.$exd_month_date[1].'-'.$exd_month_date[0];
+				} else { // by month
+					$MySQL_month_date = $exd_month_date[1].'-'.$exd_month_date[0];
+				}
+				$result = mysql_query("select count(*) as nb_visitors, sum(visits) as total_pages_view from ".TABLE_UNIQUE_BAD_AGENT." where date like '".$MySQL_month_date."%' and type='I'"); 
 				$row_bad_agent = mysql_fetch_array($result);
 				$PagesView_HorsBots = $PagesView_HorsBots + $row_bad_agent['total_pages_view'];
 				$Visits_HorsBots =  $Visits_HorsBots + $row_bad_agent['nb_visitors'];
+*/
 
 				$result = mysql_query("select count(*) as nb_visitors, sum(visits) as total_pages_view from ".TABLE_UNIQUE_BOT." where date like '".$row_date['date']."'");
 				$row = mysql_fetch_array($result);
@@ -105,7 +113,4 @@ echo '
 
 echo '
 </table></td></tr></table></td></tr></table><br>';
-
-################################################################################################################
-
 ?>

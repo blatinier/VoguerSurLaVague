@@ -82,6 +82,11 @@ define('MSG_DIRECTORIE_INSTALL_EXIST','Каталог установки / эт�
 define('MSG_COMPLETE_LIST','Показать полный список');
 define('MSG_SHORTLIST','Показывать короткий список');
 
+//--------------- General ---------------
+define('MSG_HOUR', 'Hour');
+
+// --------------------------------------
+
 //--------------------------------------------------------------
 define('MSG_EXCLUDED_BOTS','Исключенные ботов');
 define('MSG_VISITED_PAGES_BY_BOTS','посещенных страниц по ботов');
@@ -96,6 +101,7 @@ define('MSG_DETAILS_UNKNOWN_BOTS','Подробная информация о р
 define('MSG_BOTS_OS_BROWSER_UNKNOWN','Агент пользователя: ОС, браузеры, Роботы Непризнанные');
 define('MSG_BAD_USER_AGENT_S_I','плохой агент пользователя СПАМ (S) и<br />агент пользователя неизвестна (I)'); //Not use 08-10-2010
 define('MSG_USER_AGENT','Пользователь агент');
+define('MSG_LEFT_VISITORS', 'Посетители ????');
 
 //----- New - 10-10-2010 ----------
 define('MSG_USER_AGENT_SPAM', 'Spam (S)');
@@ -135,6 +141,11 @@ define('MSG_ADMIN_TOOLS_CHGT_PASSW','Смена пользователя и па
 define('MSG_ADMIN_TOOLS_CHGT_USER_PASSW_SUCCESS','пользователя и пароль были успешно изменен');
 define('MSG_ADMIN_TOOLS_CONFIRM_PASSW_OUT','Подтверждение пароль неверный');
 
+define('MSG_ADMIN_DOWNLOAD_GEOIP_DAT', '<strong>Geolocation Update database:</strong> <a href="http://geolite.maxmind.com" target="_blank">(Maxmind)</a><br>
+You can download the GeoIP.dat file updated the: 05 each month<br>
+uncompress the file and replace it in your directory allmystats /lib/geoip/dat/<br>
+<a href="http://geolite.maxmind.com/download/geoip/database/GeoLiteCountry/GeoIP.dat.gz" target="_blank">Database download (commercial)</a><br>
+GeoIP country is a more accurate version (commercial): <a href="http://www.maxmind.com/fr/country" target="_blank">GeoIP country more accurate version (commercial)</a>');
 //-----------------------------------------------------------------
 //bad_user_agent
 define('MSG_BAD_USER_AGENT','Bad агент пользователя');
@@ -152,6 +163,18 @@ define('MSG_TOOLS_DELETE_SUCCESS','Было успешно удалено.');
 define('MSG_TOOLS_ADD_SUCCESS','был успешно добавлен в базу данных.');
 define('MSG_TOOLS_MODIFIE_SUCCESS','успешно');
 
+define('MSG_TOOLS_BOT_UPDATE_TABLE', '<strong>Udate table crawler<br>WARNING:</strong> the SQL table crawler will be fully replaced<br>');
+define('MSG_TOOLS_BOT_IMPORT_SUCCESS', '&nbsp;&nbsp;&nbsp;<strong>able: crawler has been imported successfully</strong><br>');
+define('MSG_TOOLS_BOT_IMPORT_HTTP', '1st solution: import the Crawler table maintained by AllMyStats<br>');
+define('MSG_TOOLS_BOT_IMPORT_LOCAL', '2nd solution: download the file .zip to this address:  <a href="http://allmystats.wertronic.com/download/sql_update/allmystats_crawler.zip" target="_blank">allmystats_crawler.zip</a><br>
+		unzip and put it in your directory allmystats/includes/sql/<br>');
+
+define('MSG_TOOLS_BAD_AGENT_UPDATE_TABLE', '<strong>Udate table Bad User Agent<br>WARNING:</strong> the SQL table Bad User Agent will be fully replaced<br>');
+define('MSG_TOOLS_BAD_AGENT_IMPORT_SUCCESS', '&nbsp;&nbsp;&nbsp;<strong>able: Bad User Agent has been imported successfully</strong><br>');
+define('MSG_TOOLS_BAD_AGENT_IMPORT_HTTP', '1st solution: import the Bad User Agent table maintained by AllMyStats<br>');
+define('MSG_TOOLS_BAD_AGENT_IMPORT_LOCAL', '2nd solution: download the file .zip to this address:  <a href="http://allmystats.wertronic.com/download/sql_update/allmystats_bad_user_agent.zip" target="_blank">allmystats_bad_user_agent.zip</a><br>
+		unzip and put it in your directory allmystats/includes/sql/<br>');
+
 //-----------------------------------------------------------------
 //-----------------------------------------------------------------
 define('MSG_CHECK','Check');
@@ -162,12 +185,13 @@ define('MSG_COOKIE_DELETED', 'The cookie is deleted');
 define('MSG_THIS_PC','IP of your current connection');
 define('MSG_VISITS_FROMTHIS_RECORDED','The visits from this computer are recorded in the statistics.');
 
-define('MSG_VISITS_FROMTHIS_RECORDED_DETAILS','For visits from this computer are not counted in the statistics,
-at least one of two options must be applied: <br />
-1 - <b> A cookie is to be installed. </ B> <br />
-2 - <b> The IP address of your connection must be defined in the config_allmystats.php file.');
+define('MSG_VISITS_FROMTHIS_RECORDED_DETAILS', "For visits from this computer are not counted in the statistics.
+<br>
+<b>A cookie must be installed.</b><br>.");
 
 define('MSG_IF_BROWSER_ACCEPT_COOKIES','If your browser accepts cookies');
+
+if(!isset($site)) { $site = ''; }
 define('MSG_VISITS_FROMTHIS_NOT_RECORDED','Visits of the site: '.$site.' made from this computer are not counted in the statistics.');
 
 define('MSG_COOKIE_AND_IP_INSTALLED','A cookie is installed and the IP address that this connection is defined in config_allmystats.php. <br />
@@ -197,20 +221,29 @@ define('MSG_INSTALL_TABLE_ALREADY_EXIST','--> This table already exists');
 define('MSG_INSTALL_ALL_TABLE_ALREADY_EXIST','<strong><font color=#FF0000>The tables already exist. If you want to reinstall AllMyStats, you should first remove the tables.</font></strong>');
 define('MSG_INSTALL_ONE_OR_TABLES_ALREADY_EXIST','<strong><font color=#FF0000>One or tables are already present, If you want to reinstall AllMyStats, you should first remove them.</font></strong>');
 define('MSG_INSTALL_TABLES_CREATED_SUCCESS','The MySQL tables were created successfully');
-define('MSG_INSTALL_COMPLETE','The installation is complete.<br /><font color=#FF0000>For security do not forget to delete the directory /install/</font>');
-define('MSG_BUTTON_NEXT_STEP','Next step');
+define('MSG_INSTALL_COMPLETE','The installation is complete.');
+define('MSG_BUTTON_NEXT_STEP', 'Procedure of your first connection'); // Next step
 define('MSG_INSTALL_MYSQL_CONNEXION_ERROR','The test database connection to MySQL failed');
+define('MSG_INSTALL_FORCE_INSTALL', "<strong>Or force installation</strong ><br>All tables MySQL AllMyStats will be removed and re-installed (is the same has a first installation)");
+define('MSG_INSTALL_CANCEL_INSTALL', "Cancel the installation");
+
+define('MSG_INSTALL_TIME_ZONE_SERVER', "Time zones of your server"); 
+define('MSG_INSTALL_DATE_TIME_SERVER', "Date and time of your server :"); 
+define('MSG_INSTALL_YOURPC_TIME', "Your PC displays :"); 
 
 //-----------------------------------------------------------------------------------------
 //-----------------------------------------------------------------------------------------
-define('MSG_NOTE_BAD_USER_AGENT','<b>For the experts</b><br />
-<b>Be careful not to define bots / user agent innocent!</b><br />
-You can block them if necessary with a file. htaccess<br /><br />
-Type = S (SPAM) is displayed in red list Bad user agent and is not counted as a visitor or as a bot<br />
-Type I = (Unknown bot) is counted as a visitor but not displayed.<br />
-The user agent is looking at the same (same string) and not in the chain.<br />
-<br /><b>Note:</b>if no bad user agent is detected from this list, painting Bad user agent will not be displayed.<br />
-See also: <a href=\'http://www.user-agents.org/\' target=\'_blank\'>user-agents.org : User agent list</a><br /><br />');
+define('MSG_NOTE_BAD_USER_AGENT', "<b>For the experts</b><br>
+<b>Be careful not to define bots / user agent innocent!</b><br>
+You can block them if necessary with file. htaccess<br><br>
+The User Agent detected by this list or config_add.php (\$detect_bad_by_reverseDNS and \$BadIpList) <strong>are not counted as a visitor or as a robot</strong>.<br>
+Type S : SPAM is red displayed in list Bad user agent.<br>
+Type I  : Unknown.<br>
+Type A : Other, to study.<br><br>
+<b>Note:</b><br>
+The user agent is compared to the same <strong>fully identical string</strong>.<br>
+<br>If no bad user agent is detected from this list, the section Bad user agent will not be displayed.<br>
+See also: <a href=\"http://www.user-agents.org/\" target=\"_blank\">user-agents.org : User agent list</a><br><br>");
 //-----------------------------------------------------------------------------------------
 
 //Add 23-09-2011

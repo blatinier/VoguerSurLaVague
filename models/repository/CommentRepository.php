@@ -36,15 +36,20 @@ class CommentRepository extends Repository {
 
     public function add($idarticle, $pseudo,
         $comment, $site, $ip) {
-        $req = "INSERT INTO comments(idarticle, moment, pseudo,
-                    commentaire, site, ip)
-                VALUES(%i, NOW(), %s, %s, %s, %s)";
-        $com = $this->mysql_connector->insert($req, $idarticle, $pseudo,
-                    $comment, $site, $ip);
-        $req = "INSERT INTO new_comments(idcom, idarticle)
-                VALUES(%s, %s)";
-        $mark = $this->mysql_connector->insert($req, $com['insert_id'], $idarticle);
-        return $com;
+        $country = geoip_country_code_by_name($ip);
+        error_log($country);
+        if (!in_array($country, array('US', 'CN', 'CA'))) {
+            error_log('Got through');
+            $req = "INSERT INTO comments(idarticle, moment, pseudo,
+                        commentaire, site, ip)
+                    VALUES(%i, NOW(), %s, %s, %s, %s)";
+            $com = $this->mysql_connector->insert($req, $idarticle, $pseudo,
+                        $comment, $site, $ip);
+            $req = "INSERT INTO new_comments(idcom, idarticle)
+                    VALUES(%s, %s)";
+            $mark = $this->mysql_connector->insert($req, $com['insert_id'], $idarticle);
+            return $com;
+        }
     }
 
     public function mark_all_read () {
