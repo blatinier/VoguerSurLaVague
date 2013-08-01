@@ -1,27 +1,26 @@
 <?php
 /*
   -------------------------------------------------------------------------
- AllMyStats V1.75 - Statistiques site web - Web traffic analysis
+ AllMyStats V1.80 - Statistiques site web - Web traffic analysis
  -------------------------------------------------------------------------
- Copyright (C) 2008-2010 - Herve Seywert
+ Copyright (C) 2008 - 2013 - Herve Seywert
  copyright-GNU-xx.txt
  -------------------------------------------------------------------------
  Web:    http://allmystats.wertronic.com - http://www.wertronic.com
  -------------------------------------------------------------------------
 */
-//################################################################################################
+
 	// ----------------------------- Login -------------------------------------------------------
 
 		include_once('application_top.php');
 		require ("config_allmystats.php");
 		require_once("includes/filename.php");
-		require ("includes/languages/".$langue."/main.php");
 
 		if(!$error_login) {
 			$error_login = 5;
 		}
 
-		if($_SESSION['errorlog'] == 'BLOCKED') {
+		if(isset($_SESSION['errorlog']) && $_SESSION['errorlog'] == 'BLOCKED') {
 			echo '<p align="center"><font color="#FF0000"><strong>
 			Multiple erreurs login, vous devez fermer complètement votre navigateur web.<br>
 			Multiple login errors, you must close your browser completely.<br>
@@ -29,7 +28,7 @@
 			session_unset();	//remove all the variables in the session
 			$_SESSION['errorlog'] = 'BLOCKED';
 			exit;
-		} elseif ($_SESSION['errorlog'] >= $error_login){
+		} elseif (isset($_SESSION['errorlog']) && $_SESSION['errorlog'] >= $error_login){
 
 			// ----------------- Write Multiple error loging ------------------------------
 			$file_log_name = 'loging_error.php';
@@ -51,6 +50,7 @@
 			}
 			fclose($fp);
 
+			$end_header = '';
 			for($nb = 0; $nb < count($old_Tab_log); $nb++){ // Num line end head
 				if (strstr($old_Tab_log[$nb],"?>")) {
 					$end_header = $nb + 2;
@@ -66,6 +66,7 @@
 			$record_name = geoip_country_name_by_addr($handle, $_SERVER['REMOTE_ADDR']);
 			@geoip_close($handle);
 			
+			$histo_data = '';
 			for($nb = $end_header; $nb < count($old_Tab_log); $nb++){ // 
 				if($nb < ($nb_max_HistoRecord_log + $end_header) - 1) { // - 1 new line - Nb max save login histo
 					$histo_data .= $old_Tab_log[$nb];
@@ -97,6 +98,9 @@
 			$_SESSION['errorlog'] = 'BLOCKED';
 			exit;
 		}
+		
+		if(!isset($_SESSION['userlogin'])) { $_SESSION['userlogin'] = ''; }
+		if(!isset( $_SESSION['userpass'])) {  $_SESSION['userpass'] = ''; }
 
 		if($user_login != $_SESSION['userlogin'] || $passwd != $_SESSION['userpass'])	{
 				?>
@@ -104,9 +108,9 @@
 				"http://www.w3.org/TR/html4/loose.dtd">
 				<html>
 				<head>
-				<title>AllMyStats - <? echo $site; ?> Web Traffic Analysis</title>
+				<title>AllMyStats - <?php echo $site; ?> Web Traffic Analysis</title>
 				<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-				<meta name="Description" content="AllMystats - Statistiques et analyse de sites Web en temps réel, mesure de l'audience de site Internet - Web Traffic Analysis solution, statistics and analysis of Web sites in real-time, audience measurement of website, program in php, hébergement de site e-commerce." />
+				<meta name="Description" content="AllMystats - Web Traffic Analysis solution, statistics and analysis for Web sites in real-time, traffic report of website to track visitor behavior." />
 				
 				<link rel="stylesheet" type="text/css" href="stylesheet.css">
 				</head>
@@ -114,6 +118,7 @@
 				<?php
 
 				include(FILENAME_DISPLAY_HEADER);
+
 				?>
 				<p>&nbsp;</p>
 				<p>&nbsp;</p>
@@ -122,9 +127,9 @@
 				<tr><td>
 					<table align="center" border="0" cellspacing="0" cellpadding="4">
 					<tr>		
-					<td><?php echo 'Login: '; ?></td><td><input name="userlogin" value="<?php echo $userlogin; ?>" type='text' maxlength='20' size='20'/></td></tr>
+					<td><?php echo 'Login: '; ?></td><td><input name="userlogin" value="<?php echo $_SESSION['userlogin']; ?>" type='text' maxlength='20' size='20'/></td></tr>
 					<tr><td></td><td></td></tr>
-					<tr><td><?php echo 'Password: ' ; ?></td><td><input name="userpass" value="<?php echo $userpass; ?>" type='password' maxlength='20' size='20'/></td></tr>
+					<tr><td><?php echo 'Password: ' ; ?></td><td><input name="userpass" value="<?php echo $_SESSION['userpass']; ?>" type='password' maxlength='20' size='20'/></td></tr>
 					<tr><td colspan="2" align="center"><input name="submitlogin" type="submit" value="OK"></td></tr>
 					</table>
 				</td></tr>
@@ -136,20 +141,6 @@
 					<td align="center"><?php include(FILENAME_DISPLAY_FOOTER); ?></td>
 				  </tr>
 				</table>
-				<br /><br /><br />
-				<div align="center">
-				<script type="text/javascript"><!--
-				google_ad_client = "ca-pub-1405094144891903";
-				/* 468x60, date de création 27/10/11 */
-				google_ad_slot = "5494823318";
-				google_ad_width = 468;
-				google_ad_height = 60;
-				//-->
-				</script>
-				<script type="text/javascript"
-				src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
-				</script>
-				</div>				
 			</body>
 			</html>
 			<?php
@@ -157,7 +148,4 @@
 		 } else {
 			//echo 'TEST: is logged';
 		 }
-######################################################################################################
-
-
 ?>

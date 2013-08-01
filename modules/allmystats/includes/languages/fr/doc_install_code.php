@@ -1,9 +1,9 @@
 <?php
 /*
   -------------------------------------------------------------------------
- AllMyStats V1.75 - Statistiques site web - Web traffic analysis
+ AllMyStats V1.80 - Statistiques site web - Web traffic analysis
  -------------------------------------------------------------------------
- Copyright (C) 2008-2010 - Herve Seywert
+ Copyright (C) 2008 - 2013 - Herve Seywert
  copyright-GNU-xx.txt
  -------------------------------------------------------------------------
  Web:    http://allmystats.wertronic.com - http://www.wertronic.com
@@ -11,7 +11,57 @@
 */
 $pathrel = dirname($_SERVER["PHP_SELF"]);
 
-echo "<br>
+echo '
+<table width="90%"  border="0" align="center" cellpadding="5">
+        <tr>
+          <td>
+                Le fait d\'apporter une aide financi&egrave;re sera la bienvenue, mais sera aussi une reconnaissance du travail accomplie et un encouragement pour continuer le d&eacute;veloppement d\'AllMyStats.
+              <table  border="0" align="center" cellpadding="0">
+                <tr>
+                  <td align="center"><form action="https://www.paypal.com/cgi-bin/webscr" target="_blank" method="post">
+                      <input type="hidden" name="cmd" value="_xclick" />
+                      <input type="hidden" name="business" value="pcb@wertronic.com" />
+                      <input type="hidden" name="item_name" value="AllMySats" />
+                      <input type="hidden" name="item_number" value="AllMyStats - Script statistiques site Internet" />
+                      <input type="hidden" name="amount" value="5.00" />
+                      <input type="hidden" name="no_shipping" value="2" />
+                      <input type="hidden" name="no_note" value="1" />
+                      <input type="hidden" name="currency_code" value="EUR" />
+                      <input type="hidden" name="tax" value="0" />
+                      <input type="hidden" name="bn" value="IC_Sample" />
+                      <input type="image" src="https://www.sandbox.paypal.com/fr_FR/i/btn/x-click-but04.gif" border="0" name="submit" />
+                      <img alt="" border="0" src="https://www.paypal.com/fr_FR/i/scr/pixel.gif" width="1" height="1" /><br />
+                      <strong>5 Euros</strong>
+                  </form></td>
+                  <td align="center" valign="middle">OU&nbsp;</td>
+                  <td align="center"><form action="https://www.paypal.com/cgi-bin/webscr" target="_blank" method="post">
+                      <input type="hidden" name="cmd" value="_xclick" />
+                      <input type="hidden" name="business" value="pcb@wertronic.com" />
+                      <input type="hidden" name="item_name" value="AllMySats" />
+                      <input type="hidden" name="item_number" value="AllMyStats - Script statistiques site Internet" />
+                      <input type="hidden" name="amount" value="10.00" />
+                      <input type="hidden" name="no_shipping" value="2" />
+                      <input type="hidden" name="no_note" value="1" />
+                      <input type="hidden" name="currency_code" value="EUR" />
+                      <input type="hidden" name="tax" value="0" />
+                      <input type="hidden" name="bn" value="IC_Sample" />
+                      <input type="image" src="https://www.sandbox.paypal.com/fr_FR/i/btn/x-click-but04.gif" border="0" name="submit" />
+                      <img alt="" border="0" src="https://www.paypal.com/fr_FR/i/scr/pixel.gif" width="1" height="1" /><br />
+                      <strong>10 Euros</strong>
+                  </form></td>
+                  <td valign="top">Nous pouvons vous<br />
+				  fournir une facture<br />
+				  sur <a href="http://allmystats.wertronic.com/demande/renseignement.php" target="_blank">demande</a>.
+				  </td>
+                </tr>
+              </table>
+		   </td>
+          </tr>
+      </table>';
+
+
+echo "
+<br>
 &nbsp;&nbsp;<strong>Annuaire :</strong> Inscription r&eacute;serv&eacute; aux sites sur lesquels AllMyStats installé.
 <br>
 &nbsp;&nbsp;<a href=\"http://allmystats.wertronic.com/web_annuaire/info/useCondition\" target=\"_blank\">Inscription</a>

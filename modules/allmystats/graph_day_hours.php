@@ -1,17 +1,18 @@
 <?php
 /*
   -------------------------------------------------------------------------
- AllMyStats V1.75 - Statistiques site web - Web traffic analysis
+ AllMyStats V1.80 - Statistiques site web - Web traffic analysis
  -------------------------------------------------------------------------
- Copyright (C) 2008-2010 - Herve Seywert
+ Copyright (C) 2008 - 2013 - Herve Seywert
  copyright-GNU-xx.txt
  -------------------------------------------------------------------------
  Web:    http://allmystats.wertronic.com - http://www.wertronic.com
  -------------------------------------------------------------------------
 TODO Optimise code
+$graph_visitors_pages == 1 IS OBSOLETE --> TODO delete code
 */
 
-	// ---------------- Ne doit pas être appelé directement -------------------
+	// ---------------- Should not be called directly -------------------
 	if(strrchr($_SERVER['PHP_SELF'] , '/' ) == '/graph_day_hours.php' ){ 
 		header('Location: index.php'); //Si appelle direct de la page redirect
 	}
@@ -19,7 +20,12 @@ TODO Optimise code
 
 	//for graph left here (for admin and stats in)
 	$td_data_graph_CSS = 'border-width: 0px 0px 0px 0px; border-collapse: collapse; padding: 0px;';
-	//$td_data_graph_CSS = 'border: 1px solid #000000; border-collapse: collapse; padding: 0px;'; //test
+
+	$max_pages = 0;
+	$max_visitors = 0;
+	$echy_visitors_MaxHauteur = 0;
+	$echy_pages_MaxHauteur = 0;
+	$hauteur = 0;
 
 	#####################################################################################################
 	######################### Visites par plage horaire #################################################
@@ -122,12 +128,12 @@ TODO Optimise code
 			$i++;
 		}
 
-
 ##########################################################################################################
 //												GRAPHS
 ##########################################################################################################
-//$graph_visitors_pages = 2; // Dans allmystats_config.php
-if ($graph_visitors_pages == 1) {
+$graph_visitors_pages = 2; // $graph_visitors_pages = 1 is OBSOLETE
+
+if ($graph_visitors_pages == 1) { // IS OBSOLETE ($graph_visitors_pages = 1)
 ##########################################################################################################
 // 											SIMPLE GRAPH 
 ##########################################################################################################
@@ -235,7 +241,8 @@ if ($graph_visitors_pages == 1) {
 			  for($i=1; $i <= 24; $i++){
 				$hour = "v_heure$i";
 				$indice = bcdiv($$hour, $max_visitors, 2); $hauteur = bcmul($indice, $height_graph, 2);
-				if ($echy_visitors_MaxHauteur <= $hauteur) { $echy_visitors_MaxHauteur = $hauteur; }
+				if(!isset($echy_visitors_MaxHauteur)) { $echy_visitors_MaxHauteur = ''; }
+				if($echy_visitors_MaxHauteur <= $hauteur) { $echy_visitors_MaxHauteur = $hauteur; }
 			  }
 			} else { // pour ne pas afficher 0 si $max_visitors = 0
 				$EchyMin_visitors  = '';	
@@ -314,7 +321,6 @@ if ($graph_visitors_pages == 1) {
 			</td>
 		</tr></tr>"; //espace entre les 2 graphs
 
-
 		//######################### Graph  page visitées) ##############################################
 
 			//Hauteur graph
@@ -326,6 +332,7 @@ if ($graph_visitors_pages == 1) {
 			  for($i=1; $i <= 24; $i++){
 				$hour = "heure$i";
 				$indice = bcdiv($$hour,$max_pages,2); $hauteur = bcmul($indice, $height_graph, 2);
+				if(!isset($echy_pages_MaxHauteur)) { $echy_pages_MaxHauteur = ''; }
 				if ($echy_pages_MaxHauteur <= $hauteur) { $echy_pages_MaxHauteur = $hauteur; }
 			  }
 			} else { // pour ne pas afficher 0 si $max_pages = 0
@@ -395,7 +402,6 @@ if ($graph_visitors_pages == 1) {
 				</td></tr></table>
 				</td></tr>
 				</table><br />";
-
 }
 //#################################################################################################
 //#################################################################################################

@@ -1,32 +1,36 @@
 <?php
 /*
   -------------------------------------------------------------------------
- AllMyStats V1.75 - Statistiques site web - Web traffic analysis
+ AllMyStats V1.80 - Statistiques site web - Web traffic analysis
  -------------------------------------------------------------------------
- Copyright (C) 2008-2010 - Herve Seywert
+ Copyright (C) 2008 - 2013 - Herve Seywert
  copyright-GNU-xx.txt
  -------------------------------------------------------------------------
  Web:    http://allmystats.wertronic.com - http://www.wertronic.com
  -------------------------------------------------------------------------
-*/
-// on doit envoyé $mois avant
-//TODO no count bad user agent
 
-	// ---------------- Ne doit pas être appelé directement -------------------
+$graph_visitors_pages == 1 IS OBSOLETE --> TODO delete code
+*/
+
+// on doit envoyé $mois avant
+
+	// ---------------- Should not be called directly -------------------
 	if(strrchr($_SERVER['PHP_SELF'] , '/' ) == '/graph_month_days.php' ){ 
 		header('Location: index.php'); //Si appelle direct de la page redirect
 	}
 	// ------------------------------------------------------------------------
-
 	
 	//for graph left here (for admin and stats in)
 	$td_data_graph_CSS = 'border-width: 0px 0px 0px 0px; border-collapse: collapse; padding: 0px;';
-	//$td_data_graph_CSS = 'border: 1px solid #000000; border-collapse: collapse; padding: 0px;'; //test
+
+if(!isset($StatsIn_in_prot_dir)) { $StatsIn_in_prot_dir = ''; } // Si n'est pas include de stats_in
+	
+$graph_visitors_pages = 2; // $graph_visitors_pages = 1 is OBSOLETE
 
 			//#########################################################################################
 			//						 		Simple GRAPH month by day
 			//#########################################################################################
-		if ($graph_visitors_pages == 1) {
+		if ($graph_visitors_pages == 1) { // IS OBSOLETE ($graph_visitors_pages = 1)
 
 			if($time_test == true) {
 				$start = (float) array_sum(explode(' ',microtime()));  
@@ -42,20 +46,40 @@
 			$max_pages = "";
 			$result = mysql_query("select date, visited_pages, sum(visited_pages) as total_visited_page from ".TABLE_DAYS_PAGES." where date like '%".$mois."' GROUP BY date");
 			while($row = mysql_fetch_array($result)){ //while sur nb jour
+/*				
+				//On ajoute Visitors et pages visitées des user agent inconnus --> NO NO
+				$exd_month_date = explode('/', $row['date']);
+				if (isset($exd_month_date[2]) && $exd_month_date[2]) { // by day
+					$MySQL_month_date = $exd_month_date[2].'-'.$exd_month_date[1].'-'.$exd_month_date[0];
+				} else { // by month
+					$MySQL_month_date = $exd_month_date[1].'-'.$exd_month_date[0];
+				}
 				$result_unknown_agent = mysql_query("select sum(visits) as total_visited_page from ".TABLE_UNIQUE_BAD_AGENT." where date='".$row['date']."' and type='I'");
 				$row_unknown_agent = mysql_fetch_array($result_unknown_agent);
+				$unknown_agent_total_visited_page = $row_unknown_agent['total_visited_page'];
+*/				
+				$unknown_agent_total_visited_page = 0; //On ajoute Visitors et pages visitées des user agent inconnus --> NO NO
 				
 				if($row['total_visited_page'] + $row_unknown_agent['total_visited_page'] > $max_pages){
-					$max_pages = $row['total_visited_page'] + $row_unknown_agent['total_visited_page']; // Pour chaque jour On ajoute pages visitées des user agent inconnus
+					$max_pages = $row['total_visited_page'] + $unknown_agent_total_visited_page; // Pour chaque jour On ajoute pages visitées des user agent inconnus
 				}
-				$total_nb_pages_visitees = $total_nb_pages_visitees + $row['total_visited_page'] + $row_unknown_agent['total_visited_page'];
+				$total_nb_pages_visitees = $total_nb_pages_visitees + $row['total_visited_page'] + $unknown_agent_total_visited_page;
 			}
 		
 			$result = mysql_query("select * from ".TABLE_UNIQUE_VISITOR." where date like '%".$mois."'");
 			$total_nb_visiteurs = mysql_num_rows($result);
-			//On ajoute Visitors des user agent inconnus
-			$result = mysql_query("select *  from ".TABLE_UNIQUE_BAD_AGENT." where date like '%".$mois."' and type='I'"); 
+/*			
+			//On ajoute Visitors des user agent inconnus --> NO NO
+			// 2013-04-16 - Standardization of the date
+			$exd_month_date = explode('/', $mois);
+			if (isset($exd_month_date[2]) && $exd_month_date[2]) { // by day
+				$MySQL_month_date = $exd_month_date[2].'-'.$exd_month_date[1].'-'.$exd_month_date[0];
+			} else { // by month
+				$MySQL_month_date = $exd_month_date[1].'-'.$exd_month_date[0];
+			}
+			$result = mysql_query("select *  from ".TABLE_UNIQUE_BAD_AGENT." where date like '".$MySQL_month_date."%' and type='I'"); 
 			$total_nb_visiteurs =  $total_nb_visiteurs + mysql_num_rows($result);
+*/
 			//--------------------------------------------------------------------
 		
 			$graph_byday .= "
@@ -113,12 +137,20 @@
 						$result_uniq_visits = mysql_query("select date from ".TABLE_UNIQUE_VISITOR." where date='".$row['date']."'");
 						$data_graph[$n_day][1] = $row['total_visited_page_day'];
 						$data_graph[$n_day][0] = mysql_num_rows($result_uniq_visits);
-		
-						//On ajoute Visitors et pages visitées des user agent inconnus
-						$result_bad_agent = mysql_query("select count(*) as nb_visitors, sum(visits) as total_pages_view from ".TABLE_UNIQUE_BAD_AGENT." where date='".$row['date']."' and type='I'"); 
+/*		
+						//On ajoute Visitors et pages visitées des user agent inconnus --> NO NO
+						// 2013-04-16 - Standardization of the date
+						$exd_month_date = explode('/', $row['date']);
+						if (isset($exd_month_date[2]) && $exd_month_date[2]) { // by day
+							$MySQL_month_date = $exd_month_date[2].'-'.$exd_month_date[1].'-'.$exd_month_date[0];
+						} else { // by month
+							$MySQL_month_date = $exd_month_date[1].'-'.$exd_month_date[0];
+						}
+						$result_bad_agent = mysql_query("select count(*) as nb_visitors, sum(visits) as total_pages_view from ".TABLE_UNIQUE_BAD_AGENT." where date='".$MySQL_month_date."' and type='I'"); 
 						$row_bad_agent = mysql_fetch_array($result_bad_agent);
 						$data_graph[$n_day][0] =  $data_graph[$n_day][0] + $row_bad_agent['nb_visitors'];
 						$data_graph[$n_day][1] = $data_graph[$n_day][1] + $row_bad_agent['total_pages_view'];
+*/
 					}
 		
 					// for chaque jour du mois
@@ -189,7 +221,15 @@
 				//#############################################################################################################
 				//									DOUBLE GRAPH /HEURE VISITEURS DOUBLE
 				//#############################################################################################################	
-				if($time_test == true) {
+				$max_pages = 0;
+				$max_visitors = 0;
+				$total_nb_visiteurs = 0;
+				$total_nb_pages_visitees = 0;
+				$echy_visitors_MaxHauteur = 0;
+				$echy_pages_MaxHauteur = 0;
+				$hauteur = 0;
+				
+				if(isset($time_test) && $time_test == true) {
 					$start = (float) array_sum(explode(' ',microtime()));  
 				}
 					
@@ -227,6 +267,7 @@
 		
 				//Max visitors and Max pages
 				//unset($data_graph);
+				$n_day = 0;
 				$result = mysql_query("select date, sum(visitors) as total_visitors_day, sum(visited_pages) as total_visited_page_day from ".TABLE_DAYS_PAGES." where date like '%".$mois."' GROUP BY date");
 				while($row = mysql_fetch_array($result)){ //while sur nb jour
 		
@@ -236,19 +277,29 @@
 					$result_uniq_visits = mysql_query("select date from ".TABLE_UNIQUE_VISITOR." where date='".$row['date']."'");
 					$data_graph[$n_day][1] = $row['total_visited_page_day'];
 					$data_graph[$n_day][0] = mysql_num_rows($result_uniq_visits);
-		
-					//On ajoute Visitors et pages visitées des user agent inconnus
-					$result_bad_agent = mysql_query("select count(*) as nb_visitors, sum(visits) as total_pages_view from ".TABLE_UNIQUE_BAD_AGENT." where date='".$row['date']."' and type='I'"); 
+/*		
+					//On ajoute Visitors et pages visitées des user agent inconnus --> NO NO
+					$exd_month_date = explode('/', $row['date']);
+					if (isset($exd_month_date[2]) && $exd_month_date[2]) { // by day
+						$MySQL_month_date = $exd_month_date[2].'-'.$exd_month_date[1].'-'.$exd_month_date[0];
+					} else { // by month
+						$MySQL_month_date = $exd_month_date[1].'-'.$exd_month_date[0];
+					}
+					$result_bad_agent = mysql_query("select count(*) as nb_visitors, sum(visits) as total_pages_view from ".TABLE_UNIQUE_BAD_AGENT." where date='".$MySQL_month_date."' and type='I'"); 
 					$row_bad_agent = mysql_fetch_array($result_bad_agent);
 					$data_graph[$n_day][0] =  $data_graph[$n_day][0] + $row_bad_agent['nb_visitors'];
 					$data_graph[$n_day][1] = $data_graph[$n_day][1] + $row_bad_agent['total_pages_view'];
+*/
 				}
 		
 				// for chaque jour du mois
 				for($cpt_jour = 1 ; $cpt_jour <= $n_day; $cpt_jour++) { 
-		
-					if($data_graph[$cpt_jour][1] + $row_unknown_agent['total_visited_page'] > $max_pages){
-						//TODO $row_unknown_agent['total_visited_page'] for double graph
+					
+					if(!isset($data_graph[$cpt_jour][1])) { $data_graph[$cpt_jour][1] = 0; }
+					if(!isset($data_graph[$cpt_jour][0])) { $data_graph[$cpt_jour][0] = 0; }
+					
+					if($data_graph[$cpt_jour][1] > $max_pages){
+						//TODO $row_unknown_agent['total_visited_page'] for double graph --> NO
 						//$max_pages = $data_graph[$cpt_jour][1] + $row_unknown_agent['total_visited_page']; // Pour chaque jour On ajoute pages visitées des user agent inconnus
 						$max_pages = $data_graph[$cpt_jour][1]; // Pour chaque jour On ajoute pages visitées des user agent inconnus
 					}
@@ -296,7 +347,7 @@
 					  <table style=\"".$table_frame_CSS."\">
 						<tr>
 						  <td style=\"width:5%; white-space:nowrap;\">"; //width: 8%; in px ne fonctionne pas
-							 if ($StatsIn_in_prot_dir <> 'Y') { // if use stats_in and is in protected directory --> the images can be displayed
+							 if (isset($StatsIn_in_prot_dir) && $StatsIn_in_prot_dir <> 'Y') { // if use stats_in and is in protected directory --> the images can be displayed
 								$graph_byday .= "
 									&nbsp;&nbsp;<img src=\"".$path_allmystats_abs."images/icons/icon_chart.gif\" height=\"32px\" alt=\"".MSG_GRAPH_DAY_VISITORS_PAGES." (".MSG_EXCLUDED_BOTS.") - ".$mois.")\" title=\"".MSG_GRAPH_DAY_VISITORS_PAGES." (".MSG_EXCLUDED_BOTS.") - ".$mois."\">";
 							 }
@@ -324,6 +375,9 @@
 									</td>";
 			
 						for($cpt_jour = 1 ; $cpt_jour <= $nbjourdumois; $cpt_jour++) {  //Axe x
+
+							if(!isset($data_graph[$cpt_jour][0])) { $data_graph[$cpt_jour][0] = 0; }
+
 							$graph_byday .= "
 							<td rowspan=\"2\" style=\"".$td_data_graph_CSS." text-align: center; vertical-align: bottom;\">";
 							if($max_visitors != 0) {
@@ -389,6 +443,9 @@
 							</td>";
 
 					for($cpt_jour = 1 ; $cpt_jour <= $nbjourdumois; $cpt_jour++) { 
+
+						if(!isset($data_graph[$cpt_jour][1])) { $data_graph[$cpt_jour][1] = 0; }
+					
 						$graph_byday .= "
 						<td rowspan=\"2\" style=\"".$td_data_graph_CSS." text-align: center; vertical-align: bottom;\">";
 						if($max_visitors != 0) {
@@ -439,7 +496,7 @@
 				</td></tr>
 				</table><br />";
 							
-				if($time_test == true) {
+				if(isset($time_test) && $time_test == true) {
 					$end = (float) array_sum(explode(' ',microtime()));  
 					echo "<pre>										Double Graph month days Traitement : ".sprintf("%.4f", $end-$start) . ' sec</pre>';  
 				}

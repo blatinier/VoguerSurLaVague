@@ -1,9 +1,9 @@
 <?php
 /*
   -------------------------------------------------------------------------
- AllMyStats V1.75 - Statistiques site web - Web traffic analysis
+ AllMyStats V1.80 - Statistiques site web - Web traffic analysis
  -------------------------------------------------------------------------
- Copyright (C) 2008-2010 - Herve Seywert
+ Copyright (C) 2008 - 2013 - Herve Seywert
  copyright-GNU-xx.txt
  -------------------------------------------------------------------------
  Web:    http://allmystats.wertronic.com - http://www.wertronic.com
@@ -81,6 +81,10 @@ define('MSG_DIRECTORIE_INSTALL_EXIST', "Le r&eacute;pertoire install/ est pr&eac
 define('MSG_COMPLETE_LIST', 'Afficher liste compl&egrave;te');
 define('MSG_SHORTLIST', 'Afficher liste r&eacute;duite');
 
+//--------------- General ---------------
+define('MSG_HOUR', 'Heure');
+
+// --------------------------------------
 //--------------------------------------------------------------
 define('MSG_EXCLUDED_BOTS', 'Robots exclus');
 define('MSG_VISITED_PAGES_BY_BOTS', 'Pages visit&eacute;s par les robots');
@@ -95,6 +99,7 @@ define('MSG_DETAILS_UNKNOWN_BOTS', 'D&eacute;tails des Robots qui ne sont pas d&
 define('MSG_BOTS_OS_BROWSER_UNKNOWN', 'User Agent: OS, Browsers, Robots non reconnus');
 define('MSG_BAD_USER_AGENT_S_I', 'User Agent SPAM(S) et User Agent Inconnu(I)'); //Not use 08-10-2010
 define('MSG_USER_AGENT', 'User Agent');
+define('MSG_LEFT_VISITORS', 'Visiteurs ????');
 define('MSG_USER_AGENT_SPAM', 'Spam (S)');
 define('MSG_USER_AGENT_UNKNOWN', 'Inconnu (I)');
 define('MSG_USER_AGENT_OTHER', 'Autre (A)');
@@ -131,6 +136,11 @@ define('MSG_ADMIN_TOOLS_CHGT_PASSW', 'Modification de l\'utilisateur et du mot d
 define('MSG_ADMIN_TOOLS_CHGT_USER_PASSW_SUCCESS', 'Le login et le mot de passe ont &eacute;t&eacute; modifi&eacute;s avec succ&egrave;s');
 define('MSG_ADMIN_TOOLS_CONFIRM_PASSW_OUT', 'La confirmation de votre mot de passe est incorrecte');
 
+define('MSG_ADMIN_DOWNLOAD_GEOIP_DAT', '<strong>Géolocalisation Update database:</strong> <a href="http://geolite.maxmind.com" target="_blank">(de Maxmind)</a><br>
+Vous pouvez télécharger le fichier GeoIP.dat (GeoLite Pays) mis à jour le 05 de chaque mois<br>
+le décomprésser et le remplacer dans votre répertoire allmystats /lib/geoip/dat/<br>
+<a href="http://geolite.maxmind.com/download/geoip/database/GeoLiteCountry/GeoIP.dat.gz" target="_blank">Télécharger GeoIP.dat.gz version light</a><br>
+GeoIP Pays est une version plus précise (commercial) : <a href="http://www.maxmind.com/fr/country" target="_blank">GeoIP Pays, version plus précise (commercial)</a>');
 //-----------------------------------------------------------------
 
 define('MSG_BAD_USER_AGENT', 'Bad user agent');
@@ -148,6 +158,18 @@ define('MSG_TOOLS_DELETE_SUCCESS', ' a &eacute;t&eacute; supprim&eacute; avec su
 define('MSG_TOOLS_ADD_SUCCESS', ' a &eacute;t&eacute; ajout&eacute; avec succ&egrave;s &agrave; la base de donn&eacute;es.');
 define('MSG_TOOLS_MODIFIE_SUCCESS', ' a &eacute;t&eacute; modifi&eacute; avec succ&egrave;s.');
 
+define('MSG_TOOLS_BOT_UPDATE_TABLE', '<strong>Udate table crawler<br>ATTENTION :</strong> la table SQL crawler sera intégralement remplacée<br>');
+define('MSG_TOOLS_BOT_IMPORT_SUCCESS', '&nbsp;&nbsp;&nbsp;<strong>La table : crawler a été importée avec succès</strong><br>');
+define('MSG_TOOLS_BOT_IMPORT_HTTP', '1ere solution : Importer la table Crawler tenue à jour par AllMyStats<br>');
+define('MSG_TOOLS_BOT_IMPORT_LOCAL', '2eme solution : télécharger le fichier .zip à cette adresse : <a href="http://allmystats.wertronic.com/download/sql_update/allmystats_crawler.zip" target="_blank">allmystats_crawler.zip</a><br>
+		le dézipper puis le mettre dans votre répertoire allmystats /includes/sql/<br>');
+
+define('MSG_TOOLS_BAD_AGENT_UPDATE_TABLE', '<strong>Udate table Bad User Agent<br>ATTENTION :</strong> la table SQL Bad User Agent sera intégralement remplacée<br>');
+define('MSG_TOOLS_BAD_AGENT_IMPORT_SUCCESS', '&nbsp;&nbsp;&nbsp;<strong>La table : Bad User Agent a été importée avec succès</strong><br>');
+define('MSG_TOOLS_BAD_AGENT_IMPORT_HTTP', '1ere solution : Importer la table Bad User Agent tenue à jour par AllMyStats<br>');
+define('MSG_TOOLS_BAD_AGENT_IMPORT_LOCAL', '2eme solution : télécharger le fichier .zip à cette adresse : <a href="http://allmystats.wertronic.com/download/sql_update/allmystats_bad_user_agent.zip" target="_blank">allmystats_bad_user_agent.zip</a><br>
+		le dézipper puis le mettre dans votre répertoire allmystats /includes/sql/<br>');
+
 //-----------------------------------------------------------------
 //-----------------------------------------------------------------
 define('MSG_CHECK', 'V&eacute;rifier');
@@ -158,12 +180,13 @@ define('MSG_COOKIE_DELETED', 'Le cookie est supprim&eacute;');
 define('MSG_THIS_PC', 'IP de votre connexion actuelle');
 define('MSG_VISITS_FROMTHIS_RECORDED', 'Les visites effectu&eacute;es &agrave; partir de cet ordinateur sont comptabilis&eacute;es dans les statistiques.');
 
-define('MSG_VISITS_FROMTHIS_RECORDED_DETAILS', "Pour que les visites effectu&eacute;es &agrave; partir de cet ordinateur ne soient pas comptabilis&eacute;es dans les statistiques,
-au moins une des deux possibilit&eacute;s suivantes doit &ecirc;tre appliqu&eacute;e:<br>
-1 - &nbsp;<b>Un cookie doit &ecirc;tre install&eacute;.</b><br>
-2 - &nbsp;<b>L'adresse ip de votre connexion doit &ecirc;tre d&eacute;finie dans le fichier config_allmystats.php.");
+define('MSG_VISITS_FROMTHIS_RECORDED_DETAILS', "Pour que les visites effectu&eacute;es &agrave; partir de cet ordinateur ne soient pas comptabilis&eacute;es dans les statistiques.
+<br>
+<b>Un cookie doit &ecirc;tre install&eacute;.</b><br>.");
 
 define('MSG_IF_BROWSER_ACCEPT_COOKIES', 'Si votre navigateur accepte les cookies');
+
+if(!isset($site)) { $site = ''; }
 define('MSG_VISITS_FROMTHIS_NOT_RECORDED', 'Les visites du site: '.$site.' effectu&eacute;es &agrave; partir de cet ordinateur ne sont pas comptabilis&eacute;es dans les statistiques.');
 
 define('MSG_COOKIE_AND_IP_INSTALLED', "Un cookie est install&eacute; et l'adresse IP ce cette connexion est d&eacute;finie dans config_allmystats.php.<br>
@@ -192,22 +215,30 @@ define('MSG_INSTALL_MYSQL_DATABASE_NAME', "MySQL Nom de la base");
 define('MSG_INSTALL_MYSQL_LOGIN', "MySQL database login");
 define('MSG_INSTALL_PASS', " MySQL Mot de passe");
 define('MSG_INSTALL_TABLE_ALREADY_EXIST', " --> Cette table existe d&eacute;j&agrave;");
-define('MSG_INSTALL_ALL_TABLE_ALREADY_EXIST', "<strong><font color=#FF0000>Les tables existes d&eacute;j&agrave;. Si vous voulez r&eacute;installer AllMyStats, veuillez d'abord supprimer les tables.</font></strong>");
-define('MSG_INSTALL_ONE_OR_TABLES_ALREADY_EXIST', "<strong><font color=#FF0000>Une ou des tables sont d&eacute;j&agrave; pr&eacute;sentes,  Si vous voulez r&eacute;installer AllMyStats, veuillez d'abord les supprimer.</font></strong>");
+define('MSG_INSTALL_ALL_TABLE_ALREADY_EXIST', "<strong><font color=#FF0000>Les tables existes d&eacute;j&agrave;. Si vous voulez r&eacute;installer AllMyStats, veuillez d'abord supprimer les tables ou utiliser un autre préfixe.</font></strong>");
+define('MSG_INSTALL_ONE_OR_TABLES_ALREADY_EXIST', "<strong><font color=#FF0000>Une ou des tables sont d&eacute;j&agrave; pr&eacute;sentes,  Si vous voulez r&eacute;installer AllMyStats, veuillez d'abord les supprimer ou utiliser un autre préfixe.</font></strong>");
 define('MSG_INSTALL_TABLES_CREATED_SUCCESS', "Les tables ont &eacute;t&eacute; cr&eacute;&eacute;es avec succ&egrave;s");
-define('MSG_INSTALL_COMPLETE', "L'installation est termin&eacute;e.<br><font color=#FF0000>Par s&eacute;curit&eacute; n'oubliez pas d'effacer le r&eacute;pertoire /install/</font>");
-define('MSG_BUTTON_NEXT_STEP', "Etape suivante");
+define('MSG_INSTALL_COMPLETE', "L'installation est termin&eacute;e.");
+define('MSG_BUTTON_NEXT_STEP', "Proc&eacute;dure de votre 1ere connexion"); // Etape suivante
 define('MSG_INSTALL_MYSQL_CONNEXION_ERROR', "Le test de connexion a &eacute;chou&eacute;");
+define('MSG_INSTALL_FORCE_INSTALL', "<strong>Ou Forcer l'installation</strong><br>Toutes les tables MySQL AllMyStats seront supprimées et r&eacute;-installées (identique a une 1ere installation).");
+define('MSG_INSTALL_CANCEL_INSTALL', "Annuler l'installation"); 
 
+define('MSG_INSTALL_TIME_ZONE_SERVER', "Fuseaux horaires de votre serveur :"); 
+define('MSG_INSTALL_DATE_TIME_SERVER', "Date et heure de votre serveur :"); 
+define('MSG_INSTALL_YOURPC_TIME', "Votre PC indique :"); 
 //-------------------------------------------------------------------------------------------
 //-------------------------------------------------------------------------------------------
 define('MSG_NOTE_BAD_USER_AGENT', "<b>Pour les experts</b><br>
 						<b>Attention &agrave; ne pas d&eacute;finir des bots/user agent innocents!</b><br>
-						Vous pourrez les bloquer si n&eacute;cessaire avec un fichier .htaccess<br><br>
-						Type = S (SPAM) est affich&eacute; en rouge dans Liste Bad user agent et n'est pas compt&eacute; comme visiteur ni comme robot<br>
-						Type = I (robot inconnu) est compt&eacute; comme visiteur mais n'est pas affich&eacute;.<br>
-						Le user agent est recherch&eacute; &agrave; l'identique (cha&icirc;ne de caract&egrave;res identique) et non dans la cha&icirc;ne.<br>
-						<br><b>Note:</b> si aucun bad user agent n'est D&eacute;tect&eacute; &agrave; partir de cette liste, le tableau Bad user agent ne sera pas affich&eacute;.<br>
+						Vous pourrez les bloquer si n&eacute;cessaire avec le fichier .htaccess<br><br>
+						Les User Agent détectés par cette liste ou par config_add.php (\$detect_bad_by_reverseDNS et \$BadIpList) <strong>ne sont pas comptés comme visiteur ni comme robot</strong>.<br>
+						Type S : SPAM est affich&eacute; en rouge dans Liste Bad user agent.<br>
+						Type I : Inconnu.<br>
+						Type A : Autre, à étudier.<br><br>
+						<b>Note:</b><br>
+						Le user agent est compar&eacute; &agrave; l'identique, <strong>cha&icirc;ne de caract&egrave;res entièrement identique</strong>.<br>
+						Si aucun bad user agent n'est D&eacute;tect&eacute; &agrave; partir de cette liste, la section Bad user agent ne sera pas affich&eacute;.<br>
 						Voir aussi: <a href=\"http://www.user-agents.org/\" target=\"_blank\">user-agents.org : Liste user agent</a><br><br>");
 						
 //-----------------------------------------------------------------------------------------

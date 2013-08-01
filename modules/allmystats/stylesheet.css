@@ -1,44 +1,39 @@
 @charset "utf-8";
 
 body {
-	BACKGROUND-COLOR: #E9E9E9; FONT-FAMILY: Verdana, Arial, sans-serif; FONT-SIZE: 10px
+	font-family: Verdana, Arial, sans-serif;
+	background-color: #E9E9E9;
+	font-size: 10px;
+	margin-left: auto; 
+	margin-right: auto; 
 }
 
 table.head{
-	WIDTH: 570px;
+	width: 570px;
 }
+
 .head{
-	FONT-FAMILY: Verdana Arial, sans-serif;
-	FONT-SIZE: 25px;
-	TEXT-ALIGN: center;
-	COLOR: #266082;
-	FONT-WEIGHT: bold;
-	FONT-STYLE: italic;
+	font-family: Verdana Arial, sans-serif;
+	font-size: 25px; 
+	text-align: center;
+	color: #266082;
+	font-weight: bold;
+	font-style: italic;
 }
 
-td{
-	FONT-FAMILY: Verdana, Arial, sans-serif; FONT-SIZE: 10px
-}
-th {
-	FONT-FAMILY: Verdana, Arial, sans-serif; FONT-SIZE: 10px
+.HeaderNav {
+	color: #000000; font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 12px; font-style: normal; font-weight: bold;
 }
 
-A {
-	COLOR: #4000ff; FONT-FAMILY: Verdana, Arial, Helvetica, sans-serif; FONT-SIZE: 10px; FONT-STYLE: normal; FONT-WEIGHT: bold
+.PagesVisited {
+	color: #2000ff; font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 10px; font-style: normal;
 }
 
-.NAVNOHREF {
-	COLOR: #000000; FONT-FAMILY: Verdana, Arial, Helvetica, sans-serif; FONT-SIZE: 12px; FONT-STYLE: normal; FONT-WEIGHT: bold
+.Visits {
+	color: #2000ff; font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 10px; font-style: normal;
 }
 
-.PAGESVUES {
-	COLOR: #2000ff; FONT-FAMILY: Verdana, Arial, Helvetica, sans-serif; FONT-SIZE: 10px; FONT-STYLE: normal
-}
-.VISITES {
-	COLOR: #8f0080; FONT-FAMILY: Verdana, Arial, Helvetica, sans-serif; FONT-SIZE: 10px; FONT-STYLE: normal
-}
-
-.SITENAME {
+.SiteName {
 	COLOR: #000000; FONT-FAMILY: Verdana, Arial, Helvetica, sans-serif; FONT-SIZE: 14px; FONT-WEIGHT: bold
 }
 
@@ -72,7 +67,6 @@ input.submitTrans {
 	font-family: Verdana, Arial, Helvetica, sans-serif;
 	font-size: x-small;
 }
-
 
 form, form div {
   display: inline;

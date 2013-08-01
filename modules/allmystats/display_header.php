@@ -1,40 +1,43 @@
 <?php
 /*
   -------------------------------------------------------------------------
- AllMyStats V1.75 - Statistiques site web - Web traffic analysis
+ AllMyStats V1.80 - Statistiques site web - Web traffic analysis
  -------------------------------------------------------------------------
- Copyright (C) 2008-2010 - Herve Seywert
+ Copyright (C) 2008 - 2013 - Herve Seywert
  copyright-GNU-xx.txt
  -------------------------------------------------------------------------
  Web:    http://allmystats.wertronic.com - http://www.wertronic.com
  -------------------------------------------------------------------------
 */
-	// ---------------- Ne doit pas être appelé directement -------------------
+
+	include(dirname(__FILE__).'/includes/config_error_reporting.php');
+
+	// ---------------- Should not be called directly -------------------
 	if(strrchr($_SERVER['PHP_SELF'] , '/' ) == '/display_header.php' ){ 
 		header('Location: index.php');
 	}
 	// ------------------------------------------------------------------------
 
-//--------------------------- style table (for Admin && Stats in) ---------------
+//--------------------------- style table (for Admin) ---------------
 	$table_border_CSS = 'border: 1px solid #000000; border-collapse: collapse; margin-left: auto; margin-right: auto; background-color: #99CCFF; width: 570px;';
-	$table_frame_CSS = 'border: 0px solid #000000; border-collapse: collapse; margin-top: 3px; background-color: #99CCFF; width: 100%;'; 
-	$table_data_CSS = 'border: 1px solid #000000; border-collapse: collapse; margin-top: 3px; margin-bottom: 3px; margin-left: 3px; margin-right: 3px; background-color: #FAFAFA; color: #000000; font-family: Verdana, Arial, sans-serif; font-size: 10px; font-style: normal; width: 99%;'; //width: 100%; margin-left: auto; margin-right: auto;
+
+	$table_frame_CSS = 'border: 0px solid #000000; border-collapse: collapse; margin-top: 3px; background-color: #99CCFF; width: 100%; font-family: Verdana, Arial, sans-serif; font-size: 10px; font-style: normal;'; 
+	$table_data_CSS = 'border: 1px solid #000000; border-collapse: collapse; margin-top: 3px; margin-bottom: 3px; margin-left: 3px; margin-right: 3px; background-color: #FAFAFA; color: #000000; font-family: Verdana, Arial, sans-serif; font-size: 10px; font-style: normal; width: 99%;'; 
 	$td_data_CSS = 'border-width: 1px 1px 0px 0px; border-color: #000000;  border-style: solid; border-collapse: collapse; padding: 3px; font-family: Verdana, Arial, sans-serif; font-size: 10px;'; 
 	$table_title_CSS = 'border: 0px solid #000000; font-family: Verdana, Arial, sans-serif; font-size: 14px; font-weight: bold; text-align:center; vertical-align:middle;';
-//--------------------------- Style Graph (for Admin && Stats in)---------------
+//--------------------------- Style Graph (for Admin)---------------
 	$page_view = 'color: #2000FF; font-family: Verdana, Arial, sans-serif; font-size: 10px; font-style: normal;';
 	$style_visits = 'color: #8F0080; font-family: Verdana, Arial, sans-serif; font-size: 10px; font-style: normal;'; 
 	$td_txt_CSS = 'color: #000000; font-family: Verdana, Arial, sans-serif; font-size: 10px; font-style: normal;';
 //------------------------------------------------------------------------------
 
-
 include_once('version.php');
 
-$when = $_POST["when"];
-$mois = $_POST['mois'];
-$type = $_POST['type'];
-$submitDeleteUpdate = $_POST['submitDeleteUpdate'];
-$submitDeleteInstall = $_POST['submitDeleteInstall'];
+if(isset($_POST["when"])) { $when = $_POST["when"]; } else { $when = '';}
+if(isset($_POST['mois'])) { $mois = $_POST['mois']; } else { $mois = '';}
+if(isset($_POST['type'])) { $type = $_POST['type']; } else { $type = '';}
+if(isset($_POST['submitDeleteUpdate'])) { $submitDeleteUpdate = $_POST['submitDeleteUpdate']; } 
+if(isset($_POST['submitDeleteInstall'])) { $submitDeleteInstall = $_POST['submitDeleteInstall']; } 
 
 ?>
 <div align="center">
@@ -52,17 +55,22 @@ $submitDeleteInstall = $_POST['submitDeleteInstall'];
 						  </td>
 						  <td style="'.$table_title_CSS.'" align="center">
 								<div class="head">'.MSG_REPORT_AUDIENCE.'</div>
-								<a class=SITENAME href="http://'.$site.'" target="_blank">'.$site.'</a>
+								<a class=SiteName href="http://'.$site.'" target="_blank">'.$site.'</a>
 						  </td>
 						  <td width="15%" align="right">';
-							if ($_SESSION['userpass']) { 
+							if(isset($_SESSION['userpass'])) { 
 								echo '
 								<a href="'.FILENAME_LOGOUT.'"><img src="images/icons/logout.gif" border="0" alt="'.MSG_LOGOUT.'" title="'.MSG_LOGOUT.'"></a>&nbsp;&nbsp;&nbsp;';
 							} ?>
 						   </td>
 								<?php
+								if(!isset($_SESSION['userlogin'])) {
+									$_SESSION['userlogin'] = '';
+								}
+								
+								if(!isset($_COOKIE["AllMyStatsVisites"])) { $_COOKIE["AllMyStatsVisites"] = ''; }
 								if($user_login == $_SESSION['userlogin'] && $passwd == $_SESSION['userpass']){
-									 if (!$_COOKIE["AllMyStatsVisites"] == 'No record this') {?>
+									 if($_COOKIE["AllMyStatsVisites"] != 'No record this') { ?>
 										<tr>
 										<td colspan="3" align="center">
 										<?php echo MSG_NO_COUNT_VISITS; ?>
@@ -77,7 +85,7 @@ $submitDeleteInstall = $_POST['submitDeleteInstall'];
 				
 								// Test if new version disponible
 								$installed_version = substr(VERSION, 1) + 0; //+0 pour mettre en numérique sinon chaine - Note set "allow_url_fopen = On" in php.ini for file_get_contents
-								if(!$_SESSION['current_version']) {
+								if(!isset($_SESSION['current_version'])) {
 									//------------------------------------------------									
 									//Important sinon warning avec mod_security sur serveur check - 25-03-2011
 									$opts = array(
@@ -91,7 +99,6 @@ $submitDeleteInstall = $_POST['submitDeleteInstall'];
 									$ctx = stream_context_create($opts);
 									//------------------------------------------------
 									$_SESSION['current_version']  = @file_get_contents("http://allmystats.wertronic.com/allmystats_check_ver.php?request=".$_SERVER['HTTP_HOST']."&cust_ver=".$installed_version."", NULL, $ctx);
-									//$_SESSION['current_version'] = $last_ver;
 								} ?>
 						<tr>
 						</tr>
@@ -146,9 +153,9 @@ $submitDeleteInstall = $_POST['submitDeleteInstall'];
 					</div>
 					<br />';					
 				} 
-
+				
 				if (trim($type) == ""){ 
-					echo "<span class=\"NAVNOHREF\">".MSG_ACCUEIL."</span> "; 
+					echo "<span class=\"HeaderNav\">".MSG_ACCUEIL."</span> "; 
 				} else { ?>
 					<form name="form1" method="post" action="<?php echo FILENAME_INDEX_FRAME; ?>">
 					  <input type="hidden" name="type" value="">
@@ -158,7 +165,7 @@ $submitDeleteInstall = $_POST['submitDeleteInstall'];
 				}
 
 				if ($type == "DetailsRobot") {
-					echo "<span class=\"NAVNOHREF\">".MSG_BOT_VISITS."</span> ";
+					echo "<span class=\"HeaderNav\">".MSG_BOT_VISITS."</span> ";
 				} elseif ($type == "Allmystats_tools" || $type == "MyVisitsTools" || $type == "password" ||  $type == "add_crawler" ||  $type == "add_bad_user_agent") {
 
 				} else { ?>
@@ -170,7 +177,7 @@ $submitDeleteInstall = $_POST['submitDeleteInstall'];
 				}
 
 				if ($type == "cumul"){
-					echo "<span class=\"NAVNOHREF\">".MSG_MONTHLY."</span> "; 
+					echo "<span class=\"HeaderNav\">".MSG_MONTHLY."</span> "; 
 				} elseif ($type == "Allmystats_tools" || $type == "MyVisitsTools" || $type == "password" ||  $type == "add_crawler" ||  $type == "add_bad_user_agent") {
 		
 				} else { ?>
@@ -182,7 +189,7 @@ $submitDeleteInstall = $_POST['submitDeleteInstall'];
 				}
 		
 				if ($type == "histo"){
-					echo "<span class=\"NAVNOHREF\">".MSG_MONTH_HISTO."</span> "; 
+					echo "<span class=\"HeaderNav\">".MSG_MONTH_HISTO."</span> "; 
 				} elseif ($type == "Allmystats_tools" || $type == "MyVisitsTools" || $type == "password" ||  $type == "add_crawler" ||  $type == "add_bad_user_agent") {
 				
 				} else { ?>
@@ -217,7 +224,7 @@ $submitDeleteInstall = $_POST['submitDeleteInstall'];
 					  <input type="hidden" name="type" value="test_jetlag">
 					  <input class="submit" name="submitools" type="submit" value="Test UTC" alt="Test UTC" title="Test UTC">
 					</form> <?php
-					echo "<span class=\"NAVNOHREF\">".MSG_ADMIN_TOOLS."</span> "; 
+					echo "<span class=\"HeaderNav\">".MSG_ADMIN_TOOLS."</span> "; 
 		
 				} elseif ($type == "MyVisitsTools"){ ?>
 					<form name="form1" method="post" action="<?php echo FILENAME_INDEX_FRAME; ?>">
@@ -242,7 +249,7 @@ $submitDeleteInstall = $_POST['submitDeleteInstall'];
 				&nbsp;&nbsp;&nbsp;<a href="http://allmystats.wertronic.com/" target="_blank"><img src="images/help3.jpeg" alt="<?php echo MSG_HELP; ?>" width="16" height="16" border="0" align="absbottom" title="<?php echo MSG_HELP; ?>"></a>
 				</div>
 				<br>
-<?php
+			<?php
 			} else { // If not logued
 				// Display message if new version disponible
 				if ($_SESSION['current_version'] > $installed_version) {
@@ -252,8 +259,5 @@ $submitDeleteInstall = $_POST['submitDeleteInstall'];
 						<a href="http://allmystats.wertronic.com/fr_download.php" target="_blank">Télécharger AllMyStats V'.$_SESSION['current_version'].'</a>
 					</div><br>';
 				}
-			
 			}
-
-
-?>
+			?>

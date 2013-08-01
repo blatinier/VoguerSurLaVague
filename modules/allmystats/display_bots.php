@@ -1,72 +1,62 @@
 <?php
 /*
   -------------------------------------------------------------------------
- AllMyStats V1.75 - Statistiques site web - Web traffic analysis
+ AllMyStats V1.80 - Statistiques site web - Web traffic analysis
  -------------------------------------------------------------------------
- Copyright (C) 2008-2010 - Herve Seywert
+ Copyright (C) 2008 - 2013 - Herve Seywert
  copyright-GNU-xx.txt
  -------------------------------------------------------------------------
  Web:    http://allmystats.wertronic.com - http://www.wertronic.com
  -------------------------------------------------------------------------
  $when sert pour by day - $mois pour by month
 
-11-01-2011
-Bug light
-Certains user agent se mettent dans la table allmystats_unique_bot sur les sites à fort visites (> 4000 pages/jour)
-ex : 
-[Mozilla/5.0 (Windows; U; Windows NT 5.1; fr; rv:1.9.2.13) Gecko/20101203 Firefox/3.6.13 ( .NET CLR 3.5.30729)]
-[Mozilla/5.0 (Windows; U; Windows NT 6.1; fr; rv:1.9.2.12) Gecko/20101026 Firefox/3.6.12]
-[Mozilla/5.0 (Windows; U; Windows NT 5.1; fr; rv:1.9.2.13) Gecko/20101203 Firefox/3.6.13]
-[Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.1; WOW64; Trident/4.0; SIMBAR={FE7B57FB-3B79-46D0-90CB-44DB0194E81D}; GTB6.6; SLCC2; .NET CLR 2.0.50727; .NET CLR 3.5.30729; .NET CLR 3.0.30729; Media Center PC 6.0; CPNTDF; .NET4.0C)]
-[Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 6.0; WOW64; FunWebProducts; GTB6.6; SLCC1; .NET CLR 2.0.50727; Media Center PC 5.0; .NET CLR 3.5.21022; .NET CLR 3.5.30729; InfoPath.2; .NET CLR 3.0.30729; .NET4.0C)]
-[Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 5.1; Trident/4.0; GTB6.6; .NET CLR 2.0.50727; .NET CLR 3.0.4506.2152; .NET CLR 3.5.30729)]
-[Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 6.0; SLCC1; .NET CLR 2.0.50727; Media Center PC 5.0; InfoPath.1; .NET CLR 3.5.30729; .NET CLR 3.0.30729; OfficeLiveConnector.1.3; OfficeLivePatch.0.0; Orange 8.0)]
-
-A VERIFIER SI RECOMMENCE
 */
-	// ---------------- Ne doit pas être appelé directement -------------------
-	if(strrchr($_SERVER['PHP_SELF'] , '/' ) == '/display_bots.php' ){ 
+	// ---------------- Should not be called directly -------------------
+	if(strrchr($_SERVER['PHP_SELF'] , '/' ) == '/'.FILENAME_DISPLAY_BOTS ){ 
 		header('Location: index.php');
 	}
 	// ------------------------------------------------------------------------
-
-		//-----------------------------------------------------------------------------
-		//Mise en en forme ($AllBots) pour preg_match des bot connus (dans la table + bot en général (bot, spider , etc)
-		$result1 = mysql_query("select bot_name, org_name, crawler_url, crawler_info from ".TABLE_CRAWLER.""); 
-		$AllBots = '/Bot|Slurp|Scooter|Spider|crawl|'; //del Agent because error on user agent
-		while($row=mysql_fetch_array($result1)){
-			$Form_chaine = str_replace('/','\/',$row['bot_name']);
-			$Form_chaine = str_replace('+','\+',$Form_chaine);
-			$Form_chaine = str_replace('(','\(',$Form_chaine);
-			$Form_chaine = str_replace(')','\)',$Form_chaine);
-			$AllBots .= $Form_chaine.'|';
-		}
-		$AllBots = substr($AllBots,0,strlen($AllBots)-1); //delete last "|"
-		$AllBots .= '/i';
-	//-------------------------------------------------------------------------
+	
+require_once(dirname(__FILE__).'/config_add.php'); // for other bots !preg_match($detect_bad_by_reverseDNS, $row['agent'])  
+	
+	if(!isset($when)) { // include from stats in
+		$when = ''; 
+	}
 
 	//######################################################################################
 	//							LISTE ROBOTS
 	//######################################################################################
 
-		if($time_test == true) {
-			$start = (float) array_sum(explode(' ',microtime()));  		
-		}
-	
-if (!$_SESSION['other_bot'] || $affiche_only_other_bots <> true) { //Pour accelerer lors de l'ajout des robots
+	if(isset($time_test) && $time_test == true) {
+		$start = (float) array_sum(explode(' ',microtime()));  		
+	}
 
-		unset($_SESSION['other_bot']);
+	if(!isset($when_date)) { $when_date = ''; } // if admin bots
+	if(!isset($Total_pages_bots)) { $Total_pages_bots = 0; }
+	if(!isset($Total_distinct_ip_bots)) { $Total_distinct_ip_bots = 0; }
+
+if (!isset($_SESSION['other_bot']) || $affiche_only_other_bots <> true) { //Pour accelerer lors de l'ajout des robots
+
+		// If is in if $Tab_user_agent --> not display in Others bot
+		$result_agent = mysql_query("select user_agent from ".TABLE_BAD_USER_AGENT.""); 
+		while($row = mysql_fetch_array($result_agent)){
+			$Tab_user_agent[] = $row['user_agent'];
+		}
+
+		if(isset($_SESSION['other_bot'])) {
+			unset($_SESSION['other_bot']);
+		}
 
 		$result_1 = mysql_query("select count(ip) as nb_distinct_IP, agent, sum(visits) as nb_visits_agent from ".TABLE_UNIQUE_BOT." where date like '%".$when_date."' GROUP BY agent");
 
 		$Total_distinct_robots = 0;
-		$i = 0;
+		$unique_bot_name = '';
 		while($row = mysql_fetch_array($result_1)){
-			preg_match($AllBots, $row['agent'], $matches);
-			
-			$result_crawler = mysql_query("select bot_name, org_name, crawler_url, crawler_info from ".TABLE_CRAWLER." where bot_name='".$matches[0]."'"); 
+			$crawler_result = is_crawler($row['agent']);
+
+			$result_crawler = mysql_query("select bot_name, org_name, crawler_url, crawler_info from ".TABLE_CRAWLER." where bot_name='".$crawler_result."'"); 
 			$crawler = mysql_fetch_array($result_crawler);
-			$i = $crawler['bot_name'];
+			$field = $crawler['bot_name'];
 			
 			$Total_pages_bots = $Total_pages_bots + $row['nb_visits_agent'];
 			$Total_distinct_ip_bots = $Total_distinct_ip_bots + $row['nb_distinct_IP'];
@@ -80,33 +70,41 @@ if (!$_SESSION['other_bot'] || $affiche_only_other_bots <> true) { //Pour accele
 
 			if($crawler['bot_name']) {
 				if(@strstr($unique_bot_name, $crawler['bot_name'])) { // agents différents mais même bot
-					$bot_visits = $Tab_bot[$i][2] + $row['nb_visits_agent'];
-					$bot_ip = $Tab_bot[$i][3] + $row['nb_distinct_IP'];
-					$Tab_bot[$i] = array($Lien_url.$crawler_info, $crawler['bot_name'], $bot_visits, $bot_ip);
+					$bot_visits = $Tab_bot[$field][2] + $row['nb_visits_agent'];
+					$bot_ip = $Tab_bot[$field][3] + $row['nb_distinct_IP'];
+					$Tab_bot[$field] = array($Lien_url.$crawler_info, $crawler['bot_name'], $bot_visits, $bot_ip);
 				} else {
 					$Total_distinct_robots++;
-					$Tab_bot[$i] = array($Lien_url.$crawler_info, $crawler['bot_name'], $row['nb_visits_agent'], $row['nb_distinct_IP']);
+					$Tab_bot[$field] = array($Lien_url.$crawler_info, $crawler['bot_name'], $row['nb_visits_agent'], $row['nb_distinct_IP']);
 				}
 
 			} else {
-				$Other_bot[] = $row['agent'];
-				
-				$bot_visits = $Tab_bot['other_bot'][2] + $row['nb_visits_agent'];
-				$bot_ip = $Tab_bot['other_bot'][3] + $row['nb_distinct_IP'];
-				
-				$Tab_bot['other_bot'] = array(MSG_OTHER_BOTS, '-', $bot_visits, $bot_ip, '');
+				if(!in_array($row['agent'], $Tab_user_agent) && !preg_match($detect_bad_by_reverseDNS, $row['agent'])) { // if configure $detect_bot_on_reverseDNS (config_add.php) before and put after in $detect_bad_by_reverseDNS
+					$Other_bot[] = $row['agent'];
+
+					if(!isset($Tab_bot['other_bot'][2])) { $Tab_bot['other_bot'][2] = 0; }
+					if(!isset($Tab_bot['other_bot'][3])) { $Tab_bot['other_bot'][3] = 0; }
+
+					$bot_visits = $Tab_bot['other_bot'][2] + $row['nb_visits_agent'];
+					$bot_ip = $Tab_bot['other_bot'][3] + $row['nb_distinct_IP'];
+
+					$Tab_bot['other_bot'] = array(MSG_OTHER_BOTS, '-', $bot_visits, $bot_ip, '');
+				}
 			}
 	
 			$unique_bot_name .= $crawler['bot_name']."+-+";
 		}
 
-
+		$show_page_os_nav_robots = '';
+	
 	###############################################################################
 	############################## Liste Robots ###################################
 	if ($display_bots == true) {
-
+		
+		if(!isset($StatsIn_in_prot_dir)) { $StatsIn_in_prot_dir = ''; } // Si n'est pas include de stats_in
+		
 		$display_bots = false;
-		$affiche_only_other_bots == false;
+		$affiche_only_other_bots = false;
 		
 		$show_page_os_nav_robots .= '
 	<table style="'.$table_border_CSS.'">
@@ -114,8 +112,8 @@ if (!$_SESSION['other_bot'] || $affiche_only_other_bots <> true) { //Pour accele
 		<td>
 		  <table style="'.$table_frame_CSS.'">
 				<tr>
-					<td style="width:5%; white-space:nowrap;">'; //width: %; in px ne fonctionne pas
-					if ($StatsIn_in_prot_dir <> 'Y') { // if use stats_in and is in protected directory --> the images can be displayed
+					<td style="width:5%; white-space:nowrap;">'; 
+					if (isset($StatsIn_in_prot_dir) && isset($StatsIn_in_prot_dir) <> 'Y') { // if use stats_in and is in protected directory --> the images can be displayed
 						$show_page_os_nav_robots .= '
 							&nbsp;&nbsp;<img src="'.$path_allmystats_abs.'images/icons/icon_bots.gif" height="32px" alt="'.MSG_BOT_VISITS.'" title="'.MSG_BOT_VISITS.'">';
 					}
@@ -143,7 +141,7 @@ if (!$_SESSION['other_bot'] || $affiche_only_other_bots <> true) { //Pour accele
 			unset($botname);
 			unset($nbVisits);
 			unset($nbIP);
-			if ($Tab_bot) {
+			if (isset($Tab_bot)) {
 				foreach ($Tab_bot as $key => $row) {
 					$link[$key]  = $row[0];
 					$botname[$key] = $row[1];
@@ -181,7 +179,7 @@ if (!$_SESSION['other_bot'] || $affiche_only_other_bots <> true) { //Pour accele
 		
 			//############################## Autres robots ########################################
 		
-				if ($Other_bot) { 
+				if (isset($Other_bot)) { 
 					$Other_bot = array_unique($Other_bot);
 					@usort($Other_bot,"CompareValeurs");
 					$show_page_os_nav_robots .= "
@@ -203,7 +201,7 @@ if (!$_SESSION['other_bot'] || $affiche_only_other_bots <> true) { //Pour accele
 						<input name=\"type\" type=\"hidden\" value=\"add_crawler\">
 						<input name=\"when\" type=\"hidden\" value=\"".$when."\">
 						<input name=\"mois\" type=\"hidden\" value=\"".$mois."\">";
-					if($dislpay_button_tool_bots<>"false") {
+					if(isset($dislpay_button_tool_bots) && $dislpay_button_tool_bots <> "false") {
 						$show_page_os_nav_robots .= "
 						<input class=\"submitDate\" name=\"SubmitGestionCrawler\" type=\"submit\" value=\"".MSG_ADMIN_TOOLS_BOTS."\" alt=\"".MSG_ADMIN_TOOLS_BOTS."\" title=\"".MSG_ADMIN_TOOLS_BOTS."\">";
 					}
@@ -220,21 +218,22 @@ if (!$_SESSION['other_bot'] || $affiche_only_other_bots <> true) { //Pour accele
 		//############################################################################################################################
 		//############################################################################################################################
 		
-	} //Fin de if ($display_bots==true) {
+	} // End if ($display_bots==true) {
 
 	//############################## Affiche seulement les robots non référencés dans la base ########################################
 } //End if (!$_SESSION['other_bot'] || $affiche_only_other_bots<>true) {
 
 	if ($affiche_only_other_bots == true) {
-		if ($Other_bot) {
+		if (isset($Other_bot)) {
 			$_SESSION['other_bot'] = $Other_bot;
 		}
 		
+if(!isset($show_page_os_nav_robots)) { $show_page_os_nav_robots = ''; } // TODO see if .= is necessary and change this variable name if possible
+
 $show_page_os_nav_robots .= '
 		<a name="focusforminsert"></a>
 		<table style="border: 0px; margin-left: auto; margin-right: auto;">';
 
-//		if ($_SESSION['other_bot']) { //Commenter cette ligne pour insert robot permanent
 					//------------------------ Insert crawler ----------------------------------
 					if (isset($InsertCrawler)){
 						$show_page_os_nav_robots .= '
@@ -299,7 +298,7 @@ $show_page_os_nav_robots .= '
 
 	}
 		
-	if($time_test == true) {
+	if(isset($time_test) && $time_test == true) {
 		$end = (float) array_sum(explode(' ',microtime()));  
 		echo '<pre>										Liste BOTS Traitement : '.sprintf("%.4f", $end-$start) . ' sec</pre>';
 	}

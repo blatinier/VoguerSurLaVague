@@ -1,9 +1,9 @@
 <?php
 /*
   -------------------------------------------------------------------------
- AllMyStats V1.75 - Statistiques site web - Web traffic analysis
+ AllMyStats V1.80 - Statistiques site web - Web traffic analysis
  -------------------------------------------------------------------------
- Copyright (C) 2008-2010 - Herve Seywert
+ Copyright (C) 2008 - 2013 - Herve Seywert
  copyright-GNU-xx.txt
  -------------------------------------------------------------------------
  Web:    http://allmystats.wertronic.com - http://www.wertronic.com
@@ -12,7 +12,7 @@
  define the database table names used in the project
 */
 
- if(!$mysql_prefix || trim($mysql_prefix == '')) {
+ if(!isset($mysql_prefix)) {
  	$mysql_prefix = 'allmystats'; //for anterior (v1.60) compatibility
  }
 

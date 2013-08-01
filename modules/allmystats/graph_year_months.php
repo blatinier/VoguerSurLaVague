@@ -1,17 +1,19 @@
 <?php
 /*
   -------------------------------------------------------------------------
- AllMyStats V1.75 - Statistiques site web - Web traffic analysis
+ AllMyStats V1.80 - Statistiques site web - Web traffic analysis
  -------------------------------------------------------------------------
- Copyright (C) 2008-2010 - Herve Seywert
+ Copyright (C) 2008 - 2013 - Herve Seywert
  copyright-GNU-xx.txt
  -------------------------------------------------------------------------
  Web:    http://allmystats.wertronic.com - http://www.wertronic.com
  -------------------------------------------------------------------------
 Note : $data_year_graph est donné par monthly_archives_list.php
+
+$graph_visitors_pages == 1 IS OBSOLETE --> TODO delete code
 */
 	
-	// ---------------- Ne doit pas être appelé directement -------------------
+	// ---------------- Should not be called directly -------------------
 	if(strrchr($_SERVER['PHP_SELF'] , '/' ) == '/graph_year_months.php' ){ 
 		header('Location: index.php'); //Si appelle direct de la page redirect
 	}
@@ -19,10 +21,10 @@ Note : $data_year_graph est donné par monthly_archives_list.php
 
 	//for graph left here (for admin and stats in)
 	$td_data_graph_CSS = 'border-width: 0px 0px 0px 0px; border-collapse: collapse; padding: 0px;';
-	//$td_data_graph_CSS = 'border: 1px solid #000000; border-collapse: collapse; padding: 0px;'; //test
 
+$graph_visitors_pages = 2; // $graph_visitors_pages = 1 is OBSOLETE
 
-if ($graph_visitors_pages == 1) {
+if ($graph_visitors_pages == 1) { // IS OBSOLETE ($graph_visitors_pages = 1)
 
 $graph_bymonth = "";
 
@@ -62,9 +64,9 @@ $graph_bymonth = "";
 				<table style=\"".$table_data_CSS."\">
 				  <tr>
 					<td rowspan=\"2\" style=\"".$td_txt_CSS."\">
-						<b><span class=\"PAGESVUES\">".MSG_VISITED_PAGES."</span><br />
+						<b><span class=\"PagesVisited\">".MSG_VISITED_PAGES."</span><br />
 						& 
-						<span class=\"VISITES\">".MSG_VISITORS."</span></b>
+						<span class=\"Visits\">".MSG_VISITORS."</span></b>
 					</td>";
 	
 					//Pour affichage echelle y
@@ -155,7 +157,13 @@ $graph_bymonth .= "
 		//#############################################################################################################
 		//									VISITEURS (DOUBLE GRAPH)
 		//#############################################################################################################	
-			
+		$max_pages = 0;
+		$max_visitors = 0;
+		$echy_visitors_MaxHauteur = 0;
+		$echy_pages_MaxHauteur = 0;
+		$total_pages = 0;
+		$total_unique_visitors = 0;
+		$hauteur = 0;			
 		//--------------------------------- Proportions graph -------------------------------------
 		//Hauteur graph
 		$height_graph = 100.00; //150
@@ -170,8 +178,10 @@ $graph_bymonth .= "
 
 		$double_graph_bymonth = '';
 		//-----------------------------------------------------------
+		$echy_visitors_MaxHauteur = '';
+		$echy_pages_MaxHauteur = '';
 
-		if (sizeof($data_year_graph) > 0 ) { //prcedent était testé sur $max_pages, mais $max_pages est calculé aprés
+		if (isset($data_year_graph) && sizeof($data_year_graph) > 0 ) { //precedent était testé sur $max_pages, mais $max_pages est calculé aprés
 			//Add month if
 			if(sizeof($data_year_graph) < $data_year_graph[0][0]) { //Si nombre de mois de l'année < $data_year_graph[0][0] = dernier mois
 				unset($add_month);
@@ -187,18 +197,19 @@ $graph_bymonth .= "
 			
 			//------------------------------------------------------ 			
 			//Max visitors and Max pages
-			$max_pages = 0;
-			$max_visitors = 0;
-			$total_pages = 0;
-			$total_unique_visitors = 0;
 			for($i = count($format_nb_mois)-1 ; $i >= 0; $i--) { // le dernier mois est en 1er
+		
+				if(!isset($data_year_graph[$i][1])) { $data_year_graph[$i][1] = 0; }
+				if(!isset($data_year_graph[$i][2])) { $data_year_graph[$i][2] = 0; }
+				
+				if(!isset($row['date'])) { $row['date'] = ''; }
+				
 				$date_comp = $row['date'];
 				$cpt_month = $data_year_graph[$i][2] + 0; // + 0 pour supprimer les 0 devant 01, 02, 03 etc (aussi simple qu'une regex)
-
+				
 				$val_month[$cpt_month][0] = $data_year_graph[$i][1];
 				$val_month[$cpt_month][1] = $data_year_graph[$i][2];
 
-				//if($val_month[$cpt_month][1] + $row_unknown_agent['total_visited_page'] > $max_pages){
 				if($val_month[$cpt_month][1] > $max_pages){
 					//TODO $row_unknown_agent['total_visited_page'] for double graph
 					//$max_pages = $data_graph[$cpt_jour][1] + $row_unknown_agent['total_visited_page']; // Pour chaque jour On ajoute pages visitées des user agent inconnus
@@ -221,7 +232,7 @@ $graph_bymonth .= "
 				$date_comp = $row['date'];
 				$cpt_month = $data_year_graph[$i][2] + 0; // + 0 pour supprimer les 0 devant 01, 02, 03 etc (aussi simple qu'une regex)
 	
-				$indice = bcdiv($val_month[$cpt_month][0], $max_visitors, 2); $hauteur = bcmul($indice, $height_graph, 2);  
+				$indice = @bcdiv($val_month[$cpt_month][0], $max_visitors, 2); $hauteur = bcmul($indice, $height_graph, 2);  
 				if ($echy_visitors_MaxHauteur <= $hauteur) { $echy_visitors_MaxHauteur = $hauteur; }
 			}
 		} else { // pour ne pas afficher 0 si $max_visitors = 0
@@ -236,7 +247,7 @@ $graph_bymonth .= "
 				$date_comp = $row['date'];
 				$cpt_month = $data_year_graph[$i][2] + 0; // + 0 pour supprimer les 0 devant 01, 02, 03 etc (aussi simple qu'une regex)
 
-				$indice = bcdiv($val_month[$cpt_month][1], $max_pages, 2); $hauteur = bcmul($indice, $height_graph, 2);  
+				$indice = @bcdiv($val_month[$cpt_month][1], $max_pages, 2); $hauteur = bcmul($indice, $height_graph, 2);  
 				if ($echy_pages_MaxHauteur <= $hauteur) { $echy_pages_MaxHauteur = $hauteur; }
 			}
 		} else { // pour ne pas afficher 0 si $max_pages = 0
@@ -279,12 +290,15 @@ $double_graph_bymonth .= "
 
 			for($i = count($format_nb_mois)-1 ; $i >= 0; $i--) { // le dernier mois est en 1er
 				$date_comp = $row['date'];
-				$cpt_month = $data_year_graph[$i][2] + 0; // + 0 pour supprimer les 0 devant 01, 02, 03 etc (aussi simple qu'une regex)
+				
+				if(isset($data_year_graph[$i][2])) {
+					$cpt_month = $data_year_graph[$i][2] + 0; // + 0 pour supprimer les 0 devant 01, 02, 03 etc (aussi simple qu'une regex)
+				}
 
 				$double_graph_bymonth .= "
 				<td rowspan=\"2\" style=\"".$td_data_graph_CSS." text-align: center; vertical-align: bottom;\">";
 				if($max_visitors != 0) {
-					$indice = bcdiv($val_month[$cpt_month][0], $max_visitors, 2); $hauteur = bcmul($indice, $height_graph, 2);
+					$indice = @bcdiv($val_month[$cpt_month][0], $max_visitors, 2); $hauteur = bcmul($indice, $height_graph, 2);
 				}
 
 					$double_graph_bymonth .= "
@@ -303,7 +317,6 @@ $double_graph_bymonth .= "
 				<td style=\"".$td_data_graph_CSS." text-align: right; vertical-align: top; height: 2px;\">
 					<img src=\"images/histo-v_black.gif\" height=\"1px\" alt=\"\" align=\"top\" title=\"\">
 				</td>";
-
 
 				for($month = 1 ; $month <= 12; $month++) {  //Axe x
 					$double_graph_bymonth .= "
@@ -348,12 +361,15 @@ $double_graph_bymonth .= "
 				
 			for($i = count($format_nb_mois)-1 ; $i >= 0; $i--) { // le dernier mois est en 1er
 				$date_comp = $row['date'];
+				
+				if(isset($data_year_graph[$i][2])) {
 				$cpt_month = $data_year_graph[$i][2] + 0; // + 0 pour supprimer les 0 devant 01, 02, 03 etc (aussi simple qu'une regex)
+				}
 
 				$double_graph_bymonth .= "
 				<td rowspan=\"2\" style=\"".$td_data_graph_CSS." text-align: center; vertical-align: bottom;\">";
 				if($max_visitors != 0) {
-					$indice = bcdiv($val_month[$cpt_month][1], $max_pages, 2); $hauteur = bcmul($indice, $height_graph, 2);
+					$indice = @bcdiv($val_month[$cpt_month][1], $max_pages, 2); $hauteur = bcmul($indice, $height_graph, 2);
 				}
 	
 					$double_graph_bymonth .= "
@@ -394,8 +410,5 @@ $double_graph_bymonth .= "
 	$double_graph_bymonth = '';
 }
 
-
 ##########################################################################################
-
-
 ?>

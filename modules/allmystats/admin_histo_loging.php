@@ -1,15 +1,15 @@
 <?php
 /*
   -------------------------------------------------------------------------
- AllMyStats V1.75 - Statistiques site web - Web traffic analysis
+ AllMyStats V1.80 - Statistiques site web - Web traffic analysis
  -------------------------------------------------------------------------
- Copyright (C) 2008-2010 - Herve Seywert
+ Copyright (C) 2008 - 2013 - Herve Seywert
  copyright-GNU-xx.txt
  -------------------------------------------------------------------------
  Web:    http://allmystats.wertronic.com - http://www.wertronic.com
  -------------------------------------------------------------------------
 */
-	// ---------------- Ne doit pas être appelé directement -------------------
+	// ---------------- Should not be called directly -------------------
 	if(strrchr($_SERVER['PHP_SELF'] , '/' ) == '/admin_histo_loging.php' ){ 
 		header('Location: index.php');
 	}
@@ -78,4 +78,3 @@ echo '
 	</table>
 <p>&nbsp;</p>';
 ?>
-

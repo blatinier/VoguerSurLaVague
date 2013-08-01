@@ -32,14 +32,17 @@ nav.main_nav a {
 }
 
 #header{
-    color: #B1ECC7;
+    background-color: #F07746;
+    color: white;
+/*    color: #B1ECC7;*/
     font-family: "Anton",sans-serif;
     font-size: 150px;
 	height: 200px;
 	margin: auto;
     text-transform: uppercase;
     margin-left: -5px;
-	width: 946px;
+/*	width: 946px;*/
+    width: 690px;
 }
 
 #main{

@@ -24,7 +24,7 @@ connection = MySQLdb.connect(host=host, user=username,
 cursor = connection.cursor()
 
 # Get last update from home page
-cursor.execute("SELECT MAX(pubdate) AS last_pub FROM articles")
+cursor.execute("SELECT MAX(pubdate) AS last_pub FROM articles WHERE pubdate < NOW()")
 last_pubdate = cursor.fetchone()
 
 # Create sitemap xml root element
@@ -43,7 +43,7 @@ priority = ET.SubElement(url_element, 'priority')
 priority.text = "1.0"
 
 # List all articles and add url to sitemap
-cursor.execute("SELECT id, url, pubdate FROM articles ORDER BY id DESC")
+cursor.execute("SELECT id, url, pubdate FROM articles WHERE pubdate < NOW() ORDER BY id DESC")
 my_articles = cursor.fetchall()
 for art in my_articles:
     url_element = ET.SubElement(sitemap, 'url')
@@ -60,12 +60,14 @@ for art in my_articles:
 cursor.execute("SELECT id, slug FROM category WHERE type=0 ORDER BY id DESC")
 my_categories = cursor.fetchall()
 for cat in my_categories:
+    cursor.execute("SELECT MAX(pubdate) AS pubdate FROM articles WHERE cat = %s AND pubdate < NOW()", cat['id'])
+    art = cursor.fetchone()
+    if art['pubdate'] is None:
+        continue
     url_element = ET.SubElement(sitemap, 'url')
     loc = ET.SubElement(url_element, 'loc')
     loc.text = "http://www.melmelboo.fr/cat-%s-%d" % (cat['slug'], cat['id'])
     lastmod = ET.SubElement(url_element, 'lastmod')
-    cursor.execute("SELECT MAX(pubdate) AS pubdate FROM articles WHERE cat = %s", cat['id'])
-    art = cursor.fetchone()
     lastmod.text = art['pubdate'].strftime("%Y-%m-%d")
     changefreq = ET.SubElement(url_element, 'changefreq')
     changefreq.text = 'monthly'

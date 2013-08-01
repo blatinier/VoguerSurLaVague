@@ -25,11 +25,11 @@ foreach ($view->articles as $art) {
 			</div>
 		</div>
 		<footer class="comconteneur">
-            <a class="like_link" href="<?php echo $art->id; ?>">
+<?php /*            <a class="like_link" href="<?php echo $art->id; ?>">
                J'aime (<span id="likes-<?php echo $art->id; ?>"><?php echo $art->nb_likes; ?></span>)
             </a>
             -
-			<?php 
+			<?php */
             if(!$art->closed_com){
                 ?>
                 <a class="comlink" href="art-<?php echo $art->url; ?>-<?php echo $art->id; ?>#postcom">
