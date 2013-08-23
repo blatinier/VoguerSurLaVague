@@ -1,8 +1,0 @@
-<div class="menuBlock">
-    <div class="menuTitle">Articles récents</div>
-    <ul class="ulmenuV">
-        <?php foreach ($_widget_data['last_art'] as $art) { ?>
-            <li><a href="/art-<?php echo $art->url."-".$art->id; ?>"><?php echo $art->titre; ?></a></li>
-        <?php } ?>
-    </ul>
-</div>

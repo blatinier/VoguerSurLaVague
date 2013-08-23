@@ -44,7 +44,7 @@ $captcha_com = $view->article->captcha_com;
                 echo "<span style=\"color:red;\"> Cet article sera publié dans ".$jour." jours ".$heure." heures et ".$minutes." minutes.</span><br/>";
             }
             ?>
-            Écrit le <span itemprop='datePublished' title='<?php echo str_replace(' ', 'T', $art->pubdate); ?>'><?php echo $view->article->post_date; ?></span>
+            Écrit le <span itemprop='datePublished' title='<?php echo str_replace(' ', 'T', $view->article->pubdate); ?>'><?php echo $view->article->post_date; ?></span>
 			par <span itemprop='author' itemscope='itemscope' itemtype='http://schema.org/Person'>
 				<meta content='http://www.melmelboo.fr/about' itemprop='url'/>
 				<a href='http://www.melmelboo.fr/about' rel='author' title='author profile'>

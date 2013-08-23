@@ -1,8 +1,0 @@
-<div class="menuBlock">
-    <div class="menuTitle">Catégories</div>
-    <ul class="ulmenuV">
-        <?php foreach ($_widget_data['categories'] as $cat) { ?>
-            <li><a href="/cat-<?php echo $cat->slug."-".$cat->id; ?>"><?php echo $cat->titre; ?></a></li>
-        <?php } ?>
-    </ul>
-</div>

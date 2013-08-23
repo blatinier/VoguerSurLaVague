@@ -5,7 +5,7 @@ body {
 
 a {
     color: #BFBFBF;
-	font-size: 0.9em;
+	font-size: 1em;
 	text-decoration: none;
 }
 
@@ -14,52 +14,58 @@ a:hover {
 }
 
 #conteneur{
-	width:950px;
+	width:1050px;
 	margin-left:auto;
 	margin-right:auto;
 	padding-top: 9px;
 }
 
 nav.main_nav {
+    background-color: #676767;
     border-bottom: 1px solid #BAB6B1;
     font-size: 20px;
+    left: 0;
+    margin: 0;
+    position: fixed;
+    text-transform: uppercase;
+    top: 0;
     width: 100%;
 }
 
+nav.main_nav a.first {
+    margin-left: 20px; 
+}
+
 nav.main_nav a {
+    display: inline-block;
     font-family: 'Anton',sans-serif;
     font-size: 22px;
+    margin-right: 60px;
 }
 
 #header{
-    background-color: #F07746;
-    color: white;
-/*    color: #B1ECC7;*/
-    font-family: "Anton",sans-serif;
-    font-size: 150px;
-	height: 200px;
+    background-image: url("/images/header.jpg");
+	height: 364px;
 	margin: auto;
-    text-transform: uppercase;
-    margin-left: -5px;
-/*	width: 946px;*/
-    width: 690px;
+    margin-left: 160px;
+    width: 731px;
 }
 
 #main{
-	width:950px;
+	width:1050px;
 	float:left;
     margin-top: 30px;
 }
 
 #contenu{
 	float:left;
-	width: 71%;
+	width: 73.5%;
 	margin-bottom: 20px;
 }
 
 aside{
 	float: right;
-	width: 25%;
+	width: 22.5%;
     font-style: normal;
 }
 
@@ -146,6 +152,28 @@ aside .menuBlock{
 	text-transform: uppercase;
     float: right;
     color: #969696;
+}
+
+nav#main_nav {
+    color: #939393;
+    font-size: 1.5em;
+    text-align: center;
+    text-transform: uppercase;
+}
+
+nav#main_nav a:hover {
+    color: #FFC6A9;
+}
+
+nav#main_nav a {
+    color: #939393;
+    display: inline-block;
+    margin: 0 54px;
+}
+
+nav#main_nav hr {
+    background: url("/images/green_stripes_short.png") repeat-x;
+    border: none;
 }
 
 hr{

@@ -41,7 +41,30 @@ class Staticpages extends Controller {
     public function helphtml () {
     }
 
+    public function update_links () {
+        $static_repo = new StaticRepository();
+        if (!empty($_POST)){
+            $static_repo->save('links', $_POST['content']);
+        }
+        $this->view->links_content = $static_repo->get_links();
+    }
+
+    public function update_apropos () {
+        $static_repo = new StaticRepository();
+        if (!empty($_POST)){
+            $static_repo->save('about', $_POST['content']);
+        }
+        $this->view->about_content = $static_repo->get_about();
+    }
+
+    public function links () {
+        $static_repo = new StaticRepository();
+        $this->view->links_content = $static_repo->get_links();
+    }
+
     public function apropos () {
+        $static_repo = new StaticRepository();
+        $this->view->about_content = $static_repo->get_about();
     }
 
     public function admin () {

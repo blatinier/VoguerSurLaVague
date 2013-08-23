@@ -25,17 +25,25 @@
         <link href='http://fonts.googleapis.com/css?family=Anton' rel='stylesheet' type='text/css'>
     </head> 
     <body>
+        <nav class="main_nav">
+            <a class="first" href="/">Accueil</a>
+            <a href="/about">A propos</a>
+            <a href="/contact">CONTACT</a>
+            <a href="/links">Liens</a>
+        </nav>
         <div id="conteneur" itemscope='itemscope' itemtype='http://schema.org/Blog'>
             <meta content='Melmelboo' itemprop='name'/>
             <header>
-                <nav class="main_nav">
-                    <a href="/">HOME</a> / 
-                    <a href="/diy">DIY</a> / 
-                    <a href="/about">ABOUT</a> / 
-                    <a href="/contact">CONTACT</a>
-                </nav>
-                <div id="header" onclick="location.href='/'">Melmelboo</div>
+                <div id="header" onclick="location.href='/'"></div>
             </header>
+            <nav id="main_nav">
+                <hr />
+                <a href="/cat-life-style-26">Life style</a> /
+                <a href="/cat-voyage-20">Voyage</a> /
+                <a href="/cat-deco-diy-3">Déco, DIY</a> /
+                <a href="/cat-beaute-27">Beauté</a>
+                <hr />
+            </nav>
             <div id="main">
                 <div id="contenu">
                     <?php if (!empty($_speedmsg)) { ?>
@@ -54,14 +62,9 @@
                         </a>
                     </div>
                     <hr />
-                    <?php echo $_widgets['last_art']; ?>
-                    <nav id="menuBlockRight">
-                        <?php echo $_widgets['categories']; ?>
-                    </nav>
                     <nav id="menuBlockLeft">
                         <?php echo $_widgets['archives']; ?>
                     </nav>
-                    <?php echo $_widgets['links']; ?>
                 </aside>
             </div>
             <footer id="footer">

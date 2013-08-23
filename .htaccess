@@ -14,6 +14,9 @@ RewriteRule ^diy-page-([0-9]+)$ index.php?controller=home&action=main&page=$1&di
 # Static pages
 RewriteRule ^contact$ index.php?controller=staticpages&action=contact [L] 
 RewriteRule ^about$ index.php?controller=staticpages&action=apropos [L] 
+RewriteRule ^links$ index.php?controller=staticpages&action=links [L] 
+RewriteRule ^update_about$ index.php?controller=staticpages&action=update_apropos [L] 
+RewriteRule ^update_links$ index.php?controller=staticpages&action=update_links [L] 
 RewriteRule ^helphtml$ index.php?controller=staticpages&action=helphtml [L] 
 
 # Admin

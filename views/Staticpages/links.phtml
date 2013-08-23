@@ -1,12 +1,12 @@
 <?php
-$nom_page='page à propos';
+$nom_page='page liens';
 $Racine_abs = str_replace($_SERVER['PHP_SELF'],"",$_SERVER['SCRIPT_FILENAME']);
 require $Racine_abs.'/modules/allmystats/visiteur.php';
 ?> 
 <div class="post">
     <div class="mainpost">
         <div class="postcontent">
-            <?php echo $view->about_content; ?>
+            <?php echo $view->links_content; ?>
         </div>
     </div>
 </div>
