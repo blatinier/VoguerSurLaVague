@@ -137,6 +137,12 @@ aside .menuBlock{
     font-style: normal;
 }
 
+.postcontent img{
+    -moz-border-radius: 50px;
+    -webkit-border-radius: 50px;
+    border-radius: 50px;
+}
+
 .postTitle{
 	line-height:0;
     text-transform: uppercase;
