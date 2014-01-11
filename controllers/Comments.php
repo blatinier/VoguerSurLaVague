@@ -22,6 +22,19 @@ class Comments extends Controller {
         $this->view->comments = $comments;
     }
 
+    public function ban_ip () {
+        $admin = (!empty($_SESSION['ok']) && $_SESSION['ok'] == 1);
+        if (!$admin) {
+            header('Location: http://www.melmelboo.fr');
+            die();
+        }
+        $com_repo = new CommentRepository();
+        $com_repo->ban_ip($this->_getParam('ip'));
+        $com_repo->clean_banned();
+        header('Location: http://www.melmelboo.fr/last_comments');
+        die();
+    }
+
     public function delete () {
         $admin = (!empty($_SESSION['ok']) && $_SESSION['ok'] == 1);
         if (!$admin) {

@@ -75,5 +75,17 @@ class CommentRepository extends Repository {
         $req = "DELETE FROM comments WHERE id = %i";
         $this->mysql_connector->delete($req, $id);
     }
+
+    public function ban_ip($ip) {
+        $req = "INSERT INTO blacklist(ip) VALUES(%s)";
+        $com = $this->mysql_connector->insert($req, $ip);
+    }
+
+    public function clean_banned() {
+        $req = "DELETE FROM comments WHERE ip IN (SELECT ip FROM blacklist)";
+        $this->mysql_connector->delete($req);
+        $req = "DELETE FROM new_comments WHERE idcom NOT IN (SELECT id FROM comments)";
+        $this->mysql_connector->delete($req);
+    }
 }
 ?>

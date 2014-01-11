@@ -4,7 +4,8 @@
     foreach($view->comments as $com){
         echo '
             <li>
-                Commentaire de '.$com['com']['pseudo'].' 
+                Commentaire de '.$com['com']['pseudo'].' ('.$com['com']['ip'].'
+                <a href="ban_ip/'.$com['com']['ip'].'">bannir</a>)
                 dans l\'article 
                 <a href="mark_comment/'.$com['idcom'].'/'.$com['idarticle'].'">
                     '.$com['article']->titre.'
