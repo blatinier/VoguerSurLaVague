@@ -5,16 +5,27 @@ foreach ($view->articles as $art) {
         <meta content='<?php echo $art->id; ?>' itemprop='postId'/>
         <meta itemprop="inLanguage" content="fr-FR"/>
 	    <header>
-		<span class="categorie">
-			<a href="cat-<?php echo $art->category->slug; ?>-<?php echo $art->category->id; ?>">
-                <?php echo $art->category->titre; ?>
-            </a>
-		</span>
-		<h2 class="postTitle" itemprop='name'>
-			<a href="art-<?php echo $art->url; ?>-<?php echo $art->id; ?>">
-				<?php echo stripslashes($art->titre); ?>
-			</a>
-		</h2>
+            <span class="categorie">
+                <a href="cat-<?php echo $art->category->slug; ?>-<?php echo $art->category->id; ?>">
+                    <?php echo $art->category->titre; ?>
+                </a>
+            </span>
+            <span class="postDate">
+            <?php
+                if($art->ecart < 0){
+                    $jour = floor(-$art->ecart/(3600*24));
+                    $heure = floor((-$art->ecart-$jour*3600*24)/3600);
+                    $minutes = floor((-$art->ecart-$jour*3600*24-$heure*3600)/60);
+                    echo "<span style=\"color:red;\"> Cet article sera publié dans ".$jour." jours ".$heure." heures et ".$minutes." minutes.</span><br/>";
+                }
+            ?>
+                <span itemprop='datePublished' title='<?php echo str_replace(' ', 'T', $art->pubdate); ?>'><?php echo $art->post_date; ?></span>
+            </span>
+            <h2 class="postTitle" itemprop='name'>
+                <a href="art-<?php echo $art->url; ?>-<?php echo $art->id; ?>">
+                    <?php echo stripslashes($art->titre); ?>
+                </a>
+            </h2>
 	    </header>
 		<br/><br/>
 		<div class="mainpost">
@@ -48,23 +59,6 @@ foreach ($view->articles as $art) {
 				<a class=\"comlink\" href=\"article_delete-".$art->id."\">Supprimer</a><br/>";
 			}
 			?>
-            <span class="postDate">
-            <?php
-                if($art->ecart < 0){
-                    $jour = floor(-$art->ecart/(3600*24));
-                    $heure = floor((-$art->ecart-$jour*3600*24)/3600);
-                    $minutes = floor((-$art->ecart-$jour*3600*24-$heure*3600)/60);
-                    echo "<span style=\"color:red;\"> Cet article sera publié dans ".$jour." jours ".$heure." heures et ".$minutes." minutes.</span><br/>";
-                }
-            ?>
-                Écrit le <span itemprop='datePublished' title='<?php echo str_replace(' ', 'T', $art->pubdate); ?>'><?php echo $art->post_date; ?></span>
-                par <span itemprop='author' itemscope='itemscope' itemtype='http://schema.org/Person'>
-                    <meta content='http://www.melmelboo.fr/about' itemprop='url'/>
-                    <a href='http://www.melmelboo.fr/about' rel='author' title='author profile'>
-                        <span itemprop='name'><?php echo stripslashes($art->auteur); ?></span>
-                    </a>
-                </span>
-            </span>
 		</footer>
 		<br/>
 	</article>
