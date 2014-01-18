@@ -21,11 +21,11 @@ foreach ($view->articles as $art) {
             ?>
                 <span itemprop='datePublished' title='<?php echo str_replace(' ', 'T', $art->pubdate); ?>'><?php echo $art->post_date; ?></span>
             </span>
-            <h2 class="postTitle" itemprop='name'>
+            <div class="postTitle" itemprop='name'>
                 <a href="art-<?php echo $art->url; ?>-<?php echo $art->id; ?>">
                     <?php echo stripslashes($art->titre); ?>
                 </a>
-            </h2>
+            </div>
 	    </header>
 		<br/><br/>
 		<div class="mainpost">
@@ -40,18 +40,9 @@ foreach ($view->articles as $art) {
                J'aime (<span id="likes-<?php echo $art->id; ?>"><?php echo $art->nb_likes; ?></span>)
             </a>
             -
-			<?php */
-            if(!$art->closed_com){
-                ?>
-                <a class="comlink" href="art-<?php echo $art->url; ?>-<?php echo $art->id; ?>#postcom">
-                    Commenter
-                </a>
-                 - 
-            <?php
-            }
-            ?>
-            <a href="art-<?php echo $art->url; ?>-<?php echo $art->id; ?>">
-                Lire les commentaires (<?php echo $art->nb_comment; ?>)
+			<?php */ ?>
+            <a class="comlink" href="art-<?php echo $art->url; ?>-<?php echo $art->id; ?>#firstcom">
+                <?php echo $art->nb_comment; ?>&nbsp;
             </a>
             <?php
 			if(!empty($_SESSION['ok']) && $_SESSION['ok'] == 1){
@@ -60,9 +51,7 @@ foreach ($view->articles as $art) {
 			}
 			?>
 		</footer>
-		<br/>
 	</article>
-	<br/>
 	<hr/>
 	<?php
 } ?>

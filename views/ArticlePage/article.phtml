@@ -22,11 +22,11 @@ $captcha_com = $view->article->captcha_com;
             ?>
             <span itemprop='datePublished' title='<?php echo str_replace(' ', 'T', $view->article->pubdate); ?>'><?php echo $view->article->post_date; ?></span>
 	    </span>
-        <h2 class="postTitle" itemprop='name'>
+        <div class="postTitle" itemprop='name'>
             <a href="art-<?php echo $view->article->url; ?>-<?php echo $view->article->id; ?>">
                 <?php echo stripslashes($view->article->titre); ?>
             </a>
-        </h2>
+        </div>
     </header>
     <br/><br/>
     <div class="mainpost">
