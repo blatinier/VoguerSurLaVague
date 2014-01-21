@@ -37,7 +37,7 @@ nav.main_nav a.first {
 
 nav.main_nav a {
     display: inline-block;
-    font-size: 22px;
+    font-size: 16px;
     margin-right: 60px;
 }
 
@@ -72,12 +72,11 @@ aside li{
 }
 
 aside .menuTitle{
+    color: #3D3D3D;
+    font-family:'Raleway',sans-serif;
 	font-size: 15px;
-	width:100%;
-    font-weight: Bold;
-    font-family:HelveticaArial,sans-serif;
-    color: #666666;
     text-transform: uppercase;
+	width:100%;
 }
 
 aside .menuBlock{
@@ -152,10 +151,11 @@ aside .menuBlock{
 }
 
 .postDate{
-	font-size: 0.7em;
-	text-transform: uppercase;
-    float: right;
     color: #BFBFBF;
+    float: right;
+	font-size: 0.7em;
+    letter-spacing: 2px;
+	text-transform: uppercase;
 }
 
 nav#main_nav {
@@ -231,7 +231,7 @@ aside hr{
 
 .comlink{
     background: url("/images/commentbubble.png") no-repeat scroll right center / 18px auto rgba(0, 0, 0, 0);
-    color: #BFBFBF;
+    color: #222222;
     padding-right: 20px;
 }
 
@@ -405,4 +405,8 @@ textarea.new_art#commentaire {
     height: 21px;
     text-align: center;
     width: 85px;
+}
+
+#admin_link {
+    color: #ADADAD;
 }
