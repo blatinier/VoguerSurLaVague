@@ -10,7 +10,7 @@ a {
 }
 
 a:hover {
-    color: #FFC6A9;
+    color: #CACACA;
 }
 
 #conteneur{
@@ -35,6 +35,10 @@ nav.main_nav a.first {
     margin-left: 20px; 
 }
 
+nav.main_nav a:hover {
+    color: #FAFAFA;
+}
+
 nav.main_nav a {
     display: inline-block;
     font-size: 16px;
@@ -56,13 +60,13 @@ nav.main_nav a {
 }
 
 #contenu{
-	float:left;
+	float: right;
 	width: 73.5%;
 	margin-bottom: 20px;
 }
 
 aside{
-	float: right;
+	float: left;
 	width: 22.5%;
     font-style: normal;
 }
@@ -73,10 +77,10 @@ aside li{
 
 aside .menuTitle{
     color: #3D3D3D;
-    font-family:'Raleway',sans-serif;
+    font-family: Helvetica, sans-serif;
 	font-size: 15px;
     text-transform: uppercase;
-	width:100%;
+	width: 100%;
 }
 
 aside .menuBlock{
@@ -126,6 +130,10 @@ aside .menuBlock{
 	font-size: 0.9em;
 }
 
+.postcontent a{
+    color: #AAAAAA;
+}
+
 .postcontent{
 	line-height:1.3em;
 	font-family: Helvetica, Arial, sans-serif;
@@ -146,7 +154,7 @@ aside .menuBlock{
 }
 
 .postTitle a {
-    font-family:'Raleway',sans-serif;
+    font-family: Helvetica, sans-serif;
     font-size: 1em;
 }
 
@@ -165,7 +173,7 @@ nav#main_nav {
 }
 
 nav#main_nav a:hover {
-    color: #FFC6A9;
+    color: #CACACA;
 }
 
 nav#main_nav a {
