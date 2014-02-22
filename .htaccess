@@ -27,6 +27,10 @@ RewriteRule ^mark_comment/([0-9]+)/([0-9]+)$ index.php?controller=comments&actio
 RewriteRule ^mark_read_all_comments$ index.php?controller=comments&action=mark_all_read [L] 
 RewriteRule ^delete_comment/([0-9]+)$ index.php?controller=comments&action=delete&com_id=$1 [L] 
 RewriteRule ^ban_ip/([0-9.]+)$ index.php?controller=comments&action=ban_ip&ip=$1 [L] 
+RewriteRule ^tag_management$ index.php?controller=tag&action=management [L] 
+RewriteRule ^new_tag$ index.php?controller=tag&action=new_tag [L] 
+RewriteRule ^del_tag/([0-9.]+)$ index.php?controller=tag&action=del_tag&tag_id=$1 [L] 
+RewriteRule ^edit_tag/([0-9.]+)$ index.php?controller=tag&action=edit_tag&tag_id=$1 [L] 
 
 # Admin categories
 RewriteRule ^new_cat$ index.php?controller=category&action=new_cat [L] 

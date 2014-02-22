@@ -10,9 +10,8 @@ class Article extends Model {
     public $cat;
     public $captcha_com;
     public $closed_com;
-    public $is_diy;
 
-    public function __construct($id, $auteur, $titre, $url, $texte, $pubdate, $cat, $captcha_com, $closed_com, $is_diy) {
+    public function __construct($id, $auteur, $titre, $url, $texte, $pubdate, $cat, $captcha_com, $closed_com) {
         $this->id = $id;
         $this->auteur = $auteur;
         $this->titre = $titre;
@@ -22,7 +21,6 @@ class Article extends Model {
         $this->cat = $cat;
         $this->captcha_com = $captcha_com;
         $this->closed_com = $closed_com;
-        $this->is_diy = $is_diy;
 
         $pub_time = strtotime($pubdate);
         $this->post_date = date("d/m/Y", $pub_time);
@@ -38,7 +36,6 @@ class Article extends Model {
             $dict['pubdate'],
             $dict['cat'],
             $dict['captcha_com'],
-            $dict['closed_com'],
-            $dict['is_diy']);
+            $dict['closed_com']);
     }
 }

@@ -1,0 +1,20 @@
+<?php
+if(!empty($view->msg)){
+    echo "<p>".$view->msg."</p>";
+}
+?>
+<h2>Gestion des Tags</h2>
+<form method="post" action="new_tag">
+    <label for="name">Nom du nouveau tag : </label>
+    <input type="text" name="name" />
+    <input type="submit" value="Créer" />
+</form>
+<hr />
+<ul>
+    <?php foreach($view->list_tag as $t): ?>
+    <li><?php echo $t->name; ?>
+    (<a href="del_tag/<?php echo $t->id; ?>"
+        onclick="return confirm('Are you sure?')">supprimer</a>,
+    <a href="edit_tag/<?php echo $t->id; ?>">éditer</a>)</li>
+    <?php endforeach; ?>
+</ul>

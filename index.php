@@ -12,6 +12,7 @@ if (!empty($controller) && !empty($action)) {
         'comments' => 'Comments',
         'listing' => 'Listing',
         'category' => 'CategoryPage',
+        'tag' => 'TagManager',
         'staticpages' => 'Staticpages',
         'ajax' => 'Ajax',
     );

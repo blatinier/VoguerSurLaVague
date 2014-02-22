@@ -7,7 +7,7 @@ class ArticleRepository extends Repository {
 
     public function get_by_id($is_admin, $id) {
         $req = 'SELECT id, auteur, titre, url, texte,
-            pubdate, cat, captcha_com, closed_com, is_diy
+            pubdate, cat, captcha_com, closed_com
             FROM articles
             WHERE id = '.(int)$id;
         if (!$is_admin) {
@@ -18,17 +18,14 @@ class ArticleRepository extends Repository {
         return $article;
     }
 
-    public function get_articles($is_admin, $page, $is_diy=false) {
+    public function get_articles($is_admin, $page) {
         $offset = $page * 5;
         $req = 'SELECT id, auteur, titre, url, texte,
-            pubdate, cat, captcha_com, closed_com, is_diy
+            pubdate, cat, captcha_com, closed_com
             FROM articles';
         $where = array();
         if (!$is_admin) {
             $where[] = 'pubdate < NOW()';
-        }
-        if ($is_diy) {
-            $where[] = 'is_diy = 1';
         }
         if (!empty($where)) {
             $req .= " WHERE ".implode(" AND ", $where);
@@ -108,7 +105,7 @@ class ArticleRepository extends Repository {
         $month = (int)$month;
         $page = (int)$page;
         $req = 'SELECT id, auteur, titre, url, texte,
-            pubdate, cat, captcha_com, closed_com, is_diy
+            pubdate, cat, captcha_com, closed_com
             FROM articles
             WHERE YEAR(pubdate) = '.$year.'
                 AND MONTH(pubdate) = '.$month;
@@ -129,7 +126,7 @@ class ArticleRepository extends Repository {
         $page = (int)$page;
         $category_id = (int)$category_id;
         $req = 'SELECT id, auteur, titre, url, texte,
-            pubdate, cat, captcha_com, closed_com, is_diy
+            pubdate, cat, captcha_com, closed_com
             FROM articles
             WHERE cat = '.$category_id;
         if (!$is_admin) {
@@ -153,28 +150,27 @@ class ArticleRepository extends Repository {
                         texte = %s,
                         pubdate = %s,
                         cat = %d,
-                        is_diy = %d,
                         captcha_com = %d,
                         closed_com = %d
                 WHERE id = %d";
             $this->mysql_connector->update($req, $article->auteur,
                 $article->titre, $article->url, $article->texte,
-                $article->pubdate, $article->cat, $article->is_diy,
+                $article->pubdate, $article->cat,
                 $article->captcha_com, $article->closed_com, $article->id);
         } else {
             $req = "INSERT INTO articles
                         (id, auteur, titre, url,
                          texte, pubdate, cat,
-                         is_diy, captcha_com,
+                         captcha_com,
                          closed_com)
                     VALUES('', %s, %s, %s,
                            %s, %s, %d,
-                           %d, %d,
+                           %d,
                            %d)";
             $res = $this->mysql_connector->insert($req,
                 $article->auteur, $article->titre, $article->url,
                 $article->texte, $article->pubdate, $article->cat,
-                $article->is_diy, $article->captcha_com,
+                $article->captcha_com,
                 $article->closed_com);
             $article->id = $res['insert_id'];
         }
@@ -182,6 +178,8 @@ class ArticleRepository extends Repository {
     }
 
     public function delete($article_id) {
+        $req = "DELETE FROM article_tags WHERE article_id = %d";
+        $this->mysql_connector->delete($req, $article_id);
         $req = "DELETE FROM articles WHERE id = %d";
         $this->mysql_connector->delete($req, $article_id);
     }

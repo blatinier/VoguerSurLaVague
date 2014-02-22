@@ -95,6 +95,7 @@ class MySQLConnector {
     
     public function insert() {
         $args = func_get_args();
+        error_log(var_export($args, true));
         $p = preg_match_all('/%([idsb])/', $args[0], $matches, PREG_SET_ORDER);
         $args[0] = preg_replace('/%[idsb]/', '?', $args[0]);
         
