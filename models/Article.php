@@ -38,4 +38,9 @@ class Article extends Model {
             $dict['captcha_com'],
             $dict['closed_com']);
     }
+
+    public function get_tags() {
+        $tr = new TagRepository();
+        return $tr->get_tags_by_art($this->id);
+    }
 }

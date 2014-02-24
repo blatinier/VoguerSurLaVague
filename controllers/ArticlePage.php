@@ -64,7 +64,11 @@ class ArticlePage extends Controller {
             $this->view->art = $art->texte;
             $this->view->cat = $art->cat;
             $this->view->pubdate = $art->pubdate;
-            $this->view->art_tags = $art->get_tags_id();
+            $tags_id = array();
+            foreach ($art->get_tags() as $t) {
+                $tags_id[] = $t->id;
+            }
+            $this->view->art_tags = $tags_id;
         }
         $this->view->tags = $tag_repo->get_all();
         $cat_repo = new CategoryRepository();

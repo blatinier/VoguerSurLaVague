@@ -37,9 +37,7 @@ class CommentRepository extends Repository {
     public function add($idarticle, $pseudo,
         $comment, $site, $ip) {
         $country = geoip_country_code_by_name($ip);
-        error_log($country);
         if (!in_array($country, array('US', 'CN', 'CA'))) {
-            error_log('Got through');
             $req = "INSERT INTO comments(idarticle, moment, pseudo,
                         commentaire, site, ip)
                     VALUES(%i, NOW(), %s, %s, %s, %s)";
