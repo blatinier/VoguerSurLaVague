@@ -42,5 +42,24 @@ class Listing extends Controller {
         $this->view->articles = $articles;
         $this->view->std_page_link = "cat-".$category->slug."-".$category_id;
     }
+
+    public function tag () {
+        $this->view_tpl = 'Home/main.phtml';
+        $page = $this->_getParam('page', 0);
+        $tag_id = $this->_getParam('tag_id', 0);
+        $admin = (!empty($_SESSION['ok']) && $_SESSION['ok'] == 1);
+        $art_repo = new ArticleRepository();
+        $com_repo = new CommentRepository();
+        $tags_repo = new TagsRepository();
+        $tag = $tags_repo->get_by_id($tag_id);
+        $articles = $art_repo->get_tag_articles($admin, $page, $tag_id);
+        foreach ($articles as $art) {
+            $art->category = $category; //TODO
+            $art->nb_comment = $com_repo->count($art->id);
+        }
+        $this->view->nb_pages = $art_repo->page_count_tag($admin, $tag_id);
+        $this->view->articles = $articles;
+        $this->view->std_page_link = "tag-".$tag->slug."-".$tag_id;
+    }
 }
 ?>

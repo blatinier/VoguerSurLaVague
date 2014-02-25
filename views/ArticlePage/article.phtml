@@ -6,7 +6,7 @@ $captcha_com = $view->article->captcha_com;
     <meta content='<?php echo $view->article->id; ?>' itemprop='postId'/>
     <meta itemprop="inLanguage" content="fr-FR"/>
     <header>
-        <span class="categorie">
+        <span class="categorie" itemprop="about">
             <a href="cat-<?php echo $view->article->category->slug; ?>-<?php echo $view->article->category->id; ?>">
                 <?php echo $view->article->category->titre; ?>
             </a>
@@ -36,6 +36,16 @@ $captcha_com = $view->article->captcha_com;
             <br/><br/>
         </div>
     </div>
+    <span class="categorie" itemprop="about">
+        <?php $i = 0; ?>
+        <?php foreach ($view->article->get_tags() as $t): ?>
+            <?php if ($i) { echo " - "; } ?>
+        <a href="tag-<?php echo $t->slug; ?>-<?php echo $t->id; ?>">
+            <?php echo $t->name; ?>
+        </a>
+            <?php $i = 1; ?>
+        <?php endforeach; ?>
+    </span>
     <footer class="comconteneur">
 <?php /*        <a class="like_link" href="<?php echo $view->article->id; ?>">
             J'aime (<span id="likes-<?php echo $view->article->id; ?>"><?php echo $view->article->nb_likes; ?></span>)

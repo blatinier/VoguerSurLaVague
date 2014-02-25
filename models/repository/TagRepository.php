@@ -41,7 +41,7 @@ class TagRepository extends Repository {
         foreach ($tags_id as $tid) {
             $values[] = "(" . (int)$tid . ", " . (int)$art_id . ")";
         }
-        $req .= implode(', ', $values);
+        $req .= implode(', ', $values) . " ON DUPLICATE KEY UPDATE tag_id=tag_id";
         $this->mysql_connector->insert($req);
     }
 

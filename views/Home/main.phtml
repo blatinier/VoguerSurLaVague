@@ -5,7 +5,7 @@ foreach ($view->articles as $art) {
         <meta content='<?php echo $art->id; ?>' itemprop='postId'/>
         <meta itemprop="inLanguage" content="fr-FR"/>
 	    <header>
-            <span class="categorie">
+            <span class="categorie" itemprop="about">
                 <a href="cat-<?php echo $art->category->slug; ?>-<?php echo $art->category->id; ?>">
                     <?php echo $art->category->titre; ?>
                 </a>
@@ -35,6 +35,16 @@ foreach ($view->articles as $art) {
 				<br/><br/>
 			</div>
 		</div>
+        <span class="categorie" itemprop="about">
+            <?php $i = 0; ?>
+            <?php foreach ($art->get_tags() as $t): ?>
+                <?php if ($i) { echo " - "; } ?>
+            <a href="tag-<?php echo $t->slug; ?>-<?php echo $t->id; ?>">
+                <?php echo $t->name; ?>
+            </a>
+                <?php $i = 1; ?>
+            <?php endforeach; ?>
+        </span>
 		<footer class="comconteneur">
 <?php /*            <a class="like_link" href="<?php echo $art->id; ?>">
                J'aime (<span id="likes-<?php echo $art->id; ?>"><?php echo $art->nb_likes; ?></span>)
