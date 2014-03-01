@@ -50,11 +50,12 @@ class Listing extends Controller {
         $admin = (!empty($_SESSION['ok']) && $_SESSION['ok'] == 1);
         $art_repo = new ArticleRepository();
         $com_repo = new CommentRepository();
-        $tags_repo = new TagsRepository();
+        $tags_repo = new TagRepository();
+        $cats_repo = new CategoryRepository();
         $tag = $tags_repo->get_by_id($tag_id);
         $articles = $art_repo->get_tag_articles($admin, $page, $tag_id);
         foreach ($articles as $art) {
-            $art->category = $category; //TODO
+            $art->category = $cats_repo->get_by_id($art->cat);
             $art->nb_comment = $com_repo->count($art->id);
         }
         $this->view->nb_pages = $art_repo->page_count_tag($admin, $tag_id);

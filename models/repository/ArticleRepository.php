@@ -39,9 +39,9 @@ class ArticleRepository extends Repository {
         return $articles;
     }
 
-    public function count($is_admin, $year=false, $month=false, $category_id=false) {
+    public function count($is_admin, $year=false, $month=false, $category_id=false, $tag_id=false) {
         $req = 'SELECT COUNT(*) as cpt
-            FROM articles';
+            FROM articles a ';
         $where = array();
         if (!$is_admin) {
             $where[] = 'pubdate < NOW()';
@@ -51,6 +51,11 @@ class ArticleRepository extends Repository {
         }
         if ($month) {
             $where[] = 'MONTH(pubdate) = '.(int)$month;
+        }
+        if ($tag_id) {
+            $req .= " LEFT JOIN article_tags at
+            ON a.id = at.article_id";
+            $where[] = "at.tag_id = ". (int)$tag_id;
         }
         if ($category_id) {
             $where[] = 'cat = '.(int)$category_id;
@@ -69,6 +74,11 @@ class ArticleRepository extends Repository {
 
     public function page_count_category($is_admin, $category_id) {
         $nb_art = $this->count($is_admin, false, false, $category_id);
+        return ceil($nb_art / 5);
+    }
+
+    public function page_count_tag($is_admin, $tag_id) {
+        $nb_art = $this->count($is_admin, false, false, false, $tag_id);
         return ceil($nb_art / 5);
     }
 
@@ -109,6 +119,28 @@ class ArticleRepository extends Repository {
             FROM articles
             WHERE YEAR(pubdate) = '.$year.'
                 AND MONTH(pubdate) = '.$month;
+        if (!$is_admin) {
+            $req .= ' AND pubdate < NOW() ';
+        }
+        $req .= ' ORDER BY pubdate DESC LIMIT '.$offset.', 5';
+        $art_sql = $this->mysql_connector->fetchAll($req);
+        $articles = array();
+        foreach($art_sql as $article_data) {
+            $articles[] = Article::load($article_data);
+        }
+        return $articles;
+    }
+
+    public function get_tag_articles($is_admin, $page, $tag_id) {
+        $offset = $page * 5;
+        $page = (int)$page;
+        $tag_id = (int)$tag_id;
+        $req = 'SELECT id, auteur, titre, url, texte,
+            pubdate, cat, captcha_com, closed_com
+            FROM articles a
+            LEFT JOIN article_tags at
+                ON a.id = at.article_id
+            WHERE tag_id = '.$tag_id;
         if (!$is_admin) {
             $req .= ' AND pubdate < NOW() ';
         }

@@ -4,6 +4,8 @@ RewriteRule ^config.*$ / [R=301,L]
 
 RewriteRule ^cat-(.*)-([0-9]+)-page-([0-9]+)$ index.php?controller=listing&action=category&category_id=$2&page=$3 [L] 
 RewriteRule ^cat-(.*)-([0-9]+)$ index.php?controller=listing&action=category&category_id=$2 [L] 
+RewriteRule ^tag-(.*)-([0-9]+)-page-([0-9]+)$ index.php?controller=listing&action=tag&tag_id=$2&page=$3 [L] 
+RewriteRule ^tag-(.*)-([0-9]+)$ index.php?controller=listing&action=tag&tag_id=$2 [L] 
 RewriteRule ^art-(.*)-([0-9]+)$ index.php?controller=article&action=article&art=$2 [L] 
 RewriteRule ^like-([0-9]+)$ index.php?controller=article&action=like&art=$1 [L] 
 
