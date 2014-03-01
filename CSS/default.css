@@ -217,6 +217,16 @@ aside hr{
     color: #BFBFBF;
 }
 
+.tags a{
+    color: #BFBFBF;
+}
+
+.tags {
+	font-size: 10px;
+	text-transform: uppercase;
+    font-family: Helvetica, Arial, sans-serif;
+}
+
 .categorie{
 	font-size:0.6em;
 	text-transform: uppercase;
