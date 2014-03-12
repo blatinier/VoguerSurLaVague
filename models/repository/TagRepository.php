@@ -25,6 +25,20 @@ class TagRepository extends Repository {
         return $tags;
     }
 
+    public function get_all_with_count() {
+        $req = 'SELECT id, name, slug, COUNT(*) AS nb
+        FROM tags t
+        LEFT JOIN article_tags at
+        ON t.id = at.tag_id
+        GROUP BY t.id';
+        $art_sql = $this->mysql_connector->fetchAll($req);
+        $tags = array();
+        foreach($art_sql as $tag_data) {
+            $tags[] = Tag::load($tag_data);
+        }
+        return $tags;
+    }
+
     public function get_all() {
         $req = 'SELECT id, name, slug FROM tags';
         $art_sql = $this->mysql_connector->fetchAll($req);

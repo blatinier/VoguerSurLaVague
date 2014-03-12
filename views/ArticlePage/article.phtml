@@ -41,7 +41,7 @@ $captcha_com = $view->article->captcha_com;
         <?php foreach ($view->article->get_tags() as $t): ?>
             <?php if ($i) { echo " - "; } ?>
         <a href="tag-<?php echo $t->slug; ?>-<?php echo $t->id; ?>">
-            <?php echo $t->name; ?>
+            <?php echo utf8_decode($t->name); ?>
         </a>
             <?php $i = 1; ?>
         <?php endforeach; ?>
