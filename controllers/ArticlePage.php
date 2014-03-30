@@ -70,7 +70,7 @@ class ArticlePage extends Controller {
             }
             $this->view->art_tags = $tags_id;
         }
-        $this->view->tags = $tag_repo->get_all();
+        $this->view->tags = $tag_repo->get_all_sorted();
         $cat_repo = new CategoryRepository();
         $this->view->list_cat = $cat_repo->get_all();
         $this->view->now = date("Y-m-d H:i:s",time()+3600*24);

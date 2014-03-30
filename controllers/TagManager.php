@@ -32,7 +32,7 @@ class TagManager extends Controller {
             $tag = $tag_repo->get_by_id($tag_id);
             if (!empty($_POST)) {
                 $tag->name = $_POST['name'];
-                $tag->slug = LibTools::sanitize_string($_POST['name']);
+                $tag->slug = LibTools::sanitize_string(utf8_decode($_POST['name']));
                 $tag_repo->save($tag);
                 header('Location: http://www.melmelboo.fr/tag_management');
                 die();
@@ -54,7 +54,7 @@ class TagManager extends Controller {
         if (!empty($_POST)) {
             $tag_values = array(
                 'name' => $_POST['name'],
-                'slug' => LibTools::sanitize_string($_POST['name']));
+                'slug' => LibTools::sanitize_string(utf8_decode($_POST['name'])));
             $tag = Tag::load($tag_values);
             $tag_repo = new TagRepository();
             $tag_repo->save($tag);

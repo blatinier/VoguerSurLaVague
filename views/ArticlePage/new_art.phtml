@@ -35,12 +35,18 @@ if (!empty($view->sent)) {
         <input class="input_com" type="text" name="pub" id="pub" value="<?php echo (!empty($view->pubdate)) ? $view->pubdate : $view->now; ?>" />
         <label for="pub">Date de publication de l'article(AAAA-MM-JJ HH-MM-SS)</label><br />
         <label for="tags">Tags : </label><br />
-        <?php foreach($view->tags as $t): ?>
-            <input type="checkbox"
-                name="tag_<?php echo $t->id; ?>"
-                <?php if (in_array($t->id, $view->art_tags)) { echo "checked"; } ?>/>
-                <?php echo $t->name; ?><br />
+        <table>
+        <tr>
+        <?php $i = 0;
+        foreach($view->tags as $t): ?>
+            <td>
+            <input type="checkbox" name="tag_<?php echo $t->id; ?>"
+                <?php if (in_array($t->id, $view->art_tags)) { echo "checked"; } ?>/>&nbsp;<?php echo utf8_decode($t->name); ?>
+            </td>
+            <?php $i += 1; if ($i && $i % 8 == 0) echo "</tr><tr>"; ?>
         <?php endforeach; ?>
+        </tr>
+        </table>
         <br />
         <?php if (!empty($view->art_id)) { ?>
         <input type="hidden" name="art_id" value="<?php echo $view->art_id; ?>" id="art_id" />
