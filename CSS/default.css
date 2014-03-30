@@ -215,6 +215,7 @@ aside hr{
 
 .tags {
 	font-size: 10px;
+    font-style: italic;
 	text-transform: uppercase;
     font-family: Helvetica, Arial, sans-serif;
 }
@@ -435,4 +436,8 @@ textarea.new_art#commentaire {
 
 .tag_size_4 {
     font-size: 25px;
+}
+
+#tag_cloud {
+    text-align: justify;
 }

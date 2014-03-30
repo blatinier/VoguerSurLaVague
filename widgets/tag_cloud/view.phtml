@@ -1,0 +1,8 @@
+<div id="tag_cloud">
+    <hr/>
+    <?php
+    foreach ($_widget_data['tags'] as $tag) { ?>
+        <a class="tag_size_<?= $tag->size ?>" href="tag-<?php echo $tag->slug . '-' . $tag->id; ?>">
+            <?php echo utf8_decode($tag->name); ?></a>
+    <?php } ?>
+</div>
