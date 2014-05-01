@@ -441,3 +441,7 @@ textarea.new_art#commentaire {
 #tag_cloud {
     text-align: justify;
 }
+
+.span_arrow:before {
+    content: "\2192 \0020";
+}

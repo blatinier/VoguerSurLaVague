@@ -7,7 +7,11 @@ class Staticpages extends Controller {
     }
 
     public function contact() {
+        $banned_words = array('vuitton', 'louboutin', 'outlet', 'oakley', 'chanel', 'michael kors', 'longchamp');
         if(!empty($_POST['pseudo']) && !empty($_POST['mail']) && !empty($_POST['titre']) && !empty($_POST['msg'])){
+            foreach ($banned_words as $w) {
+                if (strpos(strtolower($_POST['msg']), $w)) { return; }
+            }
         	$to      = 'melmelboo@hotmail.com, benoit.latinier@gmail.com';
             $subject = '[Voguer sur...] '.htmlspecialchars($_POST['pseudo']).' : '.htmlspecialchars($_POST['titre']);
             $message = stripslashes(htmlspecialchars($_POST['msg']));
