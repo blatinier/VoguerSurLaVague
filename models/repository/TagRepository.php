@@ -60,6 +60,9 @@ class TagRepository extends Repository {
     }
 
     public function link_article_to_tags($art_id, $tags_id){
+        if (empty($tags_id)) {
+            return; // No tags to insert
+        }
         $req = "INSERT INTO article_tags(tag_id, article_id) VALUES";
         $values = array();
         foreach ($tags_id as $tid) {

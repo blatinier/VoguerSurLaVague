@@ -7,7 +7,7 @@ class Staticpages extends Controller {
     }
 
     public function contact() {
-        $banned_words = array('vuitton', 'louboutin', 'outlet', 'oakley', 'chanel', 'michael kors', 'longchamp');
+        $banned_words = array('vuitton', 'louboutin', 'outlet', 'oakley', 'chanel', 'michael kors', 'longchamp', 'shoes jordan', 'jordan shoes', 'mulberry', 'westwood', 'ray ban', 'wholesale', 'nike roshe');
         if(!empty($_POST['pseudo']) && !empty($_POST['mail']) && !empty($_POST['titre']) && !empty($_POST['msg'])){
             foreach ($banned_words as $w) {
                 if (strpos(strtolower($_POST['msg']), $w)) { return; }

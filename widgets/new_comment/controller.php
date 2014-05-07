@@ -31,7 +31,7 @@ class new_comment extends Widget {
                 if (!$error) {
                     $banned_words = $com_repo->get_banned_words();
                     foreach ($banned_words as $r) {
-                        if (strpos(strtolower($_POST['commentaire']), $r['word']) !== false) {
+                        if (strpos(strtolower($_POST['commentaire']), $r['word']) !== false || strpos(strtolower($_POST['pseudo']), $r['word']) !== false || strpos(strtolower($c['site']), $r['word']) !== false) {
                             $error = true;
                             $this->data['err_msg'] = "Ce commentaire contient des mots interdits.";
                             break;

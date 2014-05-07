@@ -12,6 +12,13 @@ class CommentRepository extends Repository {
         return $sql['cpt'];
     }
 
+    public function get_all() {
+        $req = "SELECT id, idarticle, moment, pseudo,
+                    commentaire, site, ip 
+                FROM comments";
+        return $this->mysql_connector->fetchAll($req);
+    }
+
     public function get_last_unread() {
         $req = "SELECT idcom, idarticle FROM new_comments";
         return $this->mysql_connector->fetchAll($req);

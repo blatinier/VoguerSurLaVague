@@ -100,6 +100,9 @@ class MySQLConnector {
         $args[0] = preg_replace('/%[idsb]/', '?', $args[0]);
         
         $q = $this->_link->prepare($args[0]);
+        if (!empty($this->_link->error)) {
+            error_log(var_export($this->_link->error, true));
+        }
         
         // Build mysqli_stmt::bind_param first arg (ex.: 'ssiisi')
         $params = array('');

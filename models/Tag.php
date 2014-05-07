@@ -12,7 +12,11 @@ class Tag extends Model {
     }
 
     public static function load($dict) {
-        return new Tag($dict['id'], $dict['name'], $dict['slug'],
-                       $dict['nb']);
+        if (array_key_exists('nb', $dict)) {
+            return new Tag($dict['id'], $dict['name'], $dict['slug'],
+                           $dict['nb']);
+        } else {
+            return new Tag($dict['id'], $dict['name'], $dict['slug']);
+        }
     }
 }
