@@ -14,7 +14,7 @@ class CommentRepository extends Repository {
 
     public function get_all() {
         $req = "SELECT id, idarticle, moment, pseudo,
-                    commentaire, site, ip 
+                    commentaire, site, ip, mail
                 FROM comments";
         return $this->mysql_connector->fetchAll($req);
     }
@@ -26,7 +26,7 @@ class CommentRepository extends Repository {
 
     public function get_by_id($id) {
         $req = "SELECT id, idarticle, moment, pseudo,
-                    commentaire, site, ip 
+                    commentaire, site, ip, mail
                 FROM comments WHERE id=".(int)$id;
         return $this->mysql_connector->fetchOne($req);
     }
@@ -42,14 +42,14 @@ class CommentRepository extends Repository {
     }
 
     public function add($idarticle, $pseudo,
-        $comment, $site, $ip) {
+        $comment, $site, $ip, $mail) {
         $country = geoip_country_code_by_name($ip);
         if (!in_array($country, array('US', 'CN', 'CA'))) {
             $req = "INSERT INTO comments(idarticle, moment, pseudo,
-                        commentaire, site, ip)
-                    VALUES(%i, NOW(), %s, %s, %s, %s)";
+                        commentaire, site, ip, mail)
+                    VALUES(%i, NOW(), %s, %s, %s, %s, %s)";
             $com = $this->mysql_connector->insert($req, $idarticle, $pseudo,
-                        $comment, $site, $ip);
+                        $comment, $site, $ip, $mail);
             $req = "INSERT INTO new_comments(idcom, idarticle)
                     VALUES(%s, %s)";
             $mark = $this->mysql_connector->insert($req, $com['insert_id'], $idarticle);
@@ -68,7 +68,7 @@ class CommentRepository extends Repository {
     }
 
     public function get_by_art_id($id) {
-        $req = "SELECT id, idarticle, moment, pseudo,
+        $req = "SELECT id, idarticle, moment, pseudo, mail,
                     commentaire, site, ip, DATE_FORMAT(moment,'à %H:%%i \l\e %%d/%c/%y') AS heure
                 FROM comments WHERE idarticle=".(int)$id."
                 ORDER BY moment";

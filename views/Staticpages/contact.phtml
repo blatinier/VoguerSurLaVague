@@ -1,17 +1,29 @@
 <?php if (!empty($view->msg)) {
     echo '<p>'.$view->msg.'</p>';
 } ?>
-<h2 class="coloredTitle">Vous souhaitez me contacter ?</h2>
 <div class="comconteneur">
+    <script type="text/javascript">
+     var RecaptchaOptions = {
+        theme : 'clean',
+        custom_theme_widget: 'recaptcha_widget',
+        lang:'fr',
+     };
+    </script>
     <form method="post" action="">
-        <h3 id="leavecom"><a href="#">Formulaire de contact</a></h3>
-        <input class="input_com" type="type" name="pseudo" value="<?php echo !empty($_SESSION['pseudo']) ? $_SESSION['pseudo'] : '';?>"/>
-        <label for="pseudo">Pseudo</label> <br/>
-        <input class="input_com" type="type" name="mail" value="<?php echo !empty($_SESSION['mail']) ? $_SESSION['mail'] : '';?>"/>
-        <label for="mail">Adresse mail</label> <br/>
-        <input class="input_com" type="type" name="titre" value="<?php echo !empty($_SESSION['titre']) ? $_SESSION['titre'] : '';?>"/>
-        <label for="titre">Sujet</label> <br/>
-        <textarea name="msg" id="commentaire"><?php echo !empty($_SESSION['msg']) ? $_SESSION['msg'] : '' ?></textarea><br/><br/>
+        <span id="contact"><a href="#">Contact</a></span>
+        <label class="contact-field" for="pseudo">Nom</label> <span class="lighter">(Obligatoire)</span> <br/>
+        <input class="input-contact-field" type="type" name="pseudo" value="<?php echo !empty($_SESSION['pseudo']) ? $_SESSION['pseudo'] : '';?>"/> <br/>
+        <label class="contact-field" for="mail">Email</label> <span class="lighter">(Obligatoire)</span><br/>
+        <input class="input-contact-field" type="type" name="mail" value="<?php echo !empty($_SESSION['mail']) ? $_SESSION['mail'] : '';?>"/> <br/>
+        <label class="contact-field" for="website">Website</label><br/>
+        <input class="input-contact-field" type="type" name="website" value="<?php echo !empty($_SESSION['website']) ? $_SESSION['website'] : '';?>"/> <br/>
+        <label class="contact-field" for="msg">Commentaire</label> <span class="lighter">(Obligatoire)</span><br/>
+        <textarea name="msg" id="contact-comment"><?php echo !empty($_SESSION['msg']) ? $_SESSION['msg'] : '' ?></textarea><br/><br/>
+        <?php
+        require_once('libraries/recaptchalib.php');
+        $publickey = "6LcHPNISAAAAAItdQK-EOMb1P5d18AGST55v3urq";
+        echo recaptcha_get_html($publickey);
+        ?>
         <input type="submit" value="Envoyer" />
     </form>
 </div>

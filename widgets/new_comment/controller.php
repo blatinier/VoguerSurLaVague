@@ -16,18 +16,30 @@ class new_comment extends Widget {
             $article = $art_repo->get_by_id($admin, $art);
             $this->data['closed_com'] = $article->closed_com;
             if (!empty($_POST) && !empty($_POST['commentaire']) && !$article->closed_com) {
+                require_once('libraries/recaptchalib.php');
+                $privatekey = "6LcHPNISAAAAAJEmnitqm99TVUtoH9CWCGVIM_VZ";
+                $resp = recaptcha_check_answer ($privatekey,
+                                              $_SERVER["REMOTE_ADDR"],
+                                              $_POST["recaptcha_challenge_field"],
+                                              $_POST["recaptcha_response_field"]);
+
+                if (!$resp->is_valid) {
+                    $error = true;
+                    $this->data['err_msg'] = "Captcha mal renseigné.".$resp->error;
+                }
+
                 $site = null;
                 if (substr($_POST['site'], 0, 7) == 'http://') {
                     $site = $_POST['site'];
                 }
-                $black_ip = $com_repo->get_banned_ip();
-                foreach ($black_ip as $ip) {
-                    if ($ip['ip'] == $_SERVER['REMOTE_ADDR']) {
-                        $error = true;
-                        $this->data['err_msg'] = "Votre adresse IP n'est pas autorisée à poster des commentaires.";
-                        break;
-                    }
-                }
+//                $black_ip = $com_repo->get_banned_ip();
+//                foreach ($black_ip as $ip) {
+//                    if ($ip['ip'] == $_SERVER['REMOTE_ADDR']) {
+//                        $error = true;
+//                        $this->data['err_msg'] = "Votre adresse IP n'est pas autorisée à poster des commentaires.";
+//                        break;
+//                    }
+//                }
                 if (!$error) {
                     $banned_words = $com_repo->get_banned_words();
                     foreach ($banned_words as $r) {
@@ -48,7 +60,7 @@ class new_comment extends Widget {
         }
         if (!empty($_POST) && !empty($_POST['commentaire']) && !$error) {
             $com_repo->add($art, utf8_decode($_POST['pseudo']),
-                utf8_decode($_POST['commentaire']), htmlentities($site), $_SERVER['REMOTE_ADDR']);
+                utf8_decode($_POST['commentaire']), htmlentities($site), $_SERVER['REMOTE_ADDR'], $_POST['mail']);
         }
     }
 }

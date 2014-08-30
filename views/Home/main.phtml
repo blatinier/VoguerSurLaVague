@@ -5,12 +5,6 @@ foreach ($view->articles as $art) {
         <meta content='<?php echo $art->id; ?>' itemprop='postId'/>
         <meta itemprop="inLanguage" content="fr-FR"/>
 	    <header>
-            <span class="categorie" itemprop="about">
-                <a href="cat-<?php echo $art->category->slug; ?>-<?php echo $art->category->id; ?>">
-                    <?php echo $art->category->titre; ?>
-                </a>
-            </span>
-            <span class="postDate">
             <?php
                 if($art->ecart < 0){
                     $jour = floor(-$art->ecart/(3600*24));
@@ -19,15 +13,25 @@ foreach ($view->articles as $art) {
                     echo "<span style=\"color:red;\"> Cet article sera publié dans ".$jour." jours ".$heure." heures et ".$minutes." minutes.</span><br/>";
                 }
             ?>
-                <span itemprop='datePublished' title='<?php echo str_replace(' ', 'T', $art->pubdate); ?>'><?php echo $art->post_date; ?></span>
+            <span class="postDate">
+                <span itemprop='datePublished' title='<?php echo str_replace(' ', 'T', $art->pubdate); ?>'>
+                    <div><?php echo $art->day ?></div>
+                    <div><?php echo $art->month ?></div>
+                    <div><?php echo $art->year; ?></div>
+                </span>
             </span>
             <div class="postTitle" itemprop='name'>
                 <a href="art-<?php echo $art->url; ?>-<?php echo $art->id; ?>">
                     <?php echo stripslashes($art->titre); ?>
                 </a>
             </div>
+            <span class="categorie" itemprop="about">
+                <a href="cat-<?php echo $art->category->slug; ?>-<?php echo $art->category->id; ?>">
+                    <?php echo $art->category->titre; ?>
+                </a>
+            </span>
 	    </header>
-		<br/><br/>
+        <div class="clear"></div>
 		<div class="mainpost">
 			<div class="postcontent" itemprop='description articleBody'>
 				<?php echo stripslashes(

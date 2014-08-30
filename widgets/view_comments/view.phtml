@@ -32,7 +32,7 @@
                 </span>
                 </strong>
                 <?php if($_widget_data['admin']){
-                    echo ' ('.$com['ip'].')';
+                    echo ' ('.$com['ip'].', <a mailto="'.$com['mail'].'">'.$com['mail'].'</a>)';
                     ?><a href="delete_comment/<?php echo $com['id']; ?>">Supprimer ce commentaire</a><?php
                 } ?>
                 <br/>

@@ -1,18 +1,31 @@
 <?php echo count($view->comments); ?> commentaires non lus : <br/>
-<ul>
+<table class="sortable">
+    <thead>
+        <tr>
+            <td>Pseudo</td>
+            <td>IP</td>
+            <td>Article</td>
+            <td>Bannir ?</td>
+        </tr>
+    </thead>
+    <tbody>
     <?php
     foreach($view->comments as $com){
         echo '
-            <li>
-                Commentaire de '.$com['com']['pseudo'].' ('.$com['com']['ip'].'
-                <a href="ban_ip/'.$com['com']['ip'].'"  onclick="return confirm(\'Are you sure?\')">bannir</a>)
-                dans l\'article 
-                <a href="mark_comment/'.$com['idcom'].'/'.$com['idarticle'].'">
-                    '.$com['article']->titre.'
-                </a>
-            </li>';
+            <tr>
+                <td>'.$com['com']['pseudo'].'</td>
+                <td>'.$com['com']['ip'].'</td>
+                <td><a href="mark_comment/'.$com['idcom'].'/'.$com['idarticle'].'">
+                        '.$com['article']->titre.'
+                    </a>
+                </td>
+                <td>
+                    <a href="ban_ip/'.$com['com']['ip'].'"  onclick="return confirm(\'Are you sure?\')">bannir</a>
+                </td>
+            </tr>';
     }
     ?>
-</ul>
+    </tbody>
+</table>
 <a href="mark_read_all_comments">Tout marquer comme lu</a>
 

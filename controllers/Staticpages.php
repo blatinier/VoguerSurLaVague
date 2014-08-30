@@ -7,25 +7,32 @@ class Staticpages extends Controller {
     }
 
     public function contact() {
-        $banned_words = array('vuitton', 'louboutin', 'outlet', 'oakley', 'chanel', 'michael kors', 'longchamp', 'shoes jordan', 'jordan shoes', 'mulberry', 'westwood', 'ray ban', 'wholesale', 'nike roshe');
         if(!empty($_POST['pseudo']) && !empty($_POST['mail']) && !empty($_POST['titre']) && !empty($_POST['msg'])){
-            foreach ($banned_words as $w) {
-                if (strpos(strtolower($_POST['msg']), $w)) { return; }
+            require_once('libraries/recaptchalib.php');
+            $privatekey = "6LcHPNISAAAAAJEmnitqm99TVUtoH9CWCGVIM_VZ";
+            $resp = recaptcha_check_answer ($privatekey,
+                                          $_SERVER["REMOTE_ADDR"],
+                                          $_POST["recaptcha_challenge_field"],
+                                          $_POST["recaptcha_response_field"]);
+
+            if (!$resp->is_valid) {
+                $this->view->msg = "Captcha mal renseigné.".$resp->error;
+            } else {
+                $to      = 'melmelboo@hotmail.com, benoit.latinier@gmail.com';
+                $subject = '[Voguer sur...] '.htmlspecialchars($_POST['pseudo']);
+                $message = stripslashes(htmlspecialchars($_POST['msg']));
+                $headers = 'From: '.htmlspecialchars($_POST['mail']) . "\r\n" .
+                'Reply-To: '.htmlspecialchars($_POST['mail']).  "\r\n" .
+                'X-Mailer: PHP/' . phpversion();
+            
+                mail($to, $subject, $message, $headers);
+                $_SESSION['pseudo']  = "";
+                $_SESSION['mail']  = "";
+                $_SESSION['titre']  = "";
+                $_SESSION['msg']  = "";
+            
+                $this->view->msg = "Merci pour ce petit message !!";
             }
-        	$to      = 'melmelboo@hotmail.com, benoit.latinier@gmail.com';
-            $subject = '[Voguer sur...] '.htmlspecialchars($_POST['pseudo']).' : '.htmlspecialchars($_POST['titre']);
-            $message = stripslashes(htmlspecialchars($_POST['msg']));
-            $headers = 'From: '.htmlspecialchars($_POST['mail']) . "\r\n" .
-            'Reply-To: '.htmlspecialchars($_POST['mail']).  "\r\n" .
-            'X-Mailer: PHP/' . phpversion();
-        
-            mail($to, $subject, $message, $headers);
-        	$_SESSION['pseudo']  = "";
-            $_SESSION['mail']  = "";
-            $_SESSION['titre']  = "";
-            $_SESSION['msg']  = "";
-        
-            $this->view->msg = "Merci pour ce petit message !!";
         } elseif((empty($_POST['pseudo']) || empty($_POST['mail']) || empty($_POST['titre']) || empty($_POST['msg'])) && !empty($_POST)){
         	$_SESSION['pseudo']  = $_POST['pseudo'];
         	$_SESSION['mail']  = $_POST['mail'];
