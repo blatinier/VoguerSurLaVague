@@ -1,31 +1,35 @@
 <?php echo count($view->comments); ?> commentaires non lus : <br/>
+<form method="post" action="">
+<input type="submit" name="read" value="Marquer comme lu" />
+<input type="submit" name="ban" value="Bannir" />
 <table class="sortable">
     <thead>
         <tr>
             <td>Pseudo</td>
             <td>IP</td>
             <td>Article</td>
-            <td>Bannir ?</td>
+            <td>Action</td>
         </tr>
     </thead>
     <tbody>
     <?php
     foreach($view->comments as $com){
-        echo '
-            <tr>
-                <td>'.$com['com']['pseudo'].'</td>
-                <td>'.$com['com']['ip'].'</td>
-                <td><a href="mark_comment/'.$com['idcom'].'/'.$com['idarticle'].'">
-                        '.$com['article']->titre.'
-                    </a>
-                </td>
-                <td>
-                    <a href="ban_ip/'.$com['com']['ip'].'"  onclick="return confirm(\'Are you sure?\')">bannir</a>
-                </td>
-            </tr>';
+        ?>
+        <tr>
+            <td><?php echo $com['com']['pseudo']; ?></td>
+            <td><?php echo $com['com']['ip']; ?></td>
+            <td><a href="mark_comment/<?php echo $com['idcom'].'/'.$com['idarticle']; ?>">
+                    <?php echo $com['article']->titre; ?>
+                </a>
+            </td>
+            <td>
+                <input type="checkbox" name="com_id[]" value="<?php echo $com['idcom']; ?>" />
+            </td>
+        </tr>
+        <?php 
     }
     ?>
     </tbody>
 </table>
+</form>
 <a href="mark_read_all_comments">Tout marquer comme lu</a>
-

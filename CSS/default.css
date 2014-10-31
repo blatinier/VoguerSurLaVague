@@ -408,9 +408,9 @@ strong.pseudo {
 }
 
 #commentaire {
-    border: 1px solid #CECECE;
-    height: 100px;
-    width: 100%;
+    display: block;
+    margin-bottom: 20px;
+    text-transform: uppercase;
 }
 
 .input_com {
@@ -444,6 +444,7 @@ select.input_com {
 
 #contact-comment{
     border: 1px solid #CECECE;
+    color: #7A7A7A;
     height: 200px;
     width: 430px;
 }
@@ -459,9 +460,10 @@ select.input_com {
 
 .input-contact-field {
     border: 1px solid #CECECE;
-    text-align: left;
+    color: #7A7A7A;
     height: 27px;
     margin-bottom: 13px;
+    text-align: left;
     width: 300px;
 }
 
@@ -469,7 +471,7 @@ select.input_com {
     color: #7A7A7A;
     display: inline-block;
     font-weight: 600;
-    margin-bottom: 10px;
+    margin-bottom: 5px;
 }
 
 .lighter {

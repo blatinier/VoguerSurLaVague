@@ -42,19 +42,25 @@ class CommentRepository extends Repository {
     }
 
     public function add($idarticle, $pseudo,
-        $comment, $site, $ip, $mail) {
+        $comment, $site, $ip, $mail, $follow) {
         $country = geoip_country_code_by_name($ip);
         if (!in_array($country, array('US', 'CN', 'CA'))) {
             $req = "INSERT INTO comments(idarticle, moment, pseudo,
-                        commentaire, site, ip, mail)
-                    VALUES(%i, NOW(), %s, %s, %s, %s, %s)";
+                        commentaire, site, ip, mail, follow)
+                    VALUES(%i, NOW(), %s, %s, %s, %s, %s, %s)";
             $com = $this->mysql_connector->insert($req, $idarticle, $pseudo,
-                        $comment, $site, $ip, $mail);
+                        $comment, $site, $ip, $mail, intval($follow));
             $req = "INSERT INTO new_comments(idcom, idarticle)
                     VALUES(%s, %s)";
             $mark = $this->mysql_connector->insert($req, $com['insert_id'], $idarticle);
             return $com;
         }
+    }
+
+    public function get_article_followers($id_article) {
+        $req = "SELECT DISTINCT mail FROM comments WHERE follow=1 AND idarticle=".(int)$id_article;
+        $mails = $this->mysql_connector->fetchAll($req);
+        return $mails;
     }
 
     public function mark_all_read () {

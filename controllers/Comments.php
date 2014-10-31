@@ -13,6 +13,19 @@ class Comments extends Controller {
             die();
         }
         $com_repo = new CommentRepository();
+        if (!empty($_POST)) {
+            if (array_key_exists("ban", $_POST)) {
+                foreach ($_POST['com_id'] as $cid) {
+                    $c = $com_repo->get_by_id($cid);
+                    $com_repo->ban_ip($c['ip']);
+                    $com_repo->clean_banned();
+                }
+            } else {
+                foreach ($_POST['com_id'] as $cid) {
+                    $com_repo->mark_read($cid);
+                }
+            }
+        }
         $art_repo = new ArticleRepository();
         $comments = $com_repo->get_last_unread();
         foreach ($comments as &$com) {
