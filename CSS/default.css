@@ -449,6 +449,13 @@ select.input_com {
     width: 430px;
 }
 
+#new-art{
+    border: 1px solid #CECECE;
+    color: #7A7A7A;
+    height: 400px;
+    width: 100%;
+}
+
 #contact{
     display: block;
     font-family: 'Open Sans Condensed', sans-serif;

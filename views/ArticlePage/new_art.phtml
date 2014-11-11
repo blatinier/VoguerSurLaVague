@@ -30,7 +30,7 @@ if (!empty($view->sent)) {
         ?>
         </select>
         <label for="cat">Catégorie</label><br />
-        <textarea class="new_art" name="texte" id="contact-comment"><?php echo (!empty($view->art)) ? $view->art : '<img style="width: 100%;" src="http://www.melmelboo.fr/img/articles/2013/Embrun006.JPG" alt="Embrun" />
+        <textarea class="new_art" name="texte" id="new-art"><?php echo (!empty($view->art)) ? $view->art : '<img style="width: 100%;" src="http://www.melmelboo.fr/img/articles/2013/Embrun006.JPG" alt="Embrun" />
 <br/><br/>';?></textarea><br /><br />
         <input class="input_com" type="text" name="pub" id="pub" value="<?php echo (!empty($view->pubdate)) ? $view->pubdate : $view->now; ?>" />
         <label for="pub">Date de publication de l'article(AAAA-MM-JJ HH-MM-SS)</label><br />
