@@ -50,7 +50,10 @@ for art in my_articles:
     loc = ET.SubElement(url_element, 'loc')
     loc.text = "http://www.melmelboo.fr/art-%s-%d" % (art['url'], art['id'])
     lastmod = ET.SubElement(url_element, 'lastmod')
-    lastmod.text = art['pubdate'].strftime("%Y-%m-%d")
+    try:
+        lastmod.text = art['pubdate'].strftime("%Y-%m-%d")
+    except:
+        continue
     changefreq = ET.SubElement(url_element, 'changefreq')
     changefreq.text = 'never'
     priority = ET.SubElement(url_element, 'priority')
