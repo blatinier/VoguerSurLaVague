@@ -4,7 +4,7 @@ import ConfigParser
 import MySQLdb
 import os
 import xml.etree.ElementTree as ET
-import nltk
+import bs4
 
 from datetime import datetime
 from MySQLdb.cursors import DictCursor
@@ -50,27 +50,28 @@ cursor.execute("""SELECT a.id AS aid,
                FROM articles a
                LEFT JOIN category c ON c.id = a.cat 
                WHERE pubdate < NOW() AND pubdate != "0000-00-00 00:00:00"
-               ORDER BY a.id DESC LIMIT 50""")
+               ORDER BY a.pubdate DESC LIMIT 50""")
 my_articles = cursor.fetchall()
 for art in my_articles:
     item = ET.SubElement(channel, 'item')
     atitle = ET.SubElement(item, 'title')
-    atitle.text = art['atitle']
+    atitle.text = art['atitle'].decode("latin1")
     alink = ET.SubElement(item, 'link')
     alink.text = "http://www.melmelboo.fr/art-%s-%d" % (art['url'], art['aid'])
     adescription = ET.SubElement(item, 'description')
-    clean = nltk.clean_html(art['atext'])[:150]
+    clean = bs4.BeautifulSoup(art["atext"].decode("latin1")).get_text()[:150].strip()
     if clean:
         adescription.text = clean + "..."
     else:
-        adescription.text = art['atitle']
+        adescription.text = art['atitle'].decode("latin1")
     acontent = ET.SubElement(item, 'content')
     acontent.set("type", "html")
-    acontent.text = art['atext']
+    acontent.text = art['atext'].decode("latin1")
+    print art
     aauthor = ET.SubElement(item, 'author')
     aauthor.text = art['author']
     acategory = ET.SubElement(item, 'category')
-    acategory.text = art['category']
+    acategory.text = art['category'].decode("latin1")
     acomments = ET.SubElement(item, 'comments')
     acomments.text = "http://www.melmelboo.fr/art-%s-%d#firstcom" % (art['url'], art['aid'])
     aguid = ET.SubElement(item, 'guid')
@@ -81,5 +82,5 @@ for art in my_articles:
     asource.set('url', 'http://www.melmelboo.fr/RSS/articles.rss')
     asource.text = "Les news de Melmelboo"
 
-tree = ET.ElementTree(rss)
-tree.write('articles.xml', encoding="UTF-8")
+    tree = ET.ElementTree(rss)
+    tree.write('articles.xml', encoding="utf8")
