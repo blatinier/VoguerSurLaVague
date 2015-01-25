@@ -8,6 +8,9 @@ class Staticpages extends Controller {
 
     public function contact() {
         if(!empty($_POST['pseudo']) && !empty($_POST['mail']) && !empty($_POST['titre']) && !empty($_POST['msg'])){
+            if (strstr($_POST['mail'], "**") or strstr(htmlspecialchars($_POST['pseudo']), "&amp;#12")) {
+                return;
+            }
             require_once('libraries/recaptchalib.php');
             $privatekey = "6LcHPNISAAAAAJEmnitqm99TVUtoH9CWCGVIM_VZ";
             $resp = recaptcha_check_answer ($privatekey,

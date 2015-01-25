@@ -2,7 +2,7 @@
 
 body {
     margin: 0;
-    color: #7A7A7A;
+    color: #3D3D3D;
     font-family:Helvetica,Arial,sans-serif;
 }
 
@@ -25,7 +25,8 @@ a:hover {
 #header{
     background-image: url("/images/header.jpg");
     background-repeat: no-repeat;
-	height: 364px;
+    background-position: 0% -40px;
+	height: 285px;
 	margin: auto;
     margin-left: 160px;
     width: 731px;
@@ -34,7 +35,7 @@ a:hover {
 #main{
 	width:1050px;
 	float:left;
-    margin-top: 30px;
+    margin-top: 10px;
 }
 
 #contenu{
@@ -54,7 +55,6 @@ aside li{
 }
 
 aside .menuTitle{
-    color: #3D3D3D;
     font-family: Helvetica, sans-serif;
 	font-size: 1em;
     text-transform: uppercase;
@@ -168,13 +168,7 @@ nav#main_nav a {
     margin: 0 54px;
 }
 
-nav#main_nav hr {
-    background: url("/images/green_stripes_short.png") repeat-x;
-    border: none;
-    padding: 0;
-}
-
-aside hr{
+hr#tophr{
     padding: 0;
 }
 
@@ -183,13 +177,14 @@ aside hr{
 }
 
 hr{
-	border: dotted;
+	border: solid;
 	border-top-width: 1px; 
 	border-bottom-width: 0px; 
 	border-right-width: 0px;
 	border-left-width: 0px;
+    border-color: #DDDDDD;
     clear: both;
-    padding: 0 0 50px 0;
+    padding: 0 0 30px 0;
 }
 
 aside hr{
@@ -397,7 +392,7 @@ table.sortable thead {
 ul.social{
     margin: auto;
     padding: 0;
-    width: 100%;
+    width: 101%;
 }
 ul.social li{
     display: inline-block;
