@@ -404,6 +404,10 @@ ul.social li{
     text-align: center;
 }
 
+.social_mobile {
+    display: none;
+}
+
 @media screen and (max-width: 1024px) {
     #conteneur, #main, #contenu {
         width: 100%;
@@ -413,6 +417,18 @@ ul.social li{
         height: 500px;
         margin-left: 0;
         width: 100%;
+    }
+    .social_mobile {
+        display: block;
+        height: 200px;
+        width: 100%; 
+    }
+    .social_icon {
+        height: 150px;
+        width: 150px;
+    }
+    ul.social li{
+        margin-left: 7%;
     }
     #footer, aside, nav{
         display: none;
@@ -433,6 +449,9 @@ ul.social li{
         font-size: 1.5em;
         height: 100px;
         width: 107px;
+    }
+    .page_link {
+        font-size: 3.5em;
     }
     .categorie a{
         font-size: 2.5em;

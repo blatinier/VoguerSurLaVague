@@ -32,6 +32,15 @@
             <header>
                 <div id="header" onclick="location.href='/'"></div>
             </header>
+            <div class="menuBlock social_mobile">
+                <hr id="tophr" />
+                <ul class="social">
+                    <li><a title="Instagram" href="http://instagram.com/melmelbooo"><img class="social_icon" src="/images/insta.png" alt="Instagram" /></a></li>
+                    <li><a title="Facebook" href="http://www.facebook.com/melmelboo"><img class="social_icon" src="/images/facebook.png" alt="Facebook" /></a></li>
+                    <li><a title="Hellocoton" href="http://www.hellocoton.fr/mapage/melmelboo"><img class="social_icon" src="/images/hc.png" alt="Hellocoton" /></a></li>
+                    <li><a title="Flux RSS" href="http://www.melmelboo.fr/RSS/articles.rss"><img class="social_icon" src="/images/rss.png" alt="RSS" /></a></li>
+                </ul>
+            </div>
             <hr id="tophr" />
             <div id="main">
                 <div id="contenu">
@@ -76,14 +85,14 @@
                             <img style="margin-bottom: 10px; width:237px;" src="/images/logo-instagram.jpg" alt="Instagram" />
                         </a>
                     </div>
-                    <hr />
-                    <nav id="menuBlock">
-                        <?php echo $_widgets['archives']; ?>
-                    </nav>
-                    <div class="clear"></div>
                     <div id="menuBlock">
                         <?php echo $_widgets['tag_cloud']; ?>
                     </div>
+                    <hr />
+                    <div class="clear"></div>
+                    <nav id="menuBlock">
+                        <?php echo $_widgets['archives']; ?>
+                    </nav>
                 </aside>
             </div>
             <footer id="footer">
