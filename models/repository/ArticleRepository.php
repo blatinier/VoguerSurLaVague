@@ -18,6 +18,34 @@ class ArticleRepository extends Repository {
         return $article;
     }
 
+    public function get_next_by_id($is_admin, $id) {
+        $req = 'SELECT id, auteur, titre, url, texte,
+            pubdate, cat, captcha_com, closed_com
+            FROM articles
+            WHERE id > '.(int)$id;
+        if (!$is_admin) {
+            $req .= ' AND pubdate < NOW() ';
+        }
+        $req .= ' ORDER BY pubdate ';
+        $art_sql = $this->mysql_connector->fetchOne($req);
+        $article = Article::load($art_sql);
+        return $article;
+    }
+
+    public function get_previous_by_id($is_admin, $id) {
+        $req = 'SELECT id, auteur, titre, url, texte,
+            pubdate, cat, captcha_com, closed_com
+            FROM articles
+            WHERE id < '.(int)$id;
+        if (!$is_admin) {
+            $req .= ' AND pubdate < NOW() ';
+        }
+        $req .= ' ORDER BY pubdate DESC ';
+        $art_sql = $this->mysql_connector->fetchOne($req);
+        $article = Article::load($art_sql);
+        return $article;
+    }
+
     public function get_articles($is_admin, $page) {
         $offset = $page * 5;
         $req = 'SELECT id, auteur, titre, url, texte,
@@ -131,8 +159,8 @@ class ArticleRepository extends Repository {
         return $articles;
     }
 
-    public function get_tag_articles($is_admin, $page, $tag_id) {
-        $offset = $page * 5;
+    public function get_tag_articles($is_admin, $page, $tag_id, $count=5) {
+        $offset = $page * $count;
         $page = (int)$page;
         $tag_id = (int)$tag_id;
         $req = 'SELECT id, auteur, titre, url, texte,
@@ -144,7 +172,7 @@ class ArticleRepository extends Repository {
         if (!$is_admin) {
             $req .= ' AND pubdate < NOW() ';
         }
-        $req .= ' ORDER BY pubdate DESC LIMIT '.$offset.', 5';
+        $req .= ' ORDER BY pubdate DESC LIMIT '.$offset.', '.(int)$count;
         $art_sql = $this->mysql_connector->fetchAll($req);
         $articles = array();
         foreach($art_sql as $article_data) {

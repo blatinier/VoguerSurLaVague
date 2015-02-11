@@ -18,6 +18,7 @@ if (!empty($controller) && !empty($action)) {
     );
     if (array_key_exists($controller, $controllers)) {
         ob_start();
+        require 'vendor/autoload.php';
         include_once 'libraries/ReadConfig.php';
         include_once 'libraries/MySQLConnector.php';
         

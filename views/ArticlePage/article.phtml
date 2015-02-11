@@ -50,6 +50,23 @@ $captcha_com = $view->article->captcha_com;
             <?php $i = 1; ?>
         <?php endforeach; ?>
     </span>
+    <hr />
+    <div>
+        <?php if (!empty($view->next_article->id)): ?>
+        <span class="page_link" style="float: left;">
+        <a title="<?= $view->next_article->titre; ?>"
+           href="art-<?= $view->next_article->url; ?>-<?= $view->next_article->id; ?>">
+            <span class="arrow">←</span> NEWER</a>
+        </span>
+        <?php endif; ?>
+        <?php if (!empty($view->prev_article->id)): ?>
+        <span class="page_link" style="float: right;">
+        <a title="<?= $view->prev_article->titre; ?>"
+           href="art-<?= $view->prev_article->url; ?>-<?= $view->prev_article->id; ?>">
+        OLDER <span class="arrow">→</span></a>
+        </span>
+        <?php endif; ?>
+    </div>
     <footer class="comconteneur">
 <?php /*        <a class="like_link" href="<?php echo $view->article->id; ?>">
             J'aime (<span id="likes-<?php echo $view->article->id; ?>"><?php echo $view->article->nb_likes; ?></span>)

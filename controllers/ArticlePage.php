@@ -13,9 +13,13 @@ class ArticlePage extends Controller {
         $cats_repo = new CategoryRepository();
         $com_repo = new CommentRepository();
         $article = $art_repo->get_by_id($admin, $art);
+        $next_article = $art_repo->get_next_by_id($admin, $art);
+        $prev_article = $art_repo->get_previous_by_id($admin, $art);
         $article->category = $cats_repo->get_by_id($article->cat);
         $article->nb_likes = $art_repo->get_likes($article->id);
         $this->view->article = $article;
+        $this->view->next_article = $next_article;
+        $this->view->prev_article = $prev_article;
         $this->layout->title = $article->titre;
         $this->layout->canonical = $this->config['root_url']."/art-".$article->url."-".$article->id;
     }
@@ -111,5 +115,24 @@ class ArticlePage extends Controller {
         }
         $this->layout_tpl = "ajax_html.phtml";
     }
+
+    public function project52 () {
+        $admin = (!empty($_SESSION['ok']) && $_SESSION['ok'] == 1);
+        $art_repo = new ArticleRepository();
+        $tag_52_project = 45;
+        $arts = $art_repo->get_tag_articles($admin, 0, $tag_52_project, 52);
+        $this->view->images = array();
+        foreach ($arts as $art) {
+            preg_match_all('/<img[^>]+>/i', $art->texte, $result); 
+            $img = $result[0][0];
+            $text = str_replace($img, '', $art->texte);
+            $this->view->images[] = array('image' => $img,
+                                          'url' => $art->url,
+                                          'id' => $art->id,
+                                          'titre' => $art->titre,
+                                          'text' => $text);
+        }
+    }
+
 }
 ?>

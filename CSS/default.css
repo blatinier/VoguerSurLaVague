@@ -55,8 +55,9 @@ aside li{
 }
 
 aside .menuTitle{
-    font-family: Helvetica, sans-serif;
-	font-size: 1em;
+    font-family: 'Open Sans Condensed', sans-serif;
+	font-size: 1.6em;
+    text-align: center;
     text-transform: uppercase;
 	width: 100%;
 }
@@ -66,6 +67,50 @@ aside .menuBlock{
     margin: auto;
     margin-top: 5px;
     width: 100%;
+}
+
+#project_52 img{
+    float: left;
+    height: 75px;
+    margin-bottom: 5px;
+    margin-left: 5px;
+    width: 110px !important;
+}
+.grey_overlay {
+    float: left;
+    margin: 5px;
+    position:relative;
+    width:32%;
+}
+.grey_overlay img {
+    width:100%;
+    vertical-align:top;
+}
+.grey_overlay:after, .grey_overlay:before {
+    position:absolute;
+    opacity:0;
+    transition: all 0.5s;
+    -webkit-transition: all 0.5s;
+}
+.grey_overlay:after {
+    content:'\A';
+    width:100%; height:100%;
+    top:0; left:0;
+    background:rgba(0,0,0,0.6);
+}
+.grey_overlay:before {
+    box-sizing:border-box;
+    -moz-box-sizing:border-box;
+    color: #CCCCCC;
+    content: attr(data-content);
+    line-height: 145px; 
+    padding:4px 10px;
+    text-align:center;
+    width:100%;
+    z-index:1;
+}
+.grey_overlay:hover:after, .grey_overlay:hover:before {
+    opacity:1;
 }
 
 .ulmenuV{
@@ -184,7 +229,7 @@ hr{
 	border-left-width: 0px;
     border-color: #DDDDDD;
     clear: both;
-    padding: 0 0 30px 0;
+    padding: 0 0 15px 0;
 }
 
 aside hr{
@@ -235,7 +280,7 @@ aside hr{
 	font-size: 0.8em;
 	font-family: Helvetica, Arial, sans-serif;
 	line-height:15px;
-    padding: 20px 0 50px 0;
+    padding: 0 0 50px 0;
 	width:100%;
 }
 
@@ -408,6 +453,11 @@ ul.social li{
     display: none;
 }
 
+.center {
+    text-align: center;
+    width: 100%;
+}
+
 @media screen and (max-width: 1024px) {
     #conteneur, #main, #contenu {
         width: 100%;
@@ -424,8 +474,8 @@ ul.social li{
         width: 100%; 
     }
     .social_icon {
-        height: 150px;
-        width: 150px;
+        height: 140px;
+        width: 140px;
     }
     ul.social li{
         margin-left: 7%;
