@@ -3,6 +3,12 @@
     <br />
     <hr/>
     <?php
+    if (!empty($_widget_data['comments'])) {
+    ?>
+    <br />
+    <span id="commentaire" class="title-font"><a href="#">Commentaires</a></span>
+    <?php
+    }
     foreach ($_widget_data['comments'] as $com) {
         if (strtolower($com['pseudo']) == "melmelboo") {
             $site = "http://www.melmelboo.fr";
