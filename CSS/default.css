@@ -127,6 +127,19 @@ aside .menuBlock{
 	font-size:0.8em;
 }
 
+h1.menu_title {
+    background-color: #F3F3F3;
+    color: #333333;
+    height: 36px;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 16px;
+    font-weight: normal;
+    line-height: 34px;
+    margin-top: 10px;
+    text-align: center;
+    text-transform: uppercase;
+}
+
 .post{
 	line-height:0.5em;
 }
@@ -444,6 +457,11 @@ ul.social li{
     margin-left: 5px;
 }
 
+ul.social img{
+    height: 37px;
+    width: 37px;
+}
+
 #tag_cloud_icon{
     margin: auto;
     text-align: center;
@@ -473,12 +491,12 @@ ul.social li{
         height: 200px;
         width: 100%; 
     }
-    .social_icon {
-        height: 140px;
-        width: 140px;
-    }
     ul.social li{
         margin-left: 7%;
+    }
+    ul.social img{
+        height: 115px;
+        width: 115px;
     }
     #footer, aside, nav{
         display: none;

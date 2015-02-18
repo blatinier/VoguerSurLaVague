@@ -1,8 +1,4 @@
 <div id="tag_cloud">
-    <hr/>
-    <div id="tag_cloud_icon">
-        <img src="/images/nuage.jpeg" alt="Nuage de tags" />
-    </div>
     <?php
     foreach ($_widget_data['tags'] as $tag) { ?>
         <a class="tag_size_<?= $tag->size ?>" href="tag-<?php echo $tag->slug . '-' . $tag->id; ?>">
