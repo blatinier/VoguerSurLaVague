@@ -8,6 +8,7 @@ RewriteRule ^tag-(.*)-([0-9]+)-page-([0-9]+)$ index.php?controller=listing&actio
 RewriteRule ^tag-(.*)-([0-9]+)$ index.php?controller=listing&action=tag&tag_id=$2 [L] 
 RewriteRule ^art-(.*)-([0-9]+)$ index.php?controller=article&action=article&art=$2 [L] 
 RewriteRule ^project52$ index.php?controller=article&action=project52 [L] 
+RewriteRule ^search$ index.php?controller=article&action=search [L] 
 RewriteRule ^like-([0-9]+)$ index.php?controller=article&action=like&art=$1 [L] 
 
 #DIY

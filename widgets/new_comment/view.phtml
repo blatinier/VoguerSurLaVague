@@ -20,7 +20,7 @@ if (!$_widget_data['closed_com']) {
 		<label class="contact-field" for="mail">Email</label><br/>
 		<input class="input-contact-field" type="text" name="mail" id="mail"
         value="<?php if (!empty($_widget_data['post'])) echo $_widget_data['post']['mail']; ?>"  /><br />
-        <input type="checkbox" name="follow" id="follow" <?php if (!empty($_widget_data['post']) && $_widget_data['post']['follow'] == "on") echo "checked"; ?>/> 
+        <input type="checkbox" name="follow" id="follow" <?php if (!empty($_widget_data['post']) && !empty($_widget_data['post']['follow']) && $_widget_data['post']['follow'] == "on") echo "checked"; ?>/> 
         <label for="follow">M'avertir des commentaires sur l'article par email</label><br />
 		<label class="contact-field" for="site">Site web </label><br/>
 		<input class="input-contact-field" type="text" name="site" id="site"

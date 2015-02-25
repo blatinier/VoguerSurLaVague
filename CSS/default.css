@@ -69,6 +69,14 @@ aside .menuBlock{
     width: 100%;
 }
 
+#search_field {
+    border: 1px solid #cccccc;
+    border-radius: 0;
+    color: #413c3c;
+    margin: 0;
+    padding: 7px;
+}
+
 #project_52 img{
     float: left;
     height: 75px;
@@ -76,6 +84,11 @@ aside .menuBlock{
     margin-left: 5px;
     width: 110px !important;
 }
+
+.hidden {
+    display: none;
+}
+
 .grey_overlay {
     float: left;
     margin: 5px;
@@ -293,6 +306,7 @@ aside hr{
 	font-size: 0.8em;
 	font-family: Helvetica, Arial, sans-serif;
 	line-height:15px;
+    margin-top: 10px;
     padding: 0 0 50px 0;
 	width:100%;
 }
@@ -433,6 +447,7 @@ input[type="submit"] {
 
 #tag_cloud {
     text-align: justify;
+    margin-top: 10px;
 }
 
 table, td {

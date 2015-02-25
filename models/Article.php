@@ -45,6 +45,9 @@ class Article extends Model {
     }
 
     public static function load($dict) {
+        if (empty($dict)) {
+            return null;
+        }
         return new Article($dict['id'],
             $dict['auteur'],
             $dict['titre'],

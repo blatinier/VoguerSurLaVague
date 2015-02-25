@@ -18,6 +18,41 @@ class ArticleRepository extends Repository {
         return $article;
     }
 
+    public function get_by_ids($is_admin, $ids) {
+        $req = 'SELECT id, auteur, titre, url, texte,
+            pubdate, cat, captcha_com, closed_com
+            FROM articles
+            WHERE id IN ('.implode(",", $ids).')';
+        if (!$is_admin) {
+            $req .= ' AND pubdate < NOW() ';
+        }
+        $art_sql = $this->mysql_connector->fetchAll($req);
+        $articles = array();
+        foreach($art_sql as $article_data) {
+            $articles[] = Article::load($article_data);
+        }
+        return $articles;
+    }
+
+    public function get_all($is_admin) {
+        $req = 'SELECT id, auteur, titre, url, texte,
+            pubdate, cat, captcha_com, closed_com
+            FROM articles';
+        $where = array();
+        if (!$is_admin) {
+            $where[] = 'pubdate < NOW()';
+        }
+        if (!empty($where)) {
+            $req .= " WHERE ".implode(" AND ", $where);
+        }
+        $art_sql = $this->mysql_connector->fetchAll($req);
+        $articles = array();
+        foreach($art_sql as $article_data) {
+            $articles[] = Article::load($article_data);
+        }
+        return $articles;
+    }
+
     public function get_next_by_id($is_admin, $id) {
         $req = 'SELECT id, auteur, titre, url, texte,
             pubdate, cat, captcha_com, closed_com

@@ -1,4 +1,13 @@
 <?php
+require 'vendor/autoload.php';
+
+function compare_scored_articles($a, $b) {
+    if ($a->score == $b->score) {
+        return 0;
+    }
+    return ($a->score < $b->score) ? -1 : 1;
+}
+
 class ArticlePage extends Controller {
     public $view;
 
@@ -52,6 +61,7 @@ class ArticlePage extends Controller {
                                 'closed_com' => 0);
             $art = Article::load($art_values);
             $art = $art_repo->save($art);
+            $this->update_index_article($art);
             $tag_repo->link_article_to_tags($art->id, $tags);
             $_POST['art_id'] = $art->id;
             $this->view->art_id = $art->id;
@@ -90,6 +100,7 @@ class ArticlePage extends Controller {
             $this->view->art = $article->titre;
             if (!empty($_POST) && strtolower($_POST['confirmation']) == "oui") {
                 $art_repo->delete($art_id);
+                $this->delete_index_article($art_id);
                 $this->view->deleted = true;
             }
         }
@@ -134,5 +145,83 @@ class ArticlePage extends Controller {
         }
     }
 
+    public function search () {
+        $admin = (!empty($_SESSION['ok']) && $_SESSION['ok'] == 1);
+        if ($admin && $_POST['search_query'] == "REINDEX") {
+            $this->re_index_all();
+        }
+        $this->view_tpl = "Home/main.phtml";
+        $es_client = new Elasticsearch\Client();
+        $search = str_replace('}', '',
+                              str_replace('{', '',
+                                          $_POST['search_query']));
+        $get = array("index" => $this->config['es_index'],
+                     "type" => "article");
+        $get['body']['query']['multi_match']['query'] = $search;
+        $get['body']['query']['multi_match']['fields'] = array("title", "body");
+        $arts = $es_client->search($get);
+        $ids = array();
+        foreach ($arts['hits']['hits'] as $a) {
+            $ids[] = (int)$a['_id'];
+            $scores[(int)$a['_id']] = $a['_score'];
+        }
+        if (empty($ids)) {
+            $this->view->articles = array();
+            return;
+        }
+        $art_repo = new ArticleRepository();
+        $articles = $art_repo->get_by_ids($admin, $ids);
+        $com_repo = new CommentRepository();
+        $cats_repo = new CategoryRepository();
+        foreach ($articles as $art) {
+            $art->category = $cats_repo->get_by_id($art->cat);
+            $art->nb_comment = $com_repo->count($art->id);
+            $art->nb_likes = $art_repo->get_likes($art->id);
+            $art->score = $scores[$art->id];
+        }
+        uasort($articles, "compare_scored_articles");
+        $this->view->articles = $articles;
+    }
+
+    public function re_index_all() {
+        $es_client = new Elasticsearch\Client();
+        $indexParams['index'] = $this->config['es_index'];
+        $es_client->indices()->delete($indexParams);
+        $es_client->indices()->create($indexParams);
+
+        $art_repo = new ArticleRepository();
+        $articles = $art_repo->get_all(true);
+        foreach ($articles as $a) {
+            $this->index_article($a);
+        }
+    }
+    
+    public function update_index_article($art) {
+        try {
+            $this->delete_index_article($art->id);
+        } catch( Exception $e) {
+            error_log("Article ". $art->id . " not indexed yet");
+        }
+        $this->index_article($art);
+    }
+    
+    public function index_article($art) {
+        $es_client = new Elasticsearch\Client();
+        $idx = array("index" => $this->config['es_index'],
+                     "type" => "article",
+                     "id" => $art->id,
+                     "body" => array("title" => $art->titre,
+                                     "body" => $art->texte));
+        error_log('Indexing article '.$art->id);
+        $es_client->index($idx);
+    }
+    
+    public function delete_index_article($art_id) {
+        $es_client = new Elasticsearch\Client();
+        $idx = array("index" => $this->config['es_index'],
+                     "type" => "article",
+                     "id" => $art_id);
+        $es_client->delete($idx);
+    }
 }
 ?>

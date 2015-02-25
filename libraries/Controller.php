@@ -10,9 +10,9 @@ class Controller {
         $this->mysql_connector = $mysql_connector;
         // Instanciate database connection
         $this->config = $cfg;
-        $this->view = null;
+        $this->view = new stdClass();
         $this->speedmsg = array();
-        $this->layout = null;
+        $this->layout = new stdClass();;
         $this->layout->keywords = array();
         $this->layout_tpl = null;
     }
