@@ -14,6 +14,7 @@ class Controller {
         $this->speedmsg = array();
         $this->layout = new stdClass();;
         $this->layout->keywords = array();
+        $this->layout->aside_class = "";
         $this->layout_tpl = null;
     }
     

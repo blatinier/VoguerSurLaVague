@@ -6,7 +6,8 @@
         <title>Melmelboo<?php echo (!empty($layout->title)) ? " - " . $layout->title : ""; ?></title>
         <meta name="description" content="<?php echo (!empty($layout->description)) ? $layout->description : "Le blog de Melmelboo !"; ?>" /> 
         <meta name="keywords" content="blog, melmelboo, frippes, ecolo, ecologie, recyclage, naturel, astuces, bricolage, truc, bloubiboulga<?php echo (!empty($layout->keywords)) ? implode(",", $layout->keywords) : ""; ?>" /> 
-        <link href='http://fonts.googleapis.com/css?family=Raleway:400,300,200,100,500,600,700' rel='stylesheet' type='text/css'>
+        <link href='http://fonts.googleapis.com/css?family=Great+Vibes' rel='stylesheet' type='text/css'>
+        <link rel='stylesheet' id='google-fonts-css'  href='http://fonts.googleapis.com/css?subset=latin%2Clatin-ext%2Ccyrillic%2Ccyrillic-ext&#038;family=Lato%3A300%2C300italic%2C400%2C400italic%2C700%2C700italic%2C900%2C900italic%7CQuicksand%3A300%2C300italic%2C400%2C400italic%2C700%2C700italic%2C900%2C900italic+rel%3D%27stylesheet%27+type%3D%27text%2Fcss&#038;ver=4.1.1' type='text/css' media='all' />
         <link href="/CSS/default.css" rel="stylesheet" type="text/css" media="screen" />
         <script type="text/javascript" src="/js/jquery.js"></script>
         <script type="text/javascript" src="/js/common.js"></script>
@@ -44,7 +45,7 @@
             </div>
             <hr id="tophr" />
             <div id="main">
-                <div id="contenu">
+                <div id="contenu" <?php if ($layout->aside_class == "hidden") { echo 'style="width: 100%"'; } ?>>
                     <?php if (!empty($_speedmsg)) { ?>
                         <p>
                             <?php foreach ($_speedmsg as $msg) {
@@ -54,9 +55,9 @@
                     <?php } ?>
                     <?php echo $_view_str; ?>
                 </div>
-                <aside>
-                    <div class="menuBlock">
-                        <h1 class="menu_title">Qui suis-je ?</h1>
+                <aside class="<?= $layout->aside_class; ?>">
+                    <div class="menuBlock first">
+                        <h1 class="menu_title first">Qui suis-je ?</h1>
                         <a href="/about">
                             <img style="margin-bottom: 20px; width:237px;" src="/images/Moi.png" alt="À propos" />
                         </a>

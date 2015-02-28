@@ -14,18 +14,18 @@ class Article extends Model {
 
     public function __construct($id, $auteur, $titre, $url, $texte, $pubdate, $cat, $captcha_com, $closed_com) {
         $MONTH = array(
-            1 => "Janv",
-            2 => "Fév",
+            1 => "Janvier",
+            2 => "Février",
             3 => "Mars",
             4 => "Avril",
             5 => "Mai",
             6 => "Juin",
-            7 => "Juil",
+            7 => "Juillet",
             8 => "Août",
-            9 => "Sept",
-            10 => "Oct",
-            11 => "Nov",
-            12 => "Déc");
+            9 => "Septembre",
+            10 => "Octobre",
+            11 => "Novembre",
+            12 => "Décembre");
         $this->id = $id;
         $this->auteur = $auteur;
         $this->titre = $titre;
@@ -62,5 +62,26 @@ class Article extends Model {
     public function get_tags() {
         $tr = new TagRepository();
         return $tr->get_tags_by_art($this->id);
+    }
+
+    public function get_top_image() {
+        preg_match_all('/<img class="top_image"[^>]+>/i',$this->texte, $result); 
+        if (!empty($result[0])) {
+            return $result[0][0];
+        }
+        preg_match_all('/<img [^>]+>/i',$this->texte, $result); 
+        return $result[0][0];
+    }
+
+    public function art_abstract() {
+        $numb = 180;
+        $abstract = strip_tags($this->texte);
+        if (strlen($abstract) > $numb) {
+            $abstract = substr($abstract, 0, $numb);
+            $abstract = substr($abstract, 0, strrpos($abstract, " "));
+            $etc = " ..."; 
+            $abstract = $abstract . $etc;
+        }
+        return $abstract; 
     }
 }

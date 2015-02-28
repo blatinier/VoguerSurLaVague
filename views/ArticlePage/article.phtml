@@ -2,7 +2,7 @@
 $closed_com = $view->article->closed_com;
 $captcha_com = $view->article->captcha_com;
 ?>
-<article class="post" itemprop='blogPost' itemscope='itemscope' itemtype='http://schema.org/BlogPosting'>
+<article class="art_post" itemprop='blogPost' itemscope='itemscope' itemtype='http://schema.org/BlogPosting'>
     <meta content='<?php echo $view->article->id; ?>' itemprop='postId'/>
     <meta itemprop="inLanguage" content="fr-FR"/>
     <header>
@@ -14,23 +14,18 @@ $captcha_com = $view->article->captcha_com;
             echo "<span style=\"color:red;\"> Cet article sera publié dans ".$jour." jours ".$heure." heures et ".$minutes." minutes.</span><br/>";
         }
         ?>
-        <div class="postDate">
+        <span class="postDate">
             <span itemprop='datePublished' title='<?php echo str_replace(' ', 'T', $view->article->pubdate); ?>'>
                 <div><?php echo $view->article->day; ?></div>
                 <div><?php echo $view->article->month; ?></div>
                 <div><?php echo $view->article->year; ?></div>
             </span>
-	    </div>
+	    </span>
         <div class="postTitle" itemprop='name'>
             <a href="art-<?php echo $view->article->url; ?>-<?php echo $view->article->id; ?>">
                 <?php echo stripslashes($view->article->titre); ?>
             </a>
         </div>
-        <span class="categorie" itemprop="about">
-            <a href="cat-<?php echo $view->article->category->slug; ?>-<?php echo $view->article->category->id; ?>">
-                <?php echo $view->article->category->titre; ?>
-            </a>
-        </span>
     </header>
     <div class="clear"></div>
     <div class="mainpost">
@@ -54,25 +49,26 @@ $captcha_com = $view->article->captcha_com;
     <hr />
     <div>
         <?php if (!empty($view->next_article->id)): ?>
-        <span class="page_link" style="float: left;">
         <a title="<?= $view->next_article->titre; ?>"
            href="art-<?= $view->next_article->url; ?>-<?= $view->next_article->id; ?>">
-            <span class="arrow">←</span> NEWER</a>
-        </span>
+            <div class="page_link even" style="float: left;">
+                <span class="p_art">Next article</span><br />
+                <span class="p_art_title"><?= $view->next_article->titre; ?></span>
+            </div>
+        </a>
         <?php endif; ?>
         <?php if (!empty($view->prev_article->id)): ?>
-        <span class="page_link" style="float: right;">
         <a title="<?= $view->prev_article->titre; ?>"
            href="art-<?= $view->prev_article->url; ?>-<?= $view->prev_article->id; ?>">
-        OLDER <span class="arrow">→</span></a>
-        </span>
+            <div class="odd page_link">
+                <span class="p_art">Previous article </span><br />
+                <span class="p_art_title"><?= $view->prev_article->titre; ?></span>
+            </div>
+        </a>
         <?php endif; ?>
     </div>
     <footer class="comconteneur">
-<?php /*        <a class="like_link" href="<?php echo $view->article->id; ?>">
-            J'aime (<span id="likes-<?php echo $view->article->id; ?>"><?php echo $view->article->nb_likes; ?></span>)
-        </a>
-        <?php */
+<?php 
         if(!empty($_SESSION['ok']) && $_SESSION['ok'] == 1){
             echo " - <a class=\"comlink\" href=\"article_edit-".$view->article->id."\">Editer</a> - 
             <a class=\"comlink\" href=\"article_delete-".$view->article->id."\">Supprimer</a><br/>";

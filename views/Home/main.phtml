@@ -6,64 +6,74 @@ if (empty($view->articles)) {
     </div>
     <?php
 }
+if (!empty($view->has_top_article)) {
+    $art = $view->articles[0];
+    ?>
+        <a href="art-<?php echo $art->url; ?>-<?php echo $art->id; ?>">
+            <div class="top_art header_art_img" data-content="Lire la suite">
+            <?= $art->get_top_image(); ?>
+            <header class="top_art_header">
+                <div class="postDate">
+                    <span itemprop="datePublished" title="<?php echo str_replace(' ', 'T', $art->pubdate); ?>">
+                        <div><?= $art->day ." ". $art->month .' '. $art->year; ?></div>
+                <?php
+                    if($art->ecart < 0){
+                        $jour = floor(-$art->ecart/(3600*24));
+                        $heure = floor((-$art->ecart-$jour*3600*24)/3600);
+                        $minutes = floor((-$art->ecart-$jour*3600*24-$heure*3600)/60);
+                        echo "<span style=\"color:red;\">(".$jour."j ".$heure."h ".$minutes."mn)</span>";
+                    }
+                ?>
+                    </span>
+                </div>
+                <div class="postTitle" itemprop="name">
+                    <?php echo stripslashes($art->titre); ?>
+                </div>
+            </header>
+            </div>
+            <div class="fake_top"></div>
+        </a>
+    <?php
+}
+$i = 0;
 foreach ($view->articles as $art) {
 	?>
-	<article class="post" itemprop='blogPost' itemscope='itemscope' itemtype='http://schema.org/BlogPosting'>
+	<article class="post <?php echo ($i % 2 == 0) ? "odd" : "even"; ?>" itemprop='blogPost' itemscope='itemscope' itemtype='http://schema.org/BlogPosting'>
         <meta content='<?php echo $art->id; ?>' itemprop='postId'/>
         <meta itemprop="inLanguage" content="fr-FR"/>
 	    <header>
+            <div class="header_art_img">
+                <a href="art-<?php echo $art->url; ?>-<?php echo $art->id; ?>">
+                    <?= $art->get_top_image(); ?>
+                </a>
+            </div>
+            <div class="postDate">
+                <span itemprop='datePublished' title='<?php echo str_replace(' ', 'T', $art->pubdate); ?>'>
+                    <div><?= $art->day ." ". $art->month .' '. $art->year; ?></div>
             <?php
                 if($art->ecart < 0){
                     $jour = floor(-$art->ecart/(3600*24));
                     $heure = floor((-$art->ecart-$jour*3600*24)/3600);
                     $minutes = floor((-$art->ecart-$jour*3600*24-$heure*3600)/60);
-                    echo "<span style=\"color:red;\"> Cet article sera publié dans ".$jour." jours ".$heure." heures et ".$minutes." minutes.</span><br/>";
+                    echo "<span style=\"color:red;\">(".$jour."j ".$heure."h ".$minutes."mn)</span>";
                 }
             ?>
-            <span class="postDate">
-                <span itemprop='datePublished' title='<?php echo str_replace(' ', 'T', $art->pubdate); ?>'>
-                    <div><?php echo $art->day ?></div>
-                    <div><?php echo $art->month ?></div>
-                    <div><?php echo $art->year; ?></div>
                 </span>
-            </span>
+            </div>
             <div class="postTitle" itemprop='name'>
                 <a href="art-<?php echo $art->url; ?>-<?php echo $art->id; ?>">
                     <?php echo stripslashes($art->titre); ?>
                 </a>
             </div>
-            <span class="categorie" itemprop="about">
-                <a href="cat-<?php echo $art->category->slug; ?>-<?php echo $art->category->id; ?>">
-                    <?php echo $art->category->titre; ?>
-                </a>
-            </span>
 	    </header>
-        <div class="clear"></div>
 		<div class="mainpost">
 			<div class="postcontent" itemprop='description articleBody'>
-				<?php echo stripslashes(
-						   str_replace('</br>', '<br />', $art->texte)); ?>
-				<br/><br/>
+				<?= $art->art_abstract(); ?>
 			</div>
 		</div>
-        <span class="tags" itemprop="about">
-            <?php $i = 0; ?>
-            <?php foreach ($art->get_tags() as $t): ?>
-                <?php if ($i) { echo " - "; } ?>
-            <a href="tag-<?php echo $t->slug; ?>-<?php echo $t->id; ?>">
-                <?php echo utf8_decode($t->name); ?>
-            </a>
-                <?php $i = 1; ?>
-            <?php endforeach; ?>
-        </span>
 		<footer class="comconteneur">
-<?php /*            <a class="like_link" href="<?php echo $art->id; ?>">
-               J'aime (<span id="likes-<?php echo $art->id; ?>"><?php echo $art->nb_likes; ?></span>)
-            </a>
-            -
-			<?php */ ?>
             <a class="comlink" href="art-<?php echo $art->url; ?>-<?php echo $art->id; ?>#firstcom">
-                <?php echo $art->nb_comment; ?>&nbsp;
+                <?php echo $art->nb_comment; ?> commentaires
             </a>
             <?php
 			if(!empty($_SESSION['ok']) && $_SESSION['ok'] == 1){
@@ -72,10 +82,11 @@ foreach ($view->articles as $art) {
 			}
 			?>
 		</footer>
+        <hr/>
 	</article>
-	<hr/>
 	<?php
 } ?>
+<div class="clear"></div>
 <div>
 	<?php
     $page = (!empty($_GET['page'])) ? $_GET['page'] : 0;
@@ -98,11 +109,23 @@ foreach ($view->articles as $art) {
             } else {
                 $lien = $lien_base."-page-".($page-1);
             }
-            echo '<span style="float:left;" class="page_link"><a href="'.$lien.'"><span class="arrow">←</span> NEWER</a></span>';
+            ?>
+            <a href="<?= $lien ?>">
+                <div class="main page_link even">
+                    <span class="p_art small">Next</span>
+                </div>
+            </a>
+            <?php
         }
         if($suiv){
             $lien = $lien_base."-page-".($page+1);
-            echo '<span style="float:right;" class="page_link"><a href="'.$lien.'">OLDER <span class="arrow">→</span></a></span>';
+            ?>
+            <a href="<?= $lien ?>">
+                <div class="main page_link odd">
+                    <span class="p_art small">Previous</span>
+                </div>
+            </a>
+            <?php
         }
     }
     ?>

@@ -32,6 +32,8 @@ class Home extends Controller {
         }
         $this->view->nb_pages = $art_repo->page_count($admin);
         $this->view->articles = $articles;
+        $this->view->has_top_article = true;
+        $this->layout->aside_class = "top_art_aside";
     }
 }
 ?>

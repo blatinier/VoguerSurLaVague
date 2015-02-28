@@ -30,6 +30,7 @@ class ArticlePage extends Controller {
         $this->view->next_article = $next_article;
         $this->view->prev_article = $prev_article;
         $this->layout->title = $article->titre;
+        $this->layout->aside_class= "hidden";
         $this->layout->canonical = $this->config['root_url']."/art-".$article->url."-".$article->id;
     }
 
@@ -179,7 +180,6 @@ class ArticlePage extends Controller {
             $art->nb_likes = $art_repo->get_likes($art->id);
             $art->score = $scores[$art->id];
         }
-        uasort($articles, "compare_scored_articles");
         $this->view->articles = $articles;
     }
 

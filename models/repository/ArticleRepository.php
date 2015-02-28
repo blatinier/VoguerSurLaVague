@@ -3,6 +3,7 @@
 class ArticleRepository extends Repository {
     public function __construct() {
         parent::__construct();
+        $this->nb_articles_per_page = 6;
     }
 
     public function get_by_id($is_admin, $id) {
@@ -26,6 +27,7 @@ class ArticleRepository extends Repository {
         if (!$is_admin) {
             $req .= ' AND pubdate < NOW() ';
         }
+        $req .= ' ORDER BY pubdate DESC';
         $art_sql = $this->mysql_connector->fetchAll($req);
         $articles = array();
         foreach($art_sql as $article_data) {
@@ -82,7 +84,7 @@ class ArticleRepository extends Repository {
     }
 
     public function get_articles($is_admin, $page) {
-        $offset = $page * 5;
+        $offset = $page * $this->nb_articles_per_page;
         $req = 'SELECT id, auteur, titre, url, texte,
             pubdate, cat, captcha_com, closed_com
             FROM articles';
@@ -93,7 +95,7 @@ class ArticleRepository extends Repository {
         if (!empty($where)) {
             $req .= " WHERE ".implode(" AND ", $where);
         }
-        $req .= ' ORDER BY pubdate DESC LIMIT '.$offset.', 5';
+        $req .= ' ORDER BY pubdate DESC LIMIT '.$offset.', '.$this->nb_articles_per_page;
         $art_sql = $this->mysql_connector->fetchAll($req);
         $articles = array();
         foreach($art_sql as $article_data) {
@@ -132,17 +134,17 @@ class ArticleRepository extends Repository {
 
     public function page_count($is_admin, $year=false, $month=false) {
         $nb_art = $this->count($is_admin, $year, $month);
-        return ceil($nb_art / 5);
+        return ceil($nb_art / $this->nb_articles_per_page);
     }
 
     public function page_count_category($is_admin, $category_id) {
         $nb_art = $this->count($is_admin, false, false, $category_id);
-        return ceil($nb_art / 5);
+        return ceil($nb_art / $this->nb_articles_per_page);
     }
 
     public function page_count_tag($is_admin, $tag_id) {
         $nb_art = $this->count($is_admin, false, false, false, $tag_id);
-        return ceil($nb_art / 5);
+        return ceil($nb_art / $this->nb_articles_per_page);
     }
 
     public function get_years($is_admin) {
@@ -173,7 +175,7 @@ class ArticleRepository extends Repository {
     }
 
     public function get_months_articles($is_admin, $year, $month, $page) {
-        $offset = $page * 5;
+        $offset = $page * $this->nb_articles_per_page;
         $year = (int)$year;
         $month = (int)$month;
         $page = (int)$page;
@@ -185,7 +187,7 @@ class ArticleRepository extends Repository {
         if (!$is_admin) {
             $req .= ' AND pubdate < NOW() ';
         }
-        $req .= ' ORDER BY pubdate DESC LIMIT '.$offset.', 5';
+        $req .= ' ORDER BY pubdate DESC LIMIT '.$offset.', '.$this->nb_articles_per_page;
         $art_sql = $this->mysql_connector->fetchAll($req);
         $articles = array();
         foreach($art_sql as $article_data) {
@@ -194,8 +196,11 @@ class ArticleRepository extends Repository {
         return $articles;
     }
 
-    public function get_tag_articles($is_admin, $page, $tag_id, $count=5) {
-        $offset = $page * $count;
+    public function get_tag_articles($is_admin, $page, $tag_id, $limit=0) {
+        if (empty($limit)) {
+            $limit = $this->nb_articles_per_page;
+        }
+        $offset = $page * $limit;
         $page = (int)$page;
         $tag_id = (int)$tag_id;
         $req = 'SELECT id, auteur, titre, url, texte,
@@ -207,7 +212,7 @@ class ArticleRepository extends Repository {
         if (!$is_admin) {
             $req .= ' AND pubdate < NOW() ';
         }
-        $req .= ' ORDER BY pubdate DESC LIMIT '.$offset.', '.(int)$count;
+        $req .= ' ORDER BY pubdate DESC LIMIT '.$offset.', '.$limit;
         $art_sql = $this->mysql_connector->fetchAll($req);
         $articles = array();
         foreach($art_sql as $article_data) {
@@ -217,7 +222,7 @@ class ArticleRepository extends Repository {
     }
 
     public function get_category_articles($is_admin, $page, $category_id) {
-        $offset = $page * 5;
+        $offset = $page * $this->nb_articles_per_page;
         $page = (int)$page;
         $category_id = (int)$category_id;
         $req = 'SELECT id, auteur, titre, url, texte,
@@ -227,7 +232,7 @@ class ArticleRepository extends Repository {
         if (!$is_admin) {
             $req .= ' AND pubdate < NOW() ';
         }
-        $req .= ' ORDER BY pubdate DESC LIMIT '.$offset.', 5';
+        $req .= ' ORDER BY pubdate DESC LIMIT '.$offset.', '.$this->nb_articles_per_page;
         $art_sql = $this->mysql_connector->fetchAll($req);
         $articles = array();
         foreach($art_sql as $article_data) {
