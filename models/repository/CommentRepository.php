@@ -75,7 +75,7 @@ class CommentRepository extends Repository {
 
     public function get_by_art_id($id) {
         $req = "SELECT id, idarticle, moment, pseudo, mail,
-                    commentaire, site, ip, DATE_FORMAT(moment,'à %H:%%i \l\e %%d/%c/%y') AS heure
+                    commentaire, site, ip, DATE_FORMAT(moment,'%%d/%c/%y') AS heure
                 FROM comments WHERE idarticle=".(int)$id."
                 ORDER BY moment";
         $coms = $this->mysql_connector->fetchAll($req);

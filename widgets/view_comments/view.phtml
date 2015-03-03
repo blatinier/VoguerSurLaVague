@@ -27,23 +27,23 @@
                 <strong class="pseudo">
                 <span itemprop="creator" itemscope="itemscope" itemtype="Person">
                     <?php if (!empty($site)) { ?>
-                        <meta content="<?php echo $site; ?>" itemprop="url"/>
-                        <a class="<?php echo $class; ?>" href="<?php echo $site; ?>">
-                        <span itemprop="name"><?php echo htmlspecialchars($com['pseudo']); ?></span></a>
+                        <meta content="<?= $site; ?>" itemprop="url"/>
+                        <a class="<?= $class; ?>" href="<?= $site; ?>">
+                        <span itemprop="name"><?= htmlspecialchars($com['pseudo']); ?></span></a>
                     <?php } else { ?>
-                        <span itemprop="name"><?php echo htmlspecialchars($com['pseudo']); ?></span>
+                        <span itemprop="name"><?= htmlspecialchars($com['pseudo']); ?></span>
                     <?php } ?>
                 </span>
                 </strong>
                 <?php if($_widget_data['admin']){
                     echo ' ('.$com['ip'].', <a mailto="'.$com['mail'].'">'.$com['mail'].'</a>)';
-                    ?><a href="delete_comment/<?php echo $com['id']; ?>">Supprimer ce commentaire</a><?php
+                    ?><a href="delete_comment/<?= $com['id']; ?>">Supprimer ce commentaire</a><?php
                 } ?>
                 <br/>
-                <small><span itemprop="commentTime"><?php echo $com['heure']; ?></span></small><br/>
+                <small><span itemprop="commentTime"><?= $com['day']. " ".$com['month']. " " .$com['year']; ?></span></small><br/>
                 </header>
                 <div class="com_content" itemprop="commentText">
-                    <?php echo nl2br(
+                    <?= nl2br(
                                stripslashes(
                                htmlspecialchars($com['commentaire']))); ?>
                 </div>
