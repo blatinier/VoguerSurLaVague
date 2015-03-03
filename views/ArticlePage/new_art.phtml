@@ -7,20 +7,20 @@ $default_art = '<img class="top_image" style="width: 100%;" src="http://www.melm
 if(!empty($view->msg)){
     echo "<p>".$view->msg."</p>";
 }
-if (!empty($view->sent)) {
-    ?>Édité. Lien vers l'<a href="art-<?php echo $view->url; ?>-<?php echo $view->art_id; ?>">article</a><?php
+if (!empty($view->sent) or !empty($view->art_id)) {
+    ?>Lien vers l'article « <a href="art-<?= $view->url; ?>-<?= $view->art_id; ?>"><?= $view->titre ?></a> »<?php
 }
 ?>
-<div class="comconteneur">
+<div class="art_post comconteneur">
 	<form method="post" action="">
         <?php if (!empty($view->art_id)) { ?>
-            <h3 id="leavecom"><a href="#">Édition de « <?php echo $view->titre; ?> »</a></h3>
+            <h3 id="leavecom"><a href="#">Édition de « <?= $view->titre; ?> »</a></h3>
         <?php } else { ?>
             <h3 id="leavecom"><a href="#">Ajouter un article</a></h3>
         <?php } ?>
-        <input class="input_com" type="text" name="auteur" id="auteur" value="<?php echo (!empty($view->auteur)) ? $view->auteur : 'Melmelboo';?>" />
+        <input class="input_com" type="text" name="auteur" id="auteur" value="<?= (!empty($view->auteur)) ? $view->auteur : 'Melmelboo';?>" />
         <label for="auteur">Auteur</label><br />
-        <input class="input_com" type="text" name="titre" id="titre" value="<?php echo (!empty($view->titre)) ? $view->titre : '';?>" />
+        <input class="input_com" type="text" name="titre" id="titre" value="<?= (!empty($view->titre)) ? $view->titre : '';?>" />
         <label for="titre">Titre</label><br />
         <select class="input_com" name="cat" id="cat">
         <?php
@@ -35,8 +35,8 @@ if (!empty($view->sent)) {
         ?>
         </select>
         <label for="cat">Catégorie</label><br />
-        <textarea class="new_art" name="texte" id="new-art"><?php echo (!empty($view->art)) ? $view->art : $default_art;?></textarea><br /><br />
-        <input class="input_com" type="text" name="pub" id="pub" value="<?php echo (!empty($view->pubdate)) ? $view->pubdate : $view->now; ?>" />
+        <textarea class="new_art" name="texte" id="new-art"><?= (!empty($view->art)) ? $view->art : $default_art;?></textarea><br /><br />
+        <input class="input_com" type="text" name="pub" id="pub" value="<?= (!empty($view->pubdate)) ? $view->pubdate : $view->now; ?>" />
         <label for="pub">Date de publication de l'article(AAAA-MM-JJ HH-MM-SS)</label><br />
         <label for="tags">Tags : </label><br />
         <table>
@@ -44,8 +44,8 @@ if (!empty($view->sent)) {
         <?php $i = 0;
         foreach($view->tags as $t): ?>
             <td>
-            <input type="checkbox" name="tag_<?php echo $t->id; ?>"
-                <?php if (in_array($t->id, $view->art_tags)) { echo "checked"; } ?>/>&nbsp;<?php echo utf8_decode($t->name); ?>
+            <input type="checkbox" name="tag_<?= $t->id; ?>"
+                <?php if (in_array($t->id, $view->art_tags)) { echo "checked"; } ?>/>&nbsp;<?= utf8_decode($t->name); ?>
             </td>
             <?php $i += 1; if ($i && $i % 8 == 0) echo "</tr><tr>"; ?>
         <?php endforeach; ?>
@@ -53,7 +53,7 @@ if (!empty($view->sent)) {
         </table>
         <br />
         <?php if (!empty($view->art_id)) { ?>
-        <input type="hidden" name="art_id" value="<?php echo $view->art_id; ?>" id="art_id" />
+        <input type="hidden" name="art_id" value="<?= $view->art_id; ?>" id="art_id" />
         <?php } ?>
         <input type="submit" value="Envoyer" />
 	</form>

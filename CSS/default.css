@@ -180,7 +180,7 @@ header .header_art_img {
     height: 540px;
 }
 
-.top_image {
+.top_art .top_image {
     width: 100% !important;
 }
 
@@ -396,7 +396,7 @@ aside hr{
     margin-top: 30px;
 }
 
-.art_post .comconteneur{
+.art_post.comconteneur, .comconteneur{
     text-align: left;
 }
 
