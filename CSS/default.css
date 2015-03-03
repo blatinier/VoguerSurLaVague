@@ -396,8 +396,8 @@ aside hr{
     margin-top: 30px;
 }
 
-.art_post.comconteneur, .comconteneur{
-    text-align: left;
+footer.short_com.comconteneur{
+    text-align: center;
 }
 
 .contact_form{
@@ -417,7 +417,7 @@ aside hr{
 	line-height:15px;
     margin-top: 7px;
     padding: 0 0 50px 0;
-    text-align: center;
+    text-align: left;
 	width:100%;
 }
 
