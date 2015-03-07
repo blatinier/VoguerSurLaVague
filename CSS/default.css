@@ -181,6 +181,7 @@ header .header_art_img {
 }
 
 .top_art .top_image {
+    position: relative;
     width: 100% !important;
 }
 
@@ -201,6 +202,20 @@ header.top_art_header {
     width: 100%;
 }
 
+.read_next {
+    box-sizing:border-box;
+    -moz-box-sizing:border-box;
+    border: 1px solid white;
+    color: #FFFFFF;
+    font-family: 'Great Vibes', cursive;
+    font-size: 3em;
+    left: 39%;
+    padding: 10px;
+    position: absolute;
+    text-align: center;
+    top: 90px;
+    z-index: 1;
+}
 .top_art:after, .top_art:before {
     position:absolute;
     opacity:0;
@@ -214,15 +229,7 @@ header.top_art_header {
     background:rgba(0,0,0,0.6);
 }
 .top_art:before {
-    box-sizing:border-box;
-    -moz-box-sizing:border-box;
-    color: #FFFFFF;
-    content: attr(data-content);
-    font-family: 'Great Vibes', cursive;
-    font-size: 3em;
-    line-height: 245px; 
-    text-align:center;
-    width:100%;
+    content:'\A';
     z-index:1;
 }
 .top_art:hover:after, .top_art:hover:before {
@@ -679,6 +686,19 @@ ul.social img{
     }
     .postcontent img {
         width: 100% !important;
+    }
+
+    .top_art_header .postTitle{
+        font-size: 1.5em;
+        line-height: normal;
+        text-align: center;
+        width: 100%;
+    }
+
+    .top_art_header .postDate{
+        font-size: 1.5em;
+        text-align: center;
+        width: 100%;
     }
     .postDate{
         border-radius: 55px;

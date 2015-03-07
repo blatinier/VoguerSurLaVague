@@ -10,7 +10,8 @@ if (!empty($view->has_top_article)) {
     $art = $view->articles[0];
     ?>
         <a href="art-<?php echo $art->url; ?>-<?php echo $art->id; ?>">
-            <div class="top_art header_art_img" data-content="Lire la suite">
+            <div class="top_art header_art_img">
+            <div class="read_next">Lire la suite</div>
             <?= $art->get_top_image(); ?>
             <header class="top_art_header">
                 <div class="postDate">
