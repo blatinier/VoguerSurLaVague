@@ -90,16 +90,28 @@ aside .menuBlock{
     padding: 7px;
 }
 
-#project_52 img{
+#project_52 div{
     float: left;
     height: 75px;
     margin-bottom: 5px;
+    overflow: hidden;
+    width: 50%;
+}
+
+#project_52 img{
+    float: left;
     margin-left: 5px;
-    width: 110px !important;
+    width: 100%;
 }
 
 .hidden {
     display: none;
+}
+
+
+.p52_img {
+    height: 161px;
+    overflow: hidden;
 }
 
 .grey_overlay {
