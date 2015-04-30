@@ -471,10 +471,11 @@ a img{
 }
 
 .p_art {
-    font-size: 1.3em;
+    font-size: 0.8em;
 }
 
 .p_art_title {
+    font-size: 0.8em;
     font-style: italic;
     text-transform: lowercase;
 }
@@ -490,7 +491,6 @@ a img{
 
 .page_link {
     float: left;
-    min-height: 55px;
     text-align: center;
     width: 49%;
 }
@@ -647,6 +647,24 @@ ul.social li{
 ul.social img{
     height: 37px;
     width: 37px;
+}
+
+.social_fb_art{
+    float:left;
+    padding-top: 25px;
+}
+
+.social_art{
+    font-family: 'Great Vibes', cursive;
+    font-size: 1.6em;
+    margin: auto;
+    text-align: center;
+    width: 200px;
+}
+
+.social_art>ul.social img{
+    height: 27px;
+    width: 27px;
 }
 
 #tag_cloud_icon{

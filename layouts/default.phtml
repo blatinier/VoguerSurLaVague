@@ -28,6 +28,14 @@
         <link href='http://fonts.googleapis.com/css?family=Anton' rel='stylesheet' type='text/css'>
     </head> 
     <body>
+        <div id="fb-root"></div>
+        <script>(function(d, s, id) {
+          var js, fjs = d.getElementsByTagName(s)[0];
+          if (d.getElementById(id)) return;
+          js = d.createElement(s); js.id = id;
+          js.src = "//connect.facebook.net/fr_FR/sdk.js#xfbml=1&version=v2.3";
+          fjs.parentNode.insertBefore(js, fjs);
+        }(document, 'script', 'facebook-jssdk'));</script>
         <div id="conteneur" itemscope='itemscope' itemtype='http://schema.org/Blog'>
             <meta content='Melmelboo' itemprop='name'/>
             <header>
@@ -106,10 +114,20 @@
                 <a id="admin_link" href="/admin">- Admin -</a>
             </footer>
         </div>
+        <!-- Piwik -->
+        <script type="text/javascript">
+          var _paq = _paq || [];
+          _paq.push(['trackPageView']);
+          _paq.push(['enableLinkTracking']);
+          (function() {
+          var u="//stats.melmelboo.fr/";
+          _paq.push(['setTrackerUrl', u+'piwik.php']);
+          _paq.push(['setSiteId', 1]);
+          var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+          g.type='text/javascript'; g.async=true; g.defer=true; g.src=u+'piwik.js'; s.parentNode.insertBefore(g,s);
+          })();
+        </script>
+        <noscript><p><img src="//stats.melmelboo.fr/piwik.php?idsite=1" style="border:0;" alt="" /></p></noscript>
+        <!-- End Piwik Code -->
     </body> 
 </html> 
-<?php
-$Racine_abs = str_replace($_SERVER['PHP_SELF'],"",$_SERVER['SCRIPT_FILENAME']);
-$nom_page=$_SERVER['REQUEST_URI'];
-require $Racine_abs.'/modules/allmystats/visiteur.php';
-?> 

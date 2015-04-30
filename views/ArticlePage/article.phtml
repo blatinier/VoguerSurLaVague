@@ -46,6 +46,19 @@ $captcha_com = $view->article->captcha_com;
         <?php endforeach; ?>
     </span>
     <br />
+    <div class="social_fb_art">
+        <div class="fb-like" data-href="http://www.melmelboo.fr/art-<?php echo $view->article->url; ?>-<?php echo $view->article->id; ?>" data-layout="button" data-action="like" data-show-faces="false" data-share="true"></div>
+    </div>
+    <div class="social_art">
+        Follow me <br />
+        <ul class="social">
+            <li><a title="Instagram" href="http://instagram.com/melmelbooo"><img class="social_icon" src="/images/social/instagram.png" alt="Instagram" /></a></li>
+            <li><a title="Facebook" href="http://www.facebook.com/melmelboo"><img class="social_icon" src="/images/social/facebook.png" alt="Facebook" /></a></li>
+            <li><a title="Hellocoton" href="http://www.hellocoton.fr/mapage/melmelboo"><img class="social_icon" src="/images/social/hellocoton.png" alt="Hellocoton" /></a></li>
+            <li><a title="Pinterest" href="http://www.pinterest.com/melmelboo"><img class="social_icon" src="/images/social/pinterest.png" alt="Pinterest" /></a></li>
+            <li><a title="Flux RSS" href="http://www.melmelboo.fr/RSS/articles.rss"><img class="social_icon" src="/images/social/feed.png" alt="RSS" /></a></li>
+        </ul>
+    </div>
     <hr />
     <div>
         <?php if (!empty($view->next_article->id)): ?>
