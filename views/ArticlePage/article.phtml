@@ -59,6 +59,12 @@ $captcha_com = $view->article->captcha_com;
             <li><a title="Flux RSS" href="http://www.melmelboo.fr/RSS/articles.rss"><img class="social_icon" src="/images/social/feed.png" alt="RSS" /></a></li>
         </ul>
     </div>
+    <?php 
+    if(!empty($_SESSION['ok']) && $_SESSION['ok'] == 1){
+        echo " - <a class=\"comlink\" href=\"article_edit-".$view->article->id."\">Editer</a> - 
+        <a class=\"comlink\" href=\"article_delete-".$view->article->id."\">Supprimer</a><br/>";
+    }
+    ?>
     <hr />
     <div>
         <?php if (!empty($view->next_article->id)): ?>
@@ -80,13 +86,32 @@ $captcha_com = $view->article->captcha_com;
         </a>
         <?php endif; ?>
     </div>
+    <div id="similar_articles">
+    <hr/>
+    <h3>Vous aimerez aussi</h3>
+    <?php 
+    $i = 0;
+    foreach ($view->similar_arts as $art) { 
+        $i += 1; ?>
+        <article class="post<?php echo ($i == 3) ? " last" : ""; ?>" itemprop='blogPost' itemscope='itemscope' itemtype='http://schema.org/BlogPosting'>
+        <meta content='<?php echo $art->id; ?>' itemprop='postId'/>
+        <meta itemprop="inLanguage" content="fr-FR"/>
+	    <header>
+            <div class="header_art_img">
+                <a href="art-<?php echo $art->url; ?>-<?php echo $art->id; ?>">
+                    <?= $art->get_top_image(); ?>
+                </a>
+            </div>
+            <div class="postTitle" itemprop='name'>
+                <a href="art-<?php echo $art->url; ?>-<?php echo $art->id; ?>">
+                    <?php echo stripslashes($art->titre); ?>
+                </a>
+            </div>
+	    </header>
+	</article>
+    <?php } ?>
+    </div>
     <footer class="comconteneur">
-<?php 
-        if(!empty($_SESSION['ok']) && $_SESSION['ok'] == 1){
-            echo " - <a class=\"comlink\" href=\"article_edit-".$view->article->id."\">Editer</a> - 
-            <a class=\"comlink\" href=\"article_delete-".$view->article->id."\">Supprimer</a><br/>";
-        }
-        ?>
         <section>
             <?php echo $_widgets['view_comments'];
             echo $_widgets['new_comment']; ?>

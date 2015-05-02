@@ -26,12 +26,31 @@ class ArticlePage extends Controller {
         $prev_article = $art_repo->get_previous_by_id($admin, $art);
         $article->category = $cats_repo->get_by_id($article->cat);
         $article->nb_likes = $art_repo->get_likes($article->id);
+
+        $similar_ids = $this->more_like_this($art);
+        $this->view->similar_arts = $art_repo->get_by_ids($admin, $similar_ids);
         $this->view->article = $article;
         $this->view->next_article = $next_article;
         $this->view->prev_article = $prev_article;
         $this->layout->title = $article->titre;
         $this->layout->aside_class= "hidden";
         $this->layout->canonical = $this->config['root_url']."/art-".$article->url."-".$article->id;
+    }
+
+    public function more_like_this($art_id) {
+        $es_client = new Elasticsearch\Client();
+        $get = array("index" => $this->config['es_index'],
+                     "type" => "article",
+                     "id" => $art_id,
+                     "search_size" => 3,
+                     "min_doc_freq" => 1);
+        $arts = $es_client->mlt($get);
+        $ids = array();
+        foreach ($arts['hits']['hits'] as $a) {
+            $ids[] = (int)$a['_id'];
+        }
+        return $ids;
+        
     }
 
     public function new_art () {
@@ -62,6 +81,7 @@ class ArticlePage extends Controller {
                                 'closed_com' => 0);
             $art = Article::load($art_values);
             $art = $art_repo->save($art);
+            $art = $art_repo->get_by_id($admin, $art_id);
             $this->update_index_article($art);
             $tag_repo->link_article_to_tags($art->id, $tags);
             $_POST['art_id'] = $art->id;
@@ -107,27 +127,6 @@ class ArticlePage extends Controller {
         }
     }
 
-    public function like () {
-        $ip = $_SERVER['REMOTE_ADDR'];
-        $id_article = (int)$_GET['art'];
-        $error = false;
-        $com_repo = new CommentRepository();
-        $black_ip = $com_repo->get_banned_ip();
-        foreach ($black_ip as $bip) {
-            if ($bip['ip'] == $ip) {
-                $error = true;
-                $this->view->msg = "Votre adresse IP n'est pas autorisée à poster des commentaires.";
-                break;
-            }
-        }
-        if (!$error) {
-            $art_repo = new ArticleRepository();
-            $art_repo->like($id_article, $ip);
-            $this->view->nb_likes = $art_repo->get_likes($id_article);
-        }
-        $this->layout_tpl = "ajax_html.phtml";
-    }
-
     public function project52 () {
         $admin = (!empty($_SESSION['ok']) && $_SESSION['ok'] == 1);
         $art_repo = new ArticleRepository();
@@ -148,6 +147,7 @@ class ArticlePage extends Controller {
 
     public function search () {
         $admin = (!empty($_SESSION['ok']) && $_SESSION['ok'] == 1);
+        error_log("Search: ".$_POST['search_query']);
         if ($admin && $_POST['search_query'] == "REINDEX") {
             $this->re_index_all();
         }
@@ -184,6 +184,7 @@ class ArticlePage extends Controller {
     }
 
     public function re_index_all() {
+        error_log("Reindex all articles");
         $es_client = new Elasticsearch\Client();
         $indexParams['index'] = $this->config['es_index'];
         $es_client->indices()->delete($indexParams);
@@ -206,22 +207,25 @@ class ArticlePage extends Controller {
     }
     
     public function index_article($art) {
+        error_log('Indexing article '.$art->id);
         $es_client = new Elasticsearch\Client();
         $idx = array("index" => $this->config['es_index'],
                      "type" => "article",
                      "id" => $art->id,
                      "body" => array("title" => $art->titre,
                                      "body" => $art->texte));
-        error_log('Indexing article '.$art->id);
         $es_client->index($idx);
+        error_log('Indexed article '.$art->id);
     }
     
     public function delete_index_article($art_id) {
+        error_log("Delete index of art ".$art_id);
         $es_client = new Elasticsearch\Client();
         $idx = array("index" => $this->config['es_index'],
                      "type" => "article",
                      "id" => $art_id);
         $es_client->delete($idx);
+        error_log("Deleted index of art ".$art_id);
     }
 }
 ?>

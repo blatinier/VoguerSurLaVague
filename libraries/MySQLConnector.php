@@ -104,26 +104,28 @@ class MySQLConnector {
             error_log(var_export($this->_link->error, true));
         }
         
-        // Build mysqli_stmt::bind_param first arg (ex.: 'ssiisi')
-        $params = array('');
-        foreach ($matches as $i => $match) {
-            $params[0] .= $match[1];
-        }
-        // Faking the first param to be the query (null here) to use the regular check
-        if (is_array($args[1])) {
-            $args = array_merge(array($args[0]), $args[1]);
-        }
-        // Build mysqli_stmt::bind_param second arg (query params as references)
-        foreach ($args as $i => $arg) {
-            if (!$i) continue;
-            if ((substr($params[0], $i-1, 1) == 's') && ($this->_charset == self::CHARSET_UTF8)) {
-                $args[$i] = utf8_encode($args[$i]);
+        if (count($args) > 1) {
+            // Build mysqli_stmt::bind_param first arg (ex.: 'ssiisi')
+            $params = array('');
+            foreach ($matches as $i => $match) {
+                $params[0] .= $match[1];
             }
-            $params[] = &$args[$i];
+            // Faking the first param to be the query (null here) to use the regular check
+            if (is_array($args[1])) {
+                $args = array_merge(array($args[0]), $args[1]);
+            }
+            // Build mysqli_stmt::bind_param second arg (query params as references)
+            foreach ($args as $i => $arg) {
+                if (!$i) continue;
+                if ((substr($params[0], $i-1, 1) == 's') && ($this->_charset == self::CHARSET_UTF8)) {
+                    $args[$i] = utf8_encode($args[$i]);
+                }
+                $params[] = &$args[$i];
+            }
+            
+            // Call mysqli_stmt::bind_param
+            call_user_func_array(array($q, 'bind_param'), $params);
         }
-        
-        // Call mysqli_stmt::bind_param
-        call_user_func_array(array($q, 'bind_param'), $params);
         
         // Execution
         $q->execute();

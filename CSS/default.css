@@ -252,6 +252,33 @@ header.top_art_header .postTitle, header.top_art_header .postDate {
     color: #FFFFFF;
 }
 
+#similar_articles {
+    margin-top: 70px;
+}
+
+#similar_articles .header_art_img {
+    height: 200px;
+}
+
+#similar_articles .comconteneur {
+    padding: 0;
+}
+
+#similar_articles .postTitle {
+    font-size: 0.8em;
+    padding: 0;
+    text-align: center;
+}
+
+#similar_articles .post.last {
+    margin-right: 0;
+}
+
+#similar_articles .post {
+    margin-right: 50px;
+    width: 30%;
+}
+
 .post{
     float: left;
 	line-height:0.5em;
@@ -697,14 +724,29 @@ ul.social img{
         width: 100%; 
     }
     ul.social li{
-        margin-left: 7%;
+        margin-left: 6%;
     }
     ul.social img{
-        height: 115px;
-        width: 115px;
+        height: 100px;
+        width: 100px;
     }
     #footer, aside, nav{
         display: none;
+    }
+    header .header_art_img {
+        height: 400px;
+    }
+    div.postDate {
+        font-size: 2em;
+        margin-bottom: 0;
+        text-align: center;
+        width: 100%
+    }
+    footer.short_com.comconteneur {
+        width: 100%;
+    }
+    footer.short_com.comconteneur .comlink {
+        width: 100%;
     }
     .postTitle a {
         font-size: 4em;
@@ -718,16 +760,15 @@ ul.social img{
         width: 100% !important;
     }
 
-    .top_art_header .postTitle{
-        font-size: 1.5em;
-        line-height: normal;
-        text-align: center;
-        width: 100%;
+    .fake_top {
+        height: 0px;
     }
 
-    .top_art_header .postDate{
-        font-size: 1.5em;
-        text-align: center;
+    .top_art {
+        display: none;
+    }
+
+    .post {
         width: 100%;
     }
     .postDate{
