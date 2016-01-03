@@ -198,6 +198,7 @@ header .header_art_img {
     height: 540px;
 }
 
+.top_art img,
 .top_art .top_image {
     position: relative;
     width: 100% !important;

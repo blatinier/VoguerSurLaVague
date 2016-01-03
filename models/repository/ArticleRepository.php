@@ -196,7 +196,7 @@ class ArticleRepository extends Repository {
         return $articles;
     }
 
-    public function get_tag_articles($is_admin, $page, $tag_id, $limit=0) {
+    public function get_tag_articles($is_admin, $page, $tag_id, $limit=0, $year=null) {
         if (empty($limit)) {
             $limit = $this->nb_articles_per_page;
         }
@@ -211,6 +211,9 @@ class ArticleRepository extends Repository {
             WHERE tag_id = '.$tag_id;
         if (!$is_admin) {
             $req .= ' AND pubdate < NOW() ';
+        }
+        if ($year) {
+            $req .= ' AND YEAR(pubdate) = '.(int)$year;
         }
         $req .= ' ORDER BY pubdate DESC LIMIT '.$offset.', '.$limit;
         $art_sql = $this->mysql_connector->fetchAll($req);

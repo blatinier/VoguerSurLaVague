@@ -1,10 +1,14 @@
-<div id="project_52">
-    <?php
-    foreach ($_widget_data['articles_52'] as $art) { ?>
+<?php foreach ($_widget_data['articles_52'] as $year => $arts) { ?>
+<div class="menuBlock">
+    <h1 class="menu_title">Projet 52 - <?= $year; ?></h1>
+    <div id="project_52">
+        <?php foreach ($arts as $art) { ?>
         <div>
-            <a href="/project52">
-                <?php echo $art->texte; ?>
+            <a href="/project52-<?= $year; ?>">
+                <?= $art->texte; ?>
             </a>
         </div>
-    <?php } ?>
+        <?php } ?>
+    </div>
 </div>
+<?php } ?>

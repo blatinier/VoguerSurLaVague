@@ -40,7 +40,7 @@ class ArticlePage extends Controller {
         }
         $this->view->is_project52_art = endsWith($article->titre, "/52");
         if ($this->view->is_project52_art) {
-            $this->project52();
+            $this->project52($article->year);
         }
         $this->view->article = $article;
         $this->view->next_article = $next_article;
@@ -142,11 +142,19 @@ class ArticlePage extends Controller {
         }
     }
 
-    public function project52 () {
+    public function project52 ($year) {
+        if (empty($year)) {
+            if (!empty($_GET['year'])) {
+                $year = intval($_GET['year']);
+            } else {
+                $year = intval(date("Y"));
+            }
+        }
         $admin = (!empty($_SESSION['ok']) && $_SESSION['ok'] == 1);
         $art_repo = new ArticleRepository();
         $tag_52_project = 45;
-        $arts = $art_repo->get_tag_articles($admin, 0, $tag_52_project, 52);
+        $arts = $art_repo->get_tag_articles($admin, 0, $tag_52_project, 52, $year);
+        $this->view->project_52_year = $year;
         $this->view->project_52_arts = array();
         foreach ($arts as $art) {
             preg_match_all('/<img[^>]+>/i', $art->texte, $result); 
