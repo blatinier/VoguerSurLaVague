@@ -1,6 +1,11 @@
 <?php
 require 'vendor/autoload.php';
 
+function endsWith($haystack, $needle) {
+    // search forward starting from end minus needle length characters
+    return $needle === "" || (($temp = strlen($haystack) - strlen($needle)) >= 0 && strpos($haystack, $needle, $temp) !== FALSE);
+}
+
 function compare_scored_articles($a, $b) {
     if ($a->score == $b->score) {
         return 0;
@@ -22,13 +27,21 @@ class ArticlePage extends Controller {
         $cats_repo = new CategoryRepository();
         $com_repo = new CommentRepository();
         $article = $art_repo->get_by_id($admin, $art);
-        $next_article = $art_repo->get_next_by_id($admin, $art);
-        $prev_article = $art_repo->get_previous_by_id($admin, $art);
+        $next_article = $art_repo->get_next($admin, $article);
+        $prev_article = $art_repo->get_previous($admin, $article);
         $article->category = $cats_repo->get_by_id($article->cat);
         $article->nb_likes = $art_repo->get_likes($article->id);
 
         $similar_ids = $this->more_like_this($art);
-        $this->view->similar_arts = $art_repo->get_by_ids($admin, $similar_ids);
+        if (!empty($similar_ids)){
+            $this->view->similar_arts = $art_repo->get_by_ids($admin, $similar_ids);
+        } else {
+            $this->view->similar_arts = array();
+        }
+        $this->view->is_project52_art = endsWith($article->titre, "/52");
+        if ($this->view->is_project52_art) {
+            $this->project52();
+        }
         $this->view->article = $article;
         $this->view->next_article = $next_article;
         $this->view->prev_article = $prev_article;
@@ -44,11 +57,13 @@ class ArticlePage extends Controller {
                      "id" => $art_id,
                      "search_size" => 3,
                      "min_doc_freq" => 1);
-        $arts = $es_client->mlt($get);
         $ids = array();
-        foreach ($arts['hits']['hits'] as $a) {
-            $ids[] = (int)$a['_id'];
-        }
+        try {
+            $arts = $es_client->mlt($get);
+            foreach ($arts['hits']['hits'] as $a) {
+                $ids[] = (int)$a['_id'];
+            }
+        } catch (Exception $e) { error_log("No related article found for article ".$art_id);}
         return $ids;
         
     }
@@ -82,8 +97,8 @@ class ArticlePage extends Controller {
             $art = Article::load($art_values);
             $art = $art_repo->save($art);
             $art = $art_repo->get_by_id($admin, $art_id);
-            $this->update_index_article($art);
             $tag_repo->link_article_to_tags($art->id, $tags);
+            $this->update_index_article($art);
             $_POST['art_id'] = $art->id;
             $this->view->art_id = $art->id;
             $this->view->sent = true;
@@ -132,12 +147,12 @@ class ArticlePage extends Controller {
         $art_repo = new ArticleRepository();
         $tag_52_project = 45;
         $arts = $art_repo->get_tag_articles($admin, 0, $tag_52_project, 52);
-        $this->view->images = array();
+        $this->view->project_52_arts = array();
         foreach ($arts as $art) {
             preg_match_all('/<img[^>]+>/i', $art->texte, $result); 
             $img = $result[0][0];
             $text = str_replace($img, '', $art->texte);
-            $this->view->images[] = array('image' => $img,
+            $this->view->project_52_arts[] = array('image' => $img,
                                           'url' => $art->url,
                                           'id' => $art->id,
                                           'titre' => $art->titre,

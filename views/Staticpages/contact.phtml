@@ -11,12 +11,17 @@
     </script>
     <form method="post" action="">
         <span id="contact"><a href="#">Contact</a></span>
-        <label class="contact-field" for="pseudo">Nom</label> <span class="lighter">(Obligatoire)</span> <br/>
-        <input class="input-contact-field" type="type" name="pseudo" value="<?php echo !empty($_SESSION['pseudo']) ? $_SESSION['pseudo'] : '';?>"/> <br/>
-        <label class="contact-field" for="mail">Email</label> <span class="lighter">(Obligatoire)</span><br/>
-        <input class="input-contact-field" type="type" name="mail" value="<?php echo !empty($_SESSION['mail']) ? $_SESSION['mail'] : '';?>"/> <br/>
+        <label class="contact-field" for="pseudo">Nom</label>
+        <span class="lighter">(Obligatoire)</span> <br/>
+        <input class="input-contact-field" type="type" name="pseudo"
+               value="<?php echo !empty($_SESSION['pseudo']) ? $_SESSION['pseudo'] : '';?>"/> <br/>
+        <label class="contact-field" for="mail">Email</label>
+        <span class="lighter">(Obligatoire)</span><br/>
+        <input class="input-contact-field" type="type" name="mail"
+               value="<?php echo !empty($_SESSION['mail']) ? $_SESSION['mail'] : '';?>"/> <br/>
         <label class="contact-field" for="website">Website</label><br/>
-        <input class="input-contact-field" type="type" name="website" value="<?php echo !empty($_SESSION['website']) ? $_SESSION['website'] : '';?>"/> <br/>
+        <input class="input-contact-field" type="type" name="website"
+               value="<?php echo !empty($_SESSION['website']) ? $_SESSION['website'] : '';?>"/> <br/>
         <label class="contact-field" for="msg">Commentaire</label> <span class="lighter">(Obligatoire)</span><br/>
         <textarea name="msg" id="contact-comment"><?php echo !empty($_SESSION['msg']) ? $_SESSION['msg'] : '' ?></textarea><br/><br/>
         <?php

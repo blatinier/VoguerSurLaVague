@@ -101,7 +101,7 @@ aside .menuBlock{
 #project_52 img{
     float: left;
     margin-left: 5px;
-    width: 100%;
+    width: 100% !important;
 }
 
 .hidden {
@@ -119,6 +119,12 @@ aside .menuBlock{
     margin: 5px;
     position:relative;
     width:32%;
+}
+article #project_52_page {
+    margin-top: 70px;
+}
+#project_52_page .grey_overlay img {
+    width:100% !important;
 }
 .grey_overlay img {
     width:100%;
@@ -708,7 +714,7 @@ ul.social img{
     width: 100%;
 }
 
-@media screen and (max-width: 1024px) {
+@media screen and (max-width: 1200px) {
     #conteneur, #main, #contenu {
         width: 100%;
     }

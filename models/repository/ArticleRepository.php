@@ -55,11 +55,11 @@ class ArticleRepository extends Repository {
         return $articles;
     }
 
-    public function get_next_by_id($is_admin, $id) {
+    public function get_next($is_admin, $art) {
         $req = 'SELECT id, auteur, titre, url, texte,
             pubdate, cat, captcha_com, closed_com
             FROM articles
-            WHERE id > '.(int)$id;
+            WHERE pubdate > "'.$art->pubdate.'"';
         if (!$is_admin) {
             $req .= ' AND pubdate < NOW() ';
         }
@@ -69,11 +69,11 @@ class ArticleRepository extends Repository {
         return $article;
     }
 
-    public function get_previous_by_id($is_admin, $id) {
+    public function get_previous($is_admin, $art) {
         $req = 'SELECT id, auteur, titre, url, texte,
             pubdate, cat, captcha_com, closed_com
             FROM articles
-            WHERE id < '.(int)$id;
+            WHERE pubdate < "'.$art->pubdate.'"';
         if (!$is_admin) {
             $req .= ' AND pubdate < NOW() ';
         }

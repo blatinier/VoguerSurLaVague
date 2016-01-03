@@ -7,7 +7,7 @@ class Staticpages extends Controller {
     }
 
     public function contact() {
-        if(!empty($_POST['pseudo']) && !empty($_POST['mail']) && !empty($_POST['titre']) && !empty($_POST['msg'])){
+        if(!empty($_POST['pseudo']) && !empty($_POST['mail']) && !empty($_POST['msg'])){
             if (strstr($_POST['mail'], "**") or strstr(htmlspecialchars($_POST['pseudo']), "&amp;#12")) {
                 return;
             }
@@ -31,15 +31,13 @@ class Staticpages extends Controller {
                 mail($to, $subject, $message, $headers);
                 $_SESSION['pseudo']  = "";
                 $_SESSION['mail']  = "";
-                $_SESSION['titre']  = "";
                 $_SESSION['msg']  = "";
             
                 $this->view->msg = "Merci pour ce petit message !!";
             }
-        } elseif((empty($_POST['pseudo']) || empty($_POST['mail']) || empty($_POST['titre']) || empty($_POST['msg'])) && !empty($_POST)){
+        } elseif((empty($_POST['pseudo']) || empty($_POST['mail']) || empty($_POST['msg'])) && !empty($_POST)){
         	$_SESSION['pseudo']  = $_POST['pseudo'];
         	$_SESSION['mail']  = $_POST['mail'];
-        	$_SESSION['titre']  = $_POST['titre'];
         	$_SESSION['msg']  = $_POST['msg'];
         	$this->view->msg = "Merci de bien vouloir remplir tous les champs :)";
         }
