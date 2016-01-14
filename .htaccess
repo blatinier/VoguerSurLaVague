@@ -9,6 +9,7 @@ RewriteRule ^cat-(.*)-([0-9]+)$ index.php?controller=listing&action=category&cat
 RewriteRule ^tag-(.*)-([0-9]+)-page-([0-9]+)$ index.php?controller=listing&action=tag&tag_id=$2&page=$3 [L] 
 RewriteRule ^tag-(.*)-([0-9]+)$ index.php?controller=listing&action=tag&tag_id=$2 [L] 
 RewriteRule ^art-(.*)-([0-9]+)$ index.php?controller=article&action=article&art=$2 [L] 
+RewriteRule ^charlie-au-fil-des-mois$ index.php?controller=article&action=project52&tag=47 [L] 
 RewriteRule ^project52$ index.php?controller=article&action=project52 [L] 
 RewriteRule ^project52-([0-9]{4})$ index.php?controller=article&action=project52&year=$1 [L] 
 RewriteRule ^search$ index.php?controller=article&action=search [L] 

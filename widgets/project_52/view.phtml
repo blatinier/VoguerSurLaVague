@@ -1,7 +1,7 @@
 <?php foreach ($_widget_data['articles_52'] as $year => $arts) { ?>
 <div class="menuBlock">
     <h1 class="menu_title">Projet 52 - <?= $year; ?></h1>
-    <div id="project_52">
+    <div class="project_52">
         <?php foreach ($arts as $art) { ?>
         <div>
             <a href="/project52-<?= $year; ?>">
@@ -12,3 +12,15 @@
     </div>
 </div>
 <?php } ?>
+<div class="menuBlock">
+    <h1 class="menu_title">Charlie au fil des mois</h1>
+    <div class="project_52">
+        <?php foreach ($_widget_data['articles_months'] as $art) { ?>
+        <div>
+            <a href="/charlie-au-fil-des-mois">
+                <?= $art->texte; ?>
+            </a>
+        </div>
+        <?php } ?>
+    </div>
+</div>

@@ -90,7 +90,7 @@ aside .menuBlock{
     padding: 7px;
 }
 
-#project_52 div{
+.project_52 div{
     float: left;
     height: 75px;
     margin-bottom: 5px;
@@ -98,7 +98,7 @@ aside .menuBlock{
     width: 50%;
 }
 
-#project_52 img{
+.project_52 img{
     float: left;
     margin-left: 5px;
     width: 100% !important;

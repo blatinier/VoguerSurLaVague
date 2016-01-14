@@ -63,7 +63,7 @@ for art in my_articles:
 cursor.execute("SELECT id, slug FROM category WHERE type=0 ORDER BY id DESC")
 my_categories = cursor.fetchall()
 for cat in my_categories:
-    cursor.execute("SELECT MAX(pubdate) AS pubdate FROM articles WHERE cat = %s AND pubdate < NOW()", cat['id'])
+    cursor.execute("SELECT MAX(pubdate) AS pubdate FROM articles WHERE cat = %s AND pubdate < NOW()" % cat['id'])
     art = cursor.fetchone()
     if art['pubdate'] is None:
         continue

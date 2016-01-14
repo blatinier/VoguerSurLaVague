@@ -48,7 +48,7 @@ cursor.execute("""SELECT a.id AS aid,
                          a.pubdate AS pubdate,
                          c.titre AS category
                FROM articles a
-               LEFT JOIN category c ON c.id = a.cat 
+               LEFT JOIN category c ON c.id = a.cat
                WHERE pubdate < NOW() AND pubdate != "0000-00-00 00:00:00"
                ORDER BY a.pubdate DESC LIMIT 50""")
 my_articles = cursor.fetchall()
@@ -67,7 +67,6 @@ for art in my_articles:
     acontent = ET.SubElement(item, 'content')
     acontent.set("type", "html")
     acontent.text = art['atext'].decode("latin1")
-    print art
     aauthor = ET.SubElement(item, 'author')
     aauthor.text = art['author']
     acategory = ET.SubElement(item, 'category')

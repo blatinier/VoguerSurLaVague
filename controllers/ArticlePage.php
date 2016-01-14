@@ -142,23 +142,29 @@ class ArticlePage extends Controller {
         }
     }
 
-    public function project52 ($year) {
-        if (empty($year)) {
-            if (!empty($_GET['year'])) {
-                $year = intval($_GET['year']);
-            } else {
-                $year = intval(date("Y"));
+    public function project52 ($year=null) {
+        $limit = 52;
+        $this->view->is_52 = true;
+        if (!empty($_GET['tag'])) {
+            $tag = intval($_GET['tag']);
+            $this->view->is_52 = false;
+        } else {
+            $tag = 45;
+            if (empty($year)) {
+                if (!empty($_GET['year'])) {
+                    $year = intval($_GET['year']);
+                } else {
+                    $year = intval(date("Y"));
+                }
             }
         }
         $admin = (!empty($_SESSION['ok']) && $_SESSION['ok'] == 1);
         $art_repo = new ArticleRepository();
-        $tag_52_project = 45;
-        $arts = $art_repo->get_tag_articles($admin, 0, $tag_52_project, 52, $year);
+        $arts = $art_repo->get_tag_articles($admin, 0, $tag, $limit, $year);
         $this->view->project_52_year = $year;
         $this->view->project_52_arts = array();
         foreach ($arts as $art) {
-            preg_match_all('/<img[^>]+>/i', $art->texte, $result); 
-            $img = $result[0][0];
+            $img = $art->get_top_image();
             $text = str_replace($img, '', $art->texte);
             $this->view->project_52_arts[] = array('image' => $img,
                                           'url' => $art->url,

@@ -1,11 +1,19 @@
-<div class="center postTitle"><a href="#">Projet 52</a></div>
-<div class="center postcontent">
-    <?php if ($view->project_52_year == 2015): ?>
-        <em>- Un portrait de ma fille, chaque semaine, en <?= $view->project_52_year; ?> -</em>
-    <?php else: ?>
-        <em>- Un portrait de ma famille, chaque semaine, en <?= $view->project_52_year; ?> -</em>
-    <?php endif; ?>
-</div>
+<?php if ($view->is_52): ?>
+    <div class="center postTitle"><a href="#">Projet 52</a></div>
+    <div class="center postcontent">
+        <?php if ($view->project_52_year == 2015): ?>
+            <em>- Un portrait de ma fille, chaque semaine, en <?= $view->project_52_year; ?> -</em>
+        <?php else: ?>
+            <em>- Un portrait de ma famille, chaque semaine, en <?= $view->project_52_year; ?> -</em>
+        <?php endif; ?>
+    </div>
+<?php else: ?>
+    <div class="center postTitle"><a href="#">Charlie au fil des mois</a></div>
+    <div class="center postcontent">
+        <em>- Douze portraits de ma fille mois par mois -</em>
+    </div>
+    
+<?php endif; ?>
 <br />
 <div id="project_52_page">
 <?php foreach ($view->project_52_arts as $img): ?>

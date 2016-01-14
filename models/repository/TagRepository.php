@@ -63,12 +63,14 @@ class TagRepository extends Repository {
         if (empty($tags_id)) {
             return; // No tags to insert
         }
+        $del_req = "DELETE FROM article_tags WHERE article_id = ".(int)$art_id;
         $req = "INSERT INTO article_tags(tag_id, article_id) VALUES";
         $values = array();
         foreach ($tags_id as $tid) {
             $values[] = "(" . (int)$tid . ", " . (int)$art_id . ")";
         }
         $req .= implode(', ', $values) . " ON DUPLICATE KEY UPDATE tag_id=tag_id";
+        $this->mysql_connector->delete($del_req);
         $this->mysql_connector->insert($req);
     }
 
