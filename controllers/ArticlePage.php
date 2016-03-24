@@ -63,9 +63,9 @@ class ArticlePage extends Controller {
             foreach ($arts['hits']['hits'] as $a) {
                 $ids[] = (int)$a['_id'];
             }
-        } catch (Exception $e) { error_log("No related article found for article ".$art_id);}
+        } catch (Exception $e) {} // No related article
         return $ids;
-        
+
     }
 
     public function new_art () {
@@ -225,7 +225,7 @@ class ArticlePage extends Controller {
             $this->index_article($a);
         }
     }
-    
+
     public function update_index_article($art) {
         try {
             $this->delete_index_article($art->id);
@@ -234,7 +234,7 @@ class ArticlePage extends Controller {
         }
         $this->index_article($art);
     }
-    
+
     public function index_article($art) {
         error_log('Indexing article '.$art->id);
         $es_client = new Elasticsearch\Client();
@@ -246,7 +246,7 @@ class ArticlePage extends Controller {
         $es_client->index($idx);
         error_log('Indexed article '.$art->id);
     }
-    
+
     public function delete_index_article($art_id) {
         error_log("Delete index of art ".$art_id);
         $es_client = new Elasticsearch\Client();
