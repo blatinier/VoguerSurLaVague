@@ -7,17 +7,17 @@
     <li><a href="new_cat">Nouvelle catégorie</a></li>
     <li><a href="tag_management">Gestion des tags</a></li>
     <li><a href="list_cat">Modifier/Supprimer une catégorie</a></li>
-    <li><a href="http://stats.melmelboo.fr">Statistiques visiteurs</a></li>
+    <li><a href="https://stats.melmelboo.fr">Statistiques visiteurs</a></li>
     <li><a href="logout">Deconnexion</a></li>
 </ul>
-<?php } else { 
+<?php } else {
 if (!empty($view->msg)) echo $view->msg; ?>
 <form method="post" action="">
-	<fieldset>
-		<legend>Accès protégé par mot de passe</legend>
-		<label for="pass">Entrez le mot de passe : </label>
-		<input type="password" name="pass" id="pass" /><br/>
-		<input type="submit" value="Envoyer" />
-	</fieldset>
+    <fieldset>
+        <legend>Accès protégé par mot de passe</legend>
+        <label for="pass">Entrez le mot de passe : </label>
+        <input type="password" name="pass" id="pass" /><br/>
+        <input type="submit" value="Envoyer" />
+    </fieldset>
 </form>
 <?php } ?>

@@ -32,12 +32,6 @@ class ArticlePage extends Controller {
         $article->category = $cats_repo->get_by_id($article->cat);
         $article->nb_likes = $art_repo->get_likes($article->id);
 
-        $similar_ids = $this->more_like_this($art);
-        if (!empty($similar_ids)){
-            $this->view->similar_arts = $art_repo->get_by_ids($admin, $similar_ids);
-        } else {
-            $this->view->similar_arts = array();
-        }
         $this->view->is_project52_art = endsWith($article->titre, "/52");
         if ($this->view->is_project52_art) {
             $this->project52($article->year);
@@ -47,7 +41,11 @@ class ArticlePage extends Controller {
         $this->view->prev_article = $prev_article;
         $this->layout->title = $article->titre;
         $this->layout->aside_class= "hidden";
-        $this->layout->canonical = $this->config['root_url']."/art-".$article->url."-".$article->id;
+        if (!empty($article->ghost_id)) {
+            $this->layout->canonical = $this->config['root_blog_voyage_url'].$article->canonical_url;
+        } else {
+            $this->layout->canonical = $this->config['root_url']."/art-".$article->url."-".$article->id;
+        }
     }
 
     public function more_like_this($art_id) {

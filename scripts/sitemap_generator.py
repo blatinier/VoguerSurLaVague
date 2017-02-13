@@ -29,12 +29,12 @@ last_pubdate = cursor.fetchone()
 
 # Create sitemap xml root element
 sitemap = ET.Element('urlset')
-sitemap.set('xmlns', 'http://www.sitemaps.org/schemas/sitemap/0.9')
+sitemap.set('xmlns', 'https://www.sitemaps.org/schemas/sitemap/0.9')
 
 # Home page is frequently changed
 url_element = ET.SubElement(sitemap, 'url')
 loc = ET.SubElement(url_element, 'loc')
-loc.text = "http://www.melmelboo.fr"
+loc.text = "https://www.melmelboo.fr"
 lastmod = ET.SubElement(url_element, 'lastmod')
 lastmod.text = last_pubdate["last_pub"].strftime("%Y-%m-%d")
 changefreq = ET.SubElement(url_element, 'changefreq')
@@ -48,7 +48,7 @@ my_articles = cursor.fetchall()
 for art in my_articles:
     url_element = ET.SubElement(sitemap, 'url')
     loc = ET.SubElement(url_element, 'loc')
-    loc.text = "http://www.melmelboo.fr/art-%s-%d" % (art['url'], art['id'])
+    loc.text = "https://www.melmelboo.fr/art-%s-%d" % (art['url'], art['id'])
     lastmod = ET.SubElement(url_element, 'lastmod')
     try:
         lastmod.text = art['pubdate'].strftime("%Y-%m-%d")
@@ -69,7 +69,7 @@ for cat in my_categories:
         continue
     url_element = ET.SubElement(sitemap, 'url')
     loc = ET.SubElement(url_element, 'loc')
-    loc.text = "http://www.melmelboo.fr/cat-%s-%d" % (cat['slug'], cat['id'])
+    loc.text = "https://www.melmelboo.fr/cat-%s-%d" % (cat['slug'], cat['id'])
     lastmod = ET.SubElement(url_element, 'lastmod')
     lastmod.text = art['pubdate'].strftime("%Y-%m-%d")
     changefreq = ET.SubElement(url_element, 'changefreq')

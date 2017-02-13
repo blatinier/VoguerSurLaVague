@@ -38,11 +38,11 @@ if (!empty($view->has_top_article)) {
 }
 $i = 0;
 foreach ($view->articles as $art) {
-	?>
-	<article class="post <?php echo ($i % 2 == 0) ? "odd" : "even"; ?>" itemprop='blogPost' itemscope='itemscope' itemtype='http://schema.org/BlogPosting'>
+    ?>
+    <article class="post <?php echo ($i % 2 == 0) ? "odd" : "even"; ?>" itemprop='blogPost' itemscope='itemscope' itemtype='http://schema.org/BlogPosting'>
         <meta content='<?php echo $art->id; ?>' itemprop='postId'/>
         <meta itemprop="inLanguage" content="fr-FR"/>
-	    <header>
+        <header>
             <div class="header_art_img">
                 <a href="art-<?php echo $art->url; ?>-<?php echo $art->id; ?>">
                     <?= $art->get_top_image(); ?>
@@ -66,30 +66,27 @@ foreach ($view->articles as $art) {
                     <?php echo stripslashes($art->titre); ?>
                 </a>
             </div>
-	    </header>
-		<div class="mainpost">
-			<div class="postcontent" itemprop='description articleBody'>
-				<?= $art->art_abstract(); ?>
-			</div>
-		</div>
-		<footer class="short_com comconteneur">
-            <a class="comlink" href="art-<?php echo $art->url; ?>-<?php echo $art->id; ?>#firstcom">
-                <?php echo $art->nb_comment; ?> commentaires
-            </a>
+        </header>
+        <div class="mainpost">
+            <div class="postcontent" itemprop='description articleBody'>
+                <?= $art->art_abstract(); ?>
+            </div>
+        </div>
+        <footer class="short_com comconteneur">
             <?php
-			if(!empty($_SESSION['ok']) && $_SESSION['ok'] == 1){
-				echo " - <a class=\"comlink\" href=\"article_edit-".$art->id."\">Editer</a> - 
-				<a class=\"comlink\" href=\"article_delete-".$art->id."\">Supprimer</a><br/>";
-			}
-			?>
-		</footer>
+            if(!empty($_SESSION['ok']) && $_SESSION['ok'] == 1){
+                echo " - <a class=\"comlink\" href=\"article_edit-".$art->id."\">Editer</a> -
+                <a class=\"comlink\" href=\"article_delete-".$art->id."\">Supprimer</a><br/>";
+            }
+            ?>
+        </footer>
         <hr/>
-	</article>
-	<?php
+    </article>
+    <?php
 } ?>
 <div class="clear"></div>
 <div>
-	<?php
+    <?php
     $page = (!empty($_GET['page'])) ? $_GET['page'] : 0;
     if (!empty($view->nb_pages)) {
         $nb_pages = $view->nb_pages;

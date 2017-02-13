@@ -20,7 +20,7 @@ $captcha_com = $view->article->captcha_com;
                 <div><?php echo $view->article->month; ?></div>
                 <div><?php echo $view->article->year; ?></div>
             </span>
-	    </span>
+        </span>
         <div class="postTitle" itemprop='name'>
             <a href="art-<?php echo $view->article->url; ?>-<?php echo $view->article->id; ?>">
                 <?php echo stripslashes($view->article->titre); ?>
@@ -29,7 +29,7 @@ $captcha_com = $view->article->captcha_com;
     </header>
     <div class="clear"></div>
     <div class="mainpost">
-        <div class="postcontent" itemprop='description articleBody'>
+        <div class="postcontent <?php echo (!empty($view->article->ghost_id)) ? 'ghost': ''?>" itemprop='description articleBody'>
             <?php echo stripslashes(
                        str_replace('</br>', '<br />', $view->article->texte)); ?>
             <br/><br/>
@@ -47,21 +47,21 @@ $captcha_com = $view->article->captcha_com;
     </span>
     <br />
     <div class="social_fb_art">
-        <div class="fb-like" data-href="http://www.melmelboo.fr/art-<?php echo $view->article->url; ?>-<?php echo $view->article->id; ?>" data-layout="button" data-action="like" data-show-faces="false" data-share="true"></div>
+        <div class="fb-like" data-href="https://www.melmelboo.fr/art-<?php echo $view->article->url; ?>-<?php echo $view->article->id; ?>" data-layout="button" data-action="like" data-show-faces="false" data-share="true"></div>
     </div>
     <div class="social_art">
         Follow me <br />
         <ul class="social">
-            <li><a title="Instagram" href="http://instagram.com/melmelbooo"><img class="social_icon" src="/images/social/instagram.png" alt="Instagram" /></a></li>
-            <li><a title="Facebook" href="http://www.facebook.com/melmelboo"><img class="social_icon" src="/images/social/facebook.png" alt="Facebook" /></a></li>
+            <li><a title="Instagram" href="//instagram.com/melmelbooo"><img class="social_icon" src="/images/social/instagram.png" alt="Instagram" /></a></li>
+            <li><a title="Facebook" href="//www.facebook.com/melmelboo"><img class="social_icon" src="/images/social/facebook.png" alt="Facebook" /></a></li>
             <li><a title="Hellocoton" href="http://www.hellocoton.fr/mapage/melmelboo"><img class="social_icon" src="/images/social/hellocoton.png" alt="Hellocoton" /></a></li>
-            <li><a title="Pinterest" href="http://www.pinterest.com/melmelboo"><img class="social_icon" src="/images/social/pinterest.png" alt="Pinterest" /></a></li>
-            <li><a title="Flux RSS" href="http://www.melmelboo.fr/RSS/articles.rss"><img class="social_icon" src="/images/social/feed.png" alt="RSS" /></a></li>
+            <li><a title="Pinterest" href="//www.pinterest.com/melmelboo"><img class="social_icon" src="/images/social/pinterest.png" alt="Pinterest" /></a></li>
+            <li><a title="Flux RSS" href="//www.melmelboo.fr/RSS/articles.rss"><img class="social_icon" src="/images/social/feed.png" alt="RSS" /></a></li>
         </ul>
     </div>
-    <?php 
+    <?php
     if(!empty($_SESSION['ok']) && $_SESSION['ok'] == 1){
-        echo " - <a class=\"comlink\" href=\"article_edit-".$view->article->id."\">Editer</a> - 
+        echo " - <a class=\"comlink\" href=\"article_edit-".$view->article->id."\">Editer</a> -
         <a class=\"comlink\" href=\"article_delete-".$view->article->id."\">Supprimer</a><br/>";
     }
     ?>
@@ -101,33 +101,6 @@ $captcha_com = $view->article->captcha_com;
         </a>
         <?php endif; ?>
     </div>
-    <?php if (!$view->is_project52_art) { ?>
-        <div id="similar_articles">
-        <hr/>
-        <h3>Vous aimerez aussi</h3>
-        <?php 
-        $i = 0;
-        foreach ($view->similar_arts as $art) { 
-            $i += 1; ?>
-            <article class="post<?php echo ($i == 3) ? " last" : ""; ?>" itemprop='blogPost' itemscope='itemscope' itemtype='http://schema.org/BlogPosting'>
-            <meta content='<?php echo $art->id; ?>' itemprop='postId'/>
-            <meta itemprop="inLanguage" content="fr-FR"/>
-            <header>
-                <div class="header_art_img">
-                    <a href="art-<?php echo $art->url; ?>-<?php echo $art->id; ?>">
-                        <?= $art->get_top_image(); ?>
-                    </a>
-                </div>
-                <div class="postTitle" itemprop='name'>
-                    <a href="art-<?php echo $art->url; ?>-<?php echo $art->id; ?>">
-                        <?php echo stripslashes($art->titre); ?>
-                    </a>
-                </div>
-            </header>
-        </article>
-        <?php } ?>
-        </div>
-    <?php } ?>
     <footer class="comconteneur">
         <section>
             <?php echo $_widgets['view_comments'];

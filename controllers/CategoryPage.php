@@ -9,7 +9,7 @@ class CategoryPage extends Controller {
     public function del_cat () {
         $admin = (!empty($_SESSION['ok']) && $_SESSION['ok'] == 1);
         if (!$admin) {
-            header('Location: http://www.melmelboo.fr');
+            header('Location: https://www.melmelboo.fr');
             die();
         }
         $cat_id = $this->_getParam('cat_id', 0);
@@ -17,14 +17,14 @@ class CategoryPage extends Controller {
             $cat_repo = new CategoryRepository();
             $cat_repo->delete($cat_id);
         }
-        header('Location: http://www.melmelboo.fr/list_cat');
+        header('Location: https://www.melmelboo.fr/list_cat');
         die();
     }
 
     public function new_cat () {
         $admin = (!empty($_SESSION['ok']) && $_SESSION['ok'] == 1);
         if (!$admin) {
-            header('Location: http://www.melmelboo.fr');
+            header('Location: https://www.melmelboo.fr');
             die();
         }
         $cat_repo = new CategoryRepository();

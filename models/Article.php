@@ -12,7 +12,7 @@ class Article extends Model {
     public $captcha_com;
     public $closed_com;
 
-    public function __construct($id, $auteur, $titre, $url, $texte, $pubdate, $cat, $captcha_com, $closed_com) {
+    public function __construct($id, $auteur, $titre, $url, $texte, $pubdate, $cat, $captcha_com, $closed_com, $ghost_id, $canonical_url) {
         $MONTH = array(
             1 => "Janvier",
             2 => "Février",
@@ -35,6 +35,8 @@ class Article extends Model {
         $this->cat = $cat;
         $this->captcha_com = $captcha_com;
         $this->closed_com = $closed_com;
+        $this->ghost_id = $ghost_id;
+        $this->canonical_url = $canonical_url;
 
         $pub_time = strtotime($pubdate);
         $this->post_date = date("d/m/Y", $pub_time);
@@ -56,7 +58,9 @@ class Article extends Model {
             $dict['pubdate'],
             $dict['cat'],
             $dict['captcha_com'],
-            $dict['closed_com']);
+            $dict['closed_com'],
+            $dict['ghost_id'],
+            $dict['canonical_url']);
     }
 
     public function get_tags() {
@@ -65,11 +69,11 @@ class Article extends Model {
     }
 
     public function get_top_image() {
-        preg_match_all('/<img class="top_image"[^>]+>/i',$this->texte, $result); 
+        preg_match_all('/<img class="top_image"[^>]+>/i',$this->texte, $result);
         if (!empty($result[0])) {
             return $result[0][0];
         }
-        preg_match_all('/<img [^>]+>/i',$this->texte, $result); 
+        preg_match_all('/<img [^>]+>/i',$this->texte, $result);
         return $result[0][0];
     }
 
@@ -79,9 +83,9 @@ class Article extends Model {
         if (strlen($abstract) > $numb) {
             $abstract = substr($abstract, 0, $numb);
             $abstract = substr($abstract, 0, strrpos($abstract, " "));
-            $etc = " ..."; 
+            $etc = " ...";
             $abstract = $abstract . $etc;
         }
-        return $abstract; 
+        return $abstract;
     }
 }

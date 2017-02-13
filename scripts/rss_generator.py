@@ -32,7 +32,7 @@ channel = ET.SubElement(rss, 'channel')
 title = ET.SubElement(channel, 'title')
 title.text = 'Melmelboo'
 link = ET.SubElement(channel, 'link')
-link.text = 'http://www.melmelboo.fr'
+link.text = 'https://www.melmelboo.fr'
 description = ET.SubElement(channel, 'description')
 description.text = 'Le blog de Melmelboo !'
 language = ET.SubElement(channel, 'language')
@@ -57,7 +57,7 @@ for art in my_articles:
     atitle = ET.SubElement(item, 'title')
     atitle.text = art['atitle'].decode("latin1")
     alink = ET.SubElement(item, 'link')
-    alink.text = "http://www.melmelboo.fr/art-%s-%d" % (art['url'], art['aid'])
+    alink.text = "https://www.melmelboo.fr/art-%s-%d" % (art['url'], art['aid'])
     adescription = ET.SubElement(item, 'description')
     clean = bs4.BeautifulSoup(art["atext"].decode("latin1")).get_text()[:150].strip()
     if clean:
@@ -72,13 +72,13 @@ for art in my_articles:
     acategory = ET.SubElement(item, 'category')
     acategory.text = art['category'].decode("latin1")
     acomments = ET.SubElement(item, 'comments')
-    acomments.text = "http://www.melmelboo.fr/art-%s-%d#firstcom" % (art['url'], art['aid'])
+    acomments.text = "https://www.melmelboo.fr/art-%s-%d#firstcom" % (art['url'], art['aid'])
     aguid = ET.SubElement(item, 'guid')
     aguid.text = "%d" % (art['aid'])
     apubDate = ET.SubElement(item, 'pubDate')
     apubDate.text = art['pubdate'].strftime("%a, %d %b %Y %H:%M:%S GMT")
     asource = ET.SubElement(item, 'source')
-    asource.set('url', 'http://www.melmelboo.fr/RSS/articles.rss')
+    asource.set('url', 'https://www.melmelboo.fr/RSS/articles.rss')
     asource.text = "Les news de Melmelboo"
 
     tree = ET.ElementTree(rss)

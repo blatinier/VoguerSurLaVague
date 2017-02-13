@@ -8,7 +8,7 @@ class TagManager extends Controller {
     public function del_tag () {
         $admin = (!empty($_SESSION['ok']) && $_SESSION['ok'] == 1);
         if (!$admin) {
-            header('Location: http://www.melmelboo.fr');
+            header('Location: https://www.melmelboo.fr');
             die();
         }
         $tag_id = $this->_getParam('tag_id', 0);
@@ -16,14 +16,14 @@ class TagManager extends Controller {
             $tag_repo = new TagRepository();
             $tag_repo->delete($tag_id);
         }
-        header('Location: http://www.melmelboo.fr/tag_management');
+        header('Location: https://www.melmelboo.fr/tag_management');
         die();
     }
 
     public function edit_tag () {
         $admin = (!empty($_SESSION['ok']) && $_SESSION['ok'] == 1);
         if (!$admin) {
-            header('Location: http://www.melmelboo.fr');
+            header('Location: https://www.melmelboo.fr');
             die();
         }
         $tag_id = $this->_getParam('tag_id', 0);
@@ -34,13 +34,13 @@ class TagManager extends Controller {
                 $tag->name = $_POST['name'];
                 $tag->slug = LibTools::sanitize_string(utf8_decode($_POST['name']));
                 $tag_repo->save($tag);
-                header('Location: http://www.melmelboo.fr/tag_management');
+                header('Location: https://www.melmelboo.fr/tag_management');
                 die();
             } else {
                 $this->view->tag = $tag;
             }
         } else {
-            header('Location: http://www.melmelboo.fr/tag_management');
+            header('Location: https://www.melmelboo.fr/tag_management');
             die();
         }
     }
@@ -48,7 +48,7 @@ class TagManager extends Controller {
     public function new_tag () {
         $admin = (!empty($_SESSION['ok']) && $_SESSION['ok'] == 1);
         if (!$admin) {
-            header('Location: http://www.melmelboo.fr');
+            header('Location: https://www.melmelboo.fr');
             die();
         }
         if (!empty($_POST)) {
@@ -59,7 +59,7 @@ class TagManager extends Controller {
             $tag_repo = new TagRepository();
             $tag_repo->save($tag);
         }
-        header('Location: http://www.melmelboo.fr/tag_management');
+        header('Location: https://www.melmelboo.fr/tag_management');
         die();
     }
 

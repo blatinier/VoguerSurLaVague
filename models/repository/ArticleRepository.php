@@ -8,7 +8,8 @@ class ArticleRepository extends Repository {
 
     public function get_by_id($is_admin, $id) {
         $req = 'SELECT id, auteur, titre, url, texte,
-            pubdate, cat, captcha_com, closed_com
+            pubdate, cat, captcha_com, closed_com,
+            ghost_id, canonical_url
             FROM articles
             WHERE id = '.(int)$id;
         if (!$is_admin) {
@@ -21,7 +22,8 @@ class ArticleRepository extends Repository {
 
     public function get_by_ids($is_admin, $ids) {
         $req = 'SELECT id, auteur, titre, url, texte,
-            pubdate, cat, captcha_com, closed_com
+            pubdate, cat, captcha_com, closed_com,
+            ghost_id, canonical_url
             FROM articles
             WHERE id IN ('.implode(",", $ids).')';
         if (!$is_admin) {
@@ -38,7 +40,8 @@ class ArticleRepository extends Repository {
 
     public function get_all($is_admin) {
         $req = 'SELECT id, auteur, titre, url, texte,
-            pubdate, cat, captcha_com, closed_com
+            pubdate, cat, captcha_com, closed_com,
+            ghost_id, canonical_url
             FROM articles';
         $where = array();
         if (!$is_admin) {
@@ -57,7 +60,8 @@ class ArticleRepository extends Repository {
 
     public function get_next($is_admin, $art) {
         $req = 'SELECT id, auteur, titre, url, texte,
-            pubdate, cat, captcha_com, closed_com
+            pubdate, cat, captcha_com, closed_com,
+            ghost_id, canonical_url
             FROM articles
             WHERE pubdate > "'.$art->pubdate.'"';
         if (!$is_admin) {
@@ -71,7 +75,8 @@ class ArticleRepository extends Repository {
 
     public function get_previous($is_admin, $art) {
         $req = 'SELECT id, auteur, titre, url, texte,
-            pubdate, cat, captcha_com, closed_com
+            pubdate, cat, captcha_com, closed_com,
+            ghost_id, canonical_url
             FROM articles
             WHERE pubdate < "'.$art->pubdate.'"';
         if (!$is_admin) {
@@ -86,7 +91,8 @@ class ArticleRepository extends Repository {
     public function get_articles($is_admin, $page) {
         $offset = $page * $this->nb_articles_per_page;
         $req = 'SELECT id, auteur, titre, url, texte,
-            pubdate, cat, captcha_com, closed_com
+            pubdate, cat, captcha_com, closed_com,
+            ghost_id, canonical_url
             FROM articles';
         $where = array();
         if (!$is_admin) {
@@ -148,7 +154,7 @@ class ArticleRepository extends Repository {
     }
 
     public function get_years($is_admin) {
-        $req = 'SELECT DISTINCT YEAR(pubdate) AS name 
+        $req = 'SELECT DISTINCT YEAR(pubdate) AS name
             FROM articles
             WHERE pubdate > "2000-01-01 00:00:00"';
         // this condition is to exclude 0 dates from
@@ -180,7 +186,8 @@ class ArticleRepository extends Repository {
         $month = (int)$month;
         $page = (int)$page;
         $req = 'SELECT id, auteur, titre, url, texte,
-            pubdate, cat, captcha_com, closed_com
+            pubdate, cat, captcha_com, closed_com,
+            ghost_id, canonical_url
             FROM articles
             WHERE YEAR(pubdate) = '.$year.'
                 AND MONTH(pubdate) = '.$month;
@@ -204,7 +211,8 @@ class ArticleRepository extends Repository {
         $page = (int)$page;
         $tag_id = (int)$tag_id;
         $req = 'SELECT id, auteur, titre, url, texte,
-            pubdate, cat, captcha_com, closed_com
+            pubdate, cat, captcha_com, closed_com,
+            ghost_id, canonical_url
             FROM articles a
             LEFT JOIN article_tags at
                 ON a.id = at.article_id
@@ -229,7 +237,8 @@ class ArticleRepository extends Repository {
         $page = (int)$page;
         $category_id = (int)$category_id;
         $req = 'SELECT id, auteur, titre, url, texte,
-            pubdate, cat, captcha_com, closed_com
+            pubdate, cat, captcha_com, closed_com,
+            ghost_id, canonical_url
             FROM articles
             WHERE cat = '.$category_id;
         if (!$is_admin) {

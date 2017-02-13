@@ -1,40 +1,9 @@
-<?php
-if (!empty($_widget_data['err_msg'])) {
-    echo '<p id="error" class="error">'.$_widget_data['err_msg'].'</p>';
-}
-if (!$_widget_data['closed_com']) {
-?>
-<div id="combox" style="line-height:2em;">
-    <script type="text/javascript">
-     var RecaptchaOptions = {
-        theme : 'clean',
-        custom_theme_widget: 'recaptcha_widget',
-        lang:'fr',
-     };
-    </script>
-	<form method="post" action="">
-        <span id="commentaire" class="title-font"><a href="#">Commenter cet article</a></span>
-		<label class="contact-field" for="pseudo">Pseudo </label> <span class="lighter">(Obligatoire)</span><br/>
-		<input class="input-contact-field" type="text" name="pseudo" id="pseudo" 
-        value="<?php if (!empty($_widget_data['post'])) echo $_widget_data['post']['pseudo']; ?>" /><br />
-		<label class="contact-field" for="mail">Email</label><br/>
-		<input class="input-contact-field" type="text" name="mail" id="mail"
-        value="<?php if (!empty($_widget_data['post'])) echo $_widget_data['post']['mail']; ?>"  /><br />
-        <input type="checkbox" name="follow" id="follow" <?php if (!empty($_widget_data['post']) && !empty($_widget_data['post']['follow']) && $_widget_data['post']['follow'] == "on") echo "checked"; ?>/> 
-        <label for="follow">M'avertir des commentaires sur l'article par email</label><br />
-		<label class="contact-field" for="site">Site web </label><br/>
-		<input class="input-contact-field" type="text" name="site" id="site"
-        value="<?php if (!empty($_widget_data['post'])) { echo $_widget_data['post']['site'];}else{ echo 'http://';} ?>" /><br />
-        <label class="contact-field" for="msg">Commentaire</label> <span class="lighter">(Obligatoire)</span><br/>
-		<textarea name="commentaire" id="contact-comment"><?php if (!empty($_widget_data['post'])) echo $_widget_data['post']['commentaire']; ?></textarea><br/>
-        <?php
-        require_once('libraries/recaptchalib.php');
-        $publickey = "6LcHPNISAAAAAItdQK-EOMb1P5d18AGST55v3urq";
-        echo recaptcha_get_html($publickey);
-        ?>
-        <p id="add_submit" class="right_aligned"><input type="submit" value="Poster" /></p>
-	</form>
+<div id="combox">
+    <script data-isso="//comments.melmelboo-voyage.fr/"
+            data-isso-avatar="false"
+            src="//comments.melmelboo-voyage.fr/js/embed.dev.js"></script>
+    <section id="isso-thread"
+             data-title="<?= $_widget_data['title'] ?>"
+             data-isso-id="<?= $_widget_data['isso_id'] ?>"></section>
+
 </div>
-<?php
-}
-?>
